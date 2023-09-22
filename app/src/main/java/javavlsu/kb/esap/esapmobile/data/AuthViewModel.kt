@@ -1,12 +1,18 @@
 package javavlsu.kb.esap.esapmobile.data
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.network.Api
 import javavlsu.kb.esap.esapmobile.network.model.AuthRequest
 import kotlinx.coroutines.launch
 
+@HiltViewModel
 class AuthViewModel : ViewModel() {
+    var login = mutableStateOf("")
+    var password = mutableStateOf("")
+
     fun performLogin(username: String, password: String, onResult: (String) -> Unit) {
         val loginRequest = AuthRequest(username, password)
 
