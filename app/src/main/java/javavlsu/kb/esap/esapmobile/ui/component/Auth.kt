@@ -5,23 +5,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-@Composable
-fun TitleField(title: String, color: Color = Color.Blue) {
-    Text(
-        text = title,
-        fontSize = 44.sp,
-        fontWeight = FontWeight.Bold,
-        color = color,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.padding(30.dp)
-    )
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,14 +17,18 @@ fun TextField(value: String, text: String, isPassword: Boolean = false, onValueC
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
+            shape = MaterialTheme.shapes.medium,
             label = { Text(text) },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
     } else {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { Text(text) }
+            shape = MaterialTheme.shapes.medium,
+            label = { Text(text) },
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -47,11 +38,20 @@ fun Button(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
+            contentColor = Color.White,
             containerColor = Color.Blue),
-        modifier = Modifier
-            .padding(15.dp)
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text)
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth()
+        )
     }
 }
 
