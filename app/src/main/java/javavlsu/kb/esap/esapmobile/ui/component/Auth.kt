@@ -25,27 +25,25 @@ fun TitleField(title: String, color: Color = Color.Blue) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginTextField(login: String, onLoginChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = login,
-        onValueChange = onLoginChange,
-        label = { Text("Login") }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PasswordTextField(password: String, onPasswordChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = password,
-        onValueChange = onPasswordChange,
-        label = { Text("Password") },
-        visualTransformation = PasswordVisualTransformation()
-    )
+fun TextField(value: String, text: String, isPassword: Boolean = false, onValueChange: (String) -> Unit) {
+    if (isPassword) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(text) },
+            visualTransformation = PasswordVisualTransformation()
+        )
+    } else {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(text) }
+        )
+    }
 }
 
 @Composable
-fun LoginButton(onClick: () -> Unit) {
+fun Button(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
@@ -53,7 +51,7 @@ fun LoginButton(onClick: () -> Unit) {
         modifier = Modifier
             .padding(15.dp)
     ) {
-        Text("Login")
+        Text(text)
     }
 }
 

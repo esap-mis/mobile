@@ -43,9 +43,16 @@ fun AuthScreen(authViewModel: AuthViewModel) {
         verticalArrangement = Arrangement.Center
     ) {
         TitleField("ЕСАП")
-        LoginTextField(login) { login = it }
-        PasswordTextField(password) { password = it }
-        LoginButton {
+        TextField(
+            text = "Логин",
+            value = login,
+        ) { login = it }
+        TextField(
+            text = "Пароль",
+            value = password,
+            isPassword = true,
+        ) { password = it }
+        Button(text = "Войти") {
             authViewModel.performLogin(login, password) { result ->
                 responseMessage = result
                 showDialog = true
