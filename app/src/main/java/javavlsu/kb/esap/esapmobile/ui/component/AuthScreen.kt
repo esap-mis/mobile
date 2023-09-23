@@ -20,14 +20,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 
 @Composable
 fun AuthScreen(
-    authViewModel: AuthViewModel
+    navController: NavController,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
-    val login = authViewModel.login.value
-    var password = authViewModel.password.value
+    val login = viewModel.login.value
+    val password = viewModel.password.value
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -50,7 +53,7 @@ fun AuthScreen(
         OutlinedTextField(
             value = login,
             onValueChange = {
-                authViewModel.login.value = it
+                viewModel.login.value = it
             },
             shape = MaterialTheme.shapes.medium,
             label = { Text("Логин") },
@@ -61,7 +64,7 @@ fun AuthScreen(
         OutlinedTextField(
             value = password,
             onValueChange = {
-                authViewModel.password.value = it
+                viewModel.password.value = it
             },
             shape = MaterialTheme.shapes.medium,
             label = { Text("Пароль") },
@@ -99,7 +102,7 @@ fun AuthScreen(
         }
 
         Button(text = "Войти") {
-            authViewModel.performLogin(login, password) { result ->
+            viewModel.performLogin(login, password) { result ->
                 responseMessage = result
                 showDialog = true
             }
@@ -107,8 +110,8 @@ fun AuthScreen(
 
         TextButton(
             onClick = {
-//                navigator.popBackStack()
-//                navigator.navigate(RegisterScreenDestination)
+                navController.popBackStack()
+                navController.navigate("registry")
             },
             modifier = Modifier.fillMaxWidth()
         ) {

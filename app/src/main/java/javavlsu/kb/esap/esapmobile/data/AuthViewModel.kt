@@ -2,14 +2,17 @@ package javavlsu.kb.esap.esapmobile.data
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.AssistedFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.network.Api
 import javavlsu.kb.esap.esapmobile.network.model.AuthRequest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel : ViewModel() {
+class AuthViewModel @Inject constructor() : ViewModel() {
     var login = mutableStateOf("")
     var password = mutableStateOf("")
 
