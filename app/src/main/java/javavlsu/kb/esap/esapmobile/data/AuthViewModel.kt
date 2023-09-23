@@ -2,17 +2,17 @@ package javavlsu.kb.esap.esapmobile.data
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.AssistedFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javavlsu.kb.esap.esapmobile.network.Api
+import javavlsu.kb.esap.esapmobile.network.ApiService
 import javavlsu.kb.esap.esapmobile.network.model.AuthRequest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor() : ViewModel() {
+class AuthViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
     var login = mutableStateOf("")
     var password = mutableStateOf("")
 
@@ -21,7 +21,7 @@ class AuthViewModel @Inject constructor() : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val response = Api.apiService.login(loginRequest)
+                val response = apiService.login(loginRequest)
                 if (response.isSuccessful) {
                     val token = response.body()?.jwt ?: ""
                     onResult("Success: $token")
