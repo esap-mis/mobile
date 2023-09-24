@@ -1,12 +1,27 @@
 package javavlsu.kb.esap.esapmobile.ui.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,15 +40,15 @@ import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 
 @Composable
-fun AuthScreen(
+fun RegistrationScreen(
     navController: NavController,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    val login = viewModel.login.value
-    val password = viewModel.password.value
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    var responseMessage by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -51,20 +66,40 @@ fun AuthScreen(
         )
         Spacer(modifier = Modifier.size(30.dp))
         OutlinedTextField(
-            value = login,
+            value = firstName,
             onValueChange = {
-                viewModel.login.value = it
+                firstName = it
             },
             shape = MaterialTheme.shapes.medium,
-            label = { Text("Логин") },
+            label = { Text("Имя") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.size(30.dp))
+        OutlinedTextField(
+            value = lastName,
+            onValueChange = {
+                lastName = it
+            },
+            shape = MaterialTheme.shapes.medium,
+            label = { Text("Фамилия") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(30.dp))
+        OutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+            },
+            shape = MaterialTheme.shapes.medium,
+            label = { Text("Эл. почта") },
+            modifier = Modifier.fillMaxWidth()
+        )
 
+        Spacer(modifier = Modifier.size(30.dp))
         OutlinedTextField(
             value = password,
             onValueChange = {
-                viewModel.password.value = it
+                password = it
             },
             shape = MaterialTheme.shapes.medium,
             label = { Text("Пароль") },
@@ -80,38 +115,18 @@ fun AuthScreen(
             }
         )
 
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-            }
-            TextButton(onClick = {
-                //navigator.navigate(ForgotPasswordScreenDestination)
-            }) {
-                Text(
-                    text = "Забыли пароль?",
-                    color = Color.Black
-                )
-            }
-        }
-
-        Button(text = "Войти") {
-            viewModel.performLogin(login, password) { result ->
-                responseMessage = result
-                showDialog = true
-            }
+        Spacer(modifier = Modifier.size(30.dp))
+        Button(text = "Зарегистрироваться") {
+//            viewModel.performLogin(login, password) { result ->
+//                responseMessage = result
+//                showDialog = true
+//            }
         }
 
         TextButton(
             onClick = {
                 navController.popBackStack()
-                navController.navigate("registration")
+                navController.navigate("auth")
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -120,64 +135,18 @@ fun AuthScreen(
                     withStyle(
                         style = SpanStyle(color = Color.Black)
                     ) {
-                        append("Еще нет акаунта?")
+                        append("Уже есть аккаунт?")
                     }
                     append(" ")
                     withStyle(
                         style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
                     ) {
-                        append("Зарегистрируйтесь")
+                        append("Войдите")
                     }
                 },
                 fontFamily = FontFamily.SansSerif,
                 textAlign = TextAlign.Center
             )
         }
-
-        if (showDialog) {
-            ResponseDialog(responseMessage) {
-                showDialog = false
-            }
-        }
     }
-}
-
-@Composable
-fun Button(text: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
-            containerColor = Color.Blue),
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = text,
-            fontSize = 18.sp,
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(6.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-
-@Composable
-fun ResponseDialog(responseMessage: String, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = { Text("Server Response") },
-        text = { Text(responseMessage) },
-        confirmButton = {
-            Button(
-                onClick = { onDismiss() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue),
-            ) {
-                Text("OK")
-            }
-        }
-    )
 }

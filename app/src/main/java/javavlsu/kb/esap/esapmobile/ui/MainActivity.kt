@@ -29,8 +29,8 @@ class MainActivity : ComponentActivity() {
                         composable("auth") {
                             AuthScreen(navController)
                         }
-                        composable("registry") {
-                            RegistryScreen(navController)
+                        composable("registration") {
+                            RegistrationScreen(navController)
                         }
                     }
                 }
