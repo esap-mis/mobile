@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javavlsu.kb.esap.esapmobile.network.ApiService
-import javavlsu.kb.esap.esapmobile.network.model.AuthRequest
+import javavlsu.kb.esap.esapmobile.domain.ApiService
+import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

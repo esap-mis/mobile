@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javavlsu.kb.esap.esapmobile.network.ApiService
+import javavlsu.kb.esap.esapmobile.domain.ApiService
 import javavlsu.kb.esap.esapmobile.util.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.network.model
+package javavlsu.kb.esap.esapmobile.domain.model
 
 data class AuthRequest(
     val login: String,

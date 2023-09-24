@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.component
+package javavlsu.kb.esap.esapmobile.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

@@ -1,7 +1,7 @@
-package javavlsu.kb.esap.esapmobile.network
+package javavlsu.kb.esap.esapmobile.domain
 
-import javavlsu.kb.esap.esapmobile.network.model.AuthRequest
-import javavlsu.kb.esap.esapmobile.network.model.AuthResponse
+import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
+import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
