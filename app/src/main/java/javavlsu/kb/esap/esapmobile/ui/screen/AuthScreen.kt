@@ -26,8 +26,6 @@ import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
-import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
-import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse
 import javavlsu.kb.esap.esapmobile.util.ApiResponse
 
 @Composable
@@ -91,6 +89,23 @@ fun AuthScreen(
         )
         Spacer(modifier = Modifier.size(30.dp))
 
+        if (authResponse is ApiResponse.Loading) {
+            CircularProgressIndicator(
+                color = Color.Blue,
+                modifier = Modifier
+                    .padding(16.dp)
+            )
+        } else {
+            OutlinedTextField(
+                value = login,
+                onValueChange = {
+                },
+                shape = MaterialTheme.shapes.medium,
+                label = { Text("Логин") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.size(30.dp))
+
         OutlinedTextField(
             value = password,
             onValueChange = {
@@ -109,27 +124,46 @@ fun AuthScreen(
                 }
             }
         )
+            OutlinedTextField(
+                value = password,
+                onValueChange = {
+                    authViewModel.setPassword(it)
+                },
+                shape = MaterialTheme.shapes.medium,
+                label = { Text("Пароль") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                    val description = if (passwordVisible) "Скрыть" else "Показать"
+                    IconButton(onClick = {
+                        passwordVisible = !passwordVisible
+                    }) {
+                        Icon(image, description)
+                    }
+                }
+            )
 
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
             Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
+                }
+                TextButton(onClick = {
+                    //navigator.navigate(ForgotPasswordScreenDestination)
+                }) {
+                    Text(
+                        text = "Забыли пароль?",
+                        color = Color.Black
+                    )
+                }
             }
-            TextButton(onClick = {
-                //navigator.navigate(ForgotPasswordScreenDestination)
-            }) {
-                Text(
-                    text = "Забыли пароль?",
-                    color = Color.Black
-                )
-            }
-        }
 
         Button(text = "Войти") {
             authViewModel.login(AuthRequest(login, password),
@@ -141,31 +175,41 @@ fun AuthScreen(
                 }
             )
         }
+            Button(text = "Войти") {
+                    object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            responseMessage = "Error! $message"
+                            showDialog = true
+                        }
+                    }
+                )
+            }
 
-        TextButton(
-            onClick = {
-                navController.popBackStack()
-                navController.navigate("registration")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(color = Color.Black)
-                    ) {
-                        append("Еще нет акаунта?")
-                    }
-                    append(" ")
-                    withStyle(
-                        style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
-                    ) {
-                        append("Зарегистрируйтесь")
-                    }
+            TextButton(
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate("registration")
                 },
-                fontFamily = FontFamily.SansSerif,
-                textAlign = TextAlign.Center
-            )
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(color = Color.Black)
+                        ) {
+                            append("Еще нет акаунта?")
+                        }
+                        append(" ")
+                        withStyle(
+                            style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
+                        ) {
+                            append("Зарегистрируйтесь")
+                        }
+                    },
+                    fontFamily = FontFamily.SansSerif,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
         if (showDialog) {
