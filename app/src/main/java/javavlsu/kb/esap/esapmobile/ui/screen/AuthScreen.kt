@@ -34,8 +34,8 @@ fun AuthScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel()
 ) {
-    var login by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val login = authViewModel.login.value
+    val password = authViewModel.password.value
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -78,16 +78,6 @@ fun AuthScreen(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.size(30.dp))
-        OutlinedTextField(
-            value = login,
-            onValueChange = {
-                login = it
-            },
-            shape = MaterialTheme.shapes.medium,
-            label = { Text("Логин") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.size(30.dp))
 
         if (authResponse is ApiResponse.Loading) {
             CircularProgressIndicator(
@@ -99,6 +89,7 @@ fun AuthScreen(
             OutlinedTextField(
                 value = login,
                 onValueChange = {
+                    authViewModel.setLogin(it)
                 },
                 shape = MaterialTheme.shapes.medium,
                 label = { Text("Логин") },
@@ -106,24 +97,6 @@ fun AuthScreen(
             )
             Spacer(modifier = Modifier.size(30.dp))
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = {
-                password = it
-            },
-            shape = MaterialTheme.shapes.medium,
-            label = { Text("Пароль") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                val description = if (passwordVisible) "Скрыть" else "Показать"
-                IconButton(onClick = {
-                    passwordVisible = !passwordVisible}){
-                    Icon(image, description)
-                }
-            }
-        )
             OutlinedTextField(
                 value = password,
                 onValueChange = {
@@ -165,17 +138,8 @@ fun AuthScreen(
                 }
             }
 
-        Button(text = "Войти") {
-            authViewModel.login(AuthRequest(login, password),
-                object: CoroutinesErrorHandler {
-                    override fun onError(message: String) {
-                        responseMessage = "Error! $message"
-                        showDialog = true
-                    }
-                }
-            )
-        }
             Button(text = "Войти") {
+                authViewModel.login(
                     object : CoroutinesErrorHandler {
                         override fun onError(message: String) {
                             responseMessage = "Error! $message"

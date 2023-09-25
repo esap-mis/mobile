@@ -24,7 +24,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "da
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkCOnfig {
+class NetworkConfig {
 
     @Singleton
     @Provides
