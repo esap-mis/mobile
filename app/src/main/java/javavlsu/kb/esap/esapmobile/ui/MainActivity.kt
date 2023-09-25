@@ -32,6 +32,9 @@ class MainActivity : ComponentActivity() {
                         composable("registration") {
                             RegistrationScreen(navController)
                         }
+                        composable("main") {
+                            MainScreen(navController)
+                        }
                     }
                 }
             }

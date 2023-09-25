@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,17 +24,46 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
+import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
+import javavlsu.kb.esap.esapmobile.data.TokenViewModel
+import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
+import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse
+import javavlsu.kb.esap.esapmobile.util.ApiResponse
 
 @Composable
 fun AuthScreen(
     navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel()
+    authViewModel: AuthViewModel = hiltViewModel(),
+    tokenViewModel: TokenViewModel = hiltViewModel()
 ) {
-    val login = viewModel.login.value
-    val password = viewModel.password.value
+    var login by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+
+    val token by tokenViewModel.token.observeAsState()
+    val authResponse by authViewModel.authResponse.observeAsState()
+
+    LaunchedEffect(authResponse, token) {
+        if (token != null) {
+            navController.navigate("main")
+        } else {
+            when (authResponse) {
+                is ApiResponse.Failure -> {
+                    responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                    showDialog = true
+                }
+                is ApiResponse.Success -> {
+                    val token = (authResponse as ApiResponse.Success).data.jwt
+                    tokenViewModel.saveToken(token)
+                }
+
+                ApiResponse.Loading -> {}
+                null -> {}
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -53,7 +83,7 @@ fun AuthScreen(
         OutlinedTextField(
             value = login,
             onValueChange = {
-                viewModel.login.value = it
+                login = it
             },
             shape = MaterialTheme.shapes.medium,
             label = { Text("Логин") },
@@ -64,7 +94,7 @@ fun AuthScreen(
         OutlinedTextField(
             value = password,
             onValueChange = {
-                viewModel.password.value = it
+                password = it
             },
             shape = MaterialTheme.shapes.medium,
             label = { Text("Пароль") },
@@ -102,10 +132,14 @@ fun AuthScreen(
         }
 
         Button(text = "Войти") {
-            viewModel.performLogin(login, password) { result ->
-                responseMessage = result
-                showDialog = true
-            }
+            authViewModel.login(AuthRequest(login, password),
+                object: CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        responseMessage = "Error! $message"
+                        showDialog = true
+                    }
+                }
+            )
         }
 
         TextButton(
