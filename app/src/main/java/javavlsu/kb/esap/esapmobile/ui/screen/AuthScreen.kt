@@ -34,12 +34,8 @@ fun AuthScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel()
 ) {
-    val login = authViewModel.login.value
-    val password = authViewModel.password.value
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-
     val token by tokenViewModel.token.observeAsState()
     val authResponse by authViewModel.authResponse.observeAsState()
 
@@ -82,62 +78,24 @@ fun AuthScreen(
         if (authResponse is ApiResponse.Loading) {
             CircularProgressIndicator(
                 color = Color.Blue,
-                modifier = Modifier
-                    .padding(16.dp)
+                modifier = Modifier.padding(16.dp)
             )
         } else {
-            OutlinedTextField(
-                value = login,
-                onValueChange = {
-                    authViewModel.setLogin(it)
-                },
-                shape = MaterialTheme.shapes.medium,
-                label = { Text("Логин") },
-                modifier = Modifier.fillMaxWidth()
+            val login = authViewModel.login.value
+            val password = authViewModel.password.value
+            var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+            AuthForm(
+                login = login,
+                password = password,
+                passwordVisible = passwordVisible,
+                onLoginChange = { authViewModel.setLogin(it) },
+                onPasswordChange = { authViewModel.setPassword(it) },
+                onPasswordVisibilityToggle = { passwordVisible = !passwordVisible }
             )
-            Spacer(modifier = Modifier.size(30.dp))
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    authViewModel.setPassword(it)
-                },
-                shape = MaterialTheme.shapes.medium,
-                label = { Text("Пароль") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                    val description = if (passwordVisible) "Скрыть" else "Показать"
-                    IconButton(onClick = {
-                        passwordVisible = !passwordVisible
-                    }) {
-                        Icon(image, description)
-                    }
-                }
-            )
-
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                }
-                TextButton(onClick = {
-                    //navigator.navigate(ForgotPasswordScreenDestination)
-                }) {
-                    Text(
-                        text = "Забыли пароль?",
-                        color = Color.Black
-                    )
-                }
+            ForgotPasswordButton {
+                navController.navigate("registration")
             }
-
             Button(text = "Войти") {
                 authViewModel.login(
                     object : CoroutinesErrorHandler {
@@ -148,31 +106,8 @@ fun AuthScreen(
                     }
                 )
             }
-
-            TextButton(
-                onClick = {
-                    navController.popBackStack()
-                    navController.navigate("registration")
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(color = Color.Black)
-                        ) {
-                            append("Еще нет акаунта?")
-                        }
-                        append(" ")
-                        withStyle(
-                            style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
-                        ) {
-                            append("Зарегистрируйтесь")
-                        }
-                    },
-                    fontFamily = FontFamily.SansSerif,
-                    textAlign = TextAlign.Center
-                )
+            RegisterButton {
+                navController.navigate("registration")
             }
         }
 
@@ -180,6 +115,65 @@ fun AuthScreen(
             ResponseDialog(responseMessage) {
                 showDialog = false
             }
+        }
+    }
+}
+
+@Composable
+fun AuthForm(
+    login: String,
+    password: String,
+    passwordVisible: Boolean,
+    onLoginChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onPasswordVisibilityToggle: () -> Unit
+) {
+    OutlinedTextField(
+        value = login,
+        onValueChange = onLoginChange,
+        shape = MaterialTheme.shapes.medium,
+        label = { Text("Логин") },
+        modifier = Modifier.fillMaxWidth()
+    )
+    Spacer(modifier = Modifier.size(30.dp))
+
+    OutlinedTextField(
+        value = password,
+        onValueChange = onPasswordChange,
+        shape = MaterialTheme.shapes.medium,
+        label = { Text("Пароль") },
+        modifier = Modifier.fillMaxWidth(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+            val description = if (passwordVisible) "Скрыть" else "Показать"
+            IconButton(onClick = {
+                onPasswordVisibilityToggle()
+            }) {
+                Icon(image, description)
+            }
+        }
+    )
+}
+
+@Composable
+fun ForgotPasswordButton(onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+        }
+        TextButton(onClick = { onClick }) {
+            Text(
+                text = "Забыли пароль?",
+                color = Color.Black
+            )
         }
     }
 }
@@ -202,6 +196,32 @@ fun Button(text: String, onClick: () -> Unit) {
             modifier = Modifier
                 .padding(6.dp)
                 .fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun RegisterButton(onClick: () -> Unit) {
+    TextButton(
+        onClick = { onClick },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(color = Color.Black)
+                ) {
+                    append("Еще нет аккаунта?")
+                }
+                append(" ")
+                withStyle(
+                    style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
+                ) {
+                    append("Зарегистрируйтесь")
+                }
+            },
+            fontFamily = FontFamily.SansSerif,
+            textAlign = TextAlign.Center
         )
     }
 }
