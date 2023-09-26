@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.util
+package javavlsu.kb.esap.esapmobile.domain.util
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

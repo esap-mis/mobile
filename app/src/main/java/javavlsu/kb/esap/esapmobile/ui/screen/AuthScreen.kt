@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
-import javavlsu.kb.esap.esapmobile.util.ApiResponse
+import javavlsu.kb.esap.esapmobile.domain.ApiResponse
 
 @Composable
 fun AuthScreen(

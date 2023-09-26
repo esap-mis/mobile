@@ -1,6 +1,7 @@
-package javavlsu.kb.esap.esapmobile.util
+package javavlsu.kb.esap.esapmobile.domain.util
 
 import com.google.gson.Gson
+import javavlsu.kb.esap.esapmobile.domain.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.ErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

@@ -10,10 +10,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javavlsu.kb.esap.esapmobile.domain.AuthApiService
-import javavlsu.kb.esap.esapmobile.util.AuthAuthenticator
-import javavlsu.kb.esap.esapmobile.util.AuthInterceptor
+import javavlsu.kb.esap.esapmobile.domain.util.AuthAuthenticator
+import javavlsu.kb.esap.esapmobile.domain.util.AuthInterceptor
 import javavlsu.kb.esap.esapmobile.util.BASE_URL
-import javavlsu.kb.esap.esapmobile.util.TokenManager
+import javavlsu.kb.esap.esapmobile.domain.util.TokenManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

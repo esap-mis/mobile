@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.util
+package javavlsu.kb.esap.esapmobile.domain.util
 
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
