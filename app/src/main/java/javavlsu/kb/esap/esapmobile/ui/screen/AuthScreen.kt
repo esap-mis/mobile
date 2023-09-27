@@ -73,7 +73,6 @@ fun AuthScreen(
                 }
             }
             is ApiResponse.Failure -> {
-                // Ошибка сервера, обрабатываем её
                 responseMessage = (serverStatusResponse as ApiResponse.Failure).code.toString()
                 showDialog = true
             }
@@ -121,24 +120,20 @@ fun AuthScreen(
                         passwordVisible = passwordVisible,
                         onLoginChange = { authViewModel.setLogin(it) },
                         onPasswordChange = { authViewModel.setPassword(it) },
-                        onPasswordVisibilityToggle = { passwordVisible = !passwordVisible }
-                    )
-                    ForgotPasswordButton {
-                        navController.navigate("registration")
-                    }
-                    Button(text = "Войти") {
-                        authViewModel.login(
-                            object : CoroutinesErrorHandler {
-                                override fun onError(message: String) {
-                                    responseMessage = message
-                                    showDialog = true
+                        onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
+                        onForgotPasswordButtonClick = { navController.navigate("registration") },
+                        onSignInButtonClick = {
+                            authViewModel.login(
+                                object : CoroutinesErrorHandler {
+                                    override fun onError(message: String) {
+                                        responseMessage = message
+                                        showDialog = true
+                                    }
                                 }
-                            }
-                        )
-                    }
-                    RegisterButton {
-                        navController.navigate("registration")
-                    }
+                            )
+                        },
+                        onRegisterButtonClick = { navController.navigate("registration") }
+                    )
                 }
             }
         }
@@ -159,7 +154,10 @@ fun AuthForm(
     passwordVisible: Boolean,
     onLoginChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onPasswordVisibilityToggle: () -> Unit
+    onPasswordVisibilityToggle: () -> Unit,
+    onForgotPasswordButtonClick: () -> Unit,
+    onSignInButtonClick: () -> Unit,
+    onRegisterButtonClick: () -> Unit
 ) {
     OutlinedTextField(
         value = login,
@@ -187,6 +185,15 @@ fun AuthForm(
             }
         }
     )
+
+    ForgotPasswordButton(onForgotPasswordButtonClick)
+
+    Button(
+        text = "Войти",
+        onClick = onSignInButtonClick
+    )
+
+    RegisterButton(onRegisterButtonClick)
 }
 
 @Composable
