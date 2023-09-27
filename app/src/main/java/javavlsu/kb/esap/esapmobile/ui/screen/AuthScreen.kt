@@ -114,6 +114,7 @@ fun AuthScreen(
         if (showDialog) {
             ResponseDialog(responseMessage) {
                 showDialog = false
+                navController.navigate("auth")
             }
         }
     }
@@ -169,7 +170,7 @@ fun ForgotPasswordButton(onClick: () -> Unit) {
         ) {
 
         }
-        TextButton(onClick = { onClick }) {
+        TextButton(onClick = onClick) {
             Text(
                 text = "Забыли пароль?",
                 color = Color.Black
@@ -203,7 +204,7 @@ fun Button(text: String, onClick: () -> Unit) {
 @Composable
 fun RegisterButton(onClick: () -> Unit) {
     TextButton(
-        onClick = { onClick },
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
