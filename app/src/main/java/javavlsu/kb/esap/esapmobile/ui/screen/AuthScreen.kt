@@ -1,6 +1,5 @@
 package javavlsu.kb.esap.esapmobile.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -52,32 +51,33 @@ fun AuthScreen(
         )
     }
 
+    fun handleServerStatusSuccess() {
+        if (token != null) {
+            navController.navigate("main")
+        } else {
+            when (authResponse) {
+                is ApiResponse.Failure -> {
+                    responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                    showDialog = true
+                }
+                is ApiResponse.Success -> {
+                    val token = (authResponse as ApiResponse.Success).data.jwt
+                    tokenViewModel.saveToken(token)
+                }
+                else -> {}
+            }
+        }
+    }
+
     LaunchedEffect(serverStatusResponse, authResponse, token) {
         when (serverStatusResponse) {
-            is ApiResponse.Success -> {
-                if (token != null) {
-                    navController.navigate("main")
-                } else {
-                    when (authResponse) {
-                        is ApiResponse.Failure -> {
-                            responseMessage = (authResponse as ApiResponse.Failure).errorMessage
-                            showDialog = true
-                        }
-                        is ApiResponse.Success -> {
-                            val token = (authResponse as ApiResponse.Success).data.jwt
-                            tokenViewModel.saveToken(token)
-                        }
-                        ApiResponse.Loading -> {}
-                        null -> {}
-                    }
-                }
-            }
+            is ApiResponse.Success ->
+                handleServerStatusSuccess()
             is ApiResponse.Failure -> {
-                responseMessage = (serverStatusResponse as ApiResponse.Failure).code.toString()
+                responseMessage = (serverStatusResponse as ApiResponse.Failure).errorMessage
                 showDialog = true
             }
-            ApiResponse.Loading -> {}
-            null -> {}
+            else -> {}
         }
     }
 
