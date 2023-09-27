@@ -27,6 +27,7 @@ import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.ApiResponse
+import javavlsu.kb.esap.esapmobile.ui.component.Button
 
 @Composable
 fun AuthScreen(
@@ -215,28 +216,6 @@ fun ForgotPasswordButton(onClick: () -> Unit) {
                 color = Color.Black
             )
         }
-    }
-}
-
-@Composable
-fun Button(text: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
-            containerColor = Color.Blue),
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = text,
-            fontSize = 18.sp,
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(6.dp)
-                .fillMaxWidth()
-        )
     }
 }
 

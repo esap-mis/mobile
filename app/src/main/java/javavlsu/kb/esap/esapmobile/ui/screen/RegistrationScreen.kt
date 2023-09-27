@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
+import javavlsu.kb.esap.esapmobile.ui.component.Button
 
 @Composable
 fun RegistrationScreen(
