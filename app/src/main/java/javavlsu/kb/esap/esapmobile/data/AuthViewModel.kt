@@ -9,6 +9,7 @@ import javavlsu.kb.esap.esapmobile.domain.repository.AuthRepository
 import javavlsu.kb.esap.esapmobile.domain.ApiResponse
 import javax.inject.Inject
 import androidx.compose.runtime.State
+import javavlsu.kb.esap.esapmobile.domain.model.ServerStatusResponse
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -17,6 +18,9 @@ class AuthViewModel @Inject constructor(
 
     private val _authResponse = MutableLiveData<ApiResponse<AuthResponse>>()
     val authResponse = _authResponse
+
+    private val _serverStatusResponse = MutableLiveData<ApiResponse<ServerStatusResponse>>()
+    val serverStatusResponse = _serverStatusResponse
 
     private var _login  = mutableStateOf("")
     val login: State<String> = _login
@@ -30,6 +34,13 @@ class AuthViewModel @Inject constructor(
 
     fun setPassword(value: String){
         _password.value = value
+    }
+
+    fun checkServerStatus(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+        _serverStatusResponse,
+        coroutinesErrorHandler
+    ) {
+        authRepository.checkStatus()
     }
 
     fun login(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(

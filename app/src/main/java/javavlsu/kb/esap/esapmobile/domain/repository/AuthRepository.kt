@@ -8,6 +8,10 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authApiService: AuthApiService,
 ) {
+    fun checkStatus() = apiRequestFlow {
+        authApiService.checkStatus()
+    }
+
     fun login(request: AuthRequest) = apiRequestFlow {
         authApiService.login(request)
     }

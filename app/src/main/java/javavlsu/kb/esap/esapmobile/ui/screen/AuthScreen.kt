@@ -1,5 +1,6 @@
 package javavlsu.kb.esap.esapmobile.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -37,25 +38,47 @@ fun AuthScreen(
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val token by tokenViewModel.token.observeAsState()
+    val serverStatusResponse by authViewModel.serverStatusResponse.observeAsState()
     val authResponse by authViewModel.authResponse.observeAsState()
 
-    LaunchedEffect(authResponse, token) {
-        if (token != null) {
-            navController.navigate("main")
-        } else {
-            when (authResponse) {
-                is ApiResponse.Failure -> {
-                    responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+    LaunchedEffect(true) {
+        authViewModel.checkServerStatus(
+            object : CoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    responseMessage = message
                     showDialog = true
                 }
-                is ApiResponse.Success -> {
-                    val token = (authResponse as ApiResponse.Success).data.jwt
-                    tokenViewModel.saveToken(token)
-                }
-
-                ApiResponse.Loading -> {}
-                null -> {}
             }
+        )
+    }
+
+    LaunchedEffect(serverStatusResponse, authResponse, token) {
+        when (serverStatusResponse) {
+            is ApiResponse.Success -> {
+                if (token != null) {
+                    navController.navigate("main")
+                } else {
+                    when (authResponse) {
+                        is ApiResponse.Failure -> {
+                            responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                            showDialog = true
+                        }
+                        is ApiResponse.Success -> {
+                            val token = (authResponse as ApiResponse.Success).data.jwt
+                            tokenViewModel.saveToken(token)
+                        }
+                        ApiResponse.Loading -> {}
+                        null -> {}
+                    }
+                }
+            }
+            is ApiResponse.Failure -> {
+                // Ошибка сервера, обрабатываем её
+                responseMessage = (serverStatusResponse as ApiResponse.Failure).code.toString()
+                showDialog = true
+            }
+            ApiResponse.Loading -> {}
+            null -> {}
         }
     }
 
@@ -75,39 +98,48 @@ fun AuthScreen(
         )
         Spacer(modifier = Modifier.size(30.dp))
 
-        if (authResponse is ApiResponse.Loading) {
+        if (serverStatusResponse is ApiResponse.Loading) {
             CircularProgressIndicator(
                 color = Color.Blue,
                 modifier = Modifier.padding(16.dp)
             )
         } else {
-            val login = authViewModel.login.value
-            val password = authViewModel.password.value
-            var passwordVisible by rememberSaveable { mutableStateOf(false) }
+            if (serverStatusResponse is ApiResponse.Success) {
+                if (authResponse is ApiResponse.Loading) {
+                    CircularProgressIndicator(
+                        color = Color.Blue,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                } else {
+                    val login = authViewModel.login.value
+                    val password = authViewModel.password.value
+                    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-            AuthForm(
-                login = login,
-                password = password,
-                passwordVisible = passwordVisible,
-                onLoginChange = { authViewModel.setLogin(it) },
-                onPasswordChange = { authViewModel.setPassword(it) },
-                onPasswordVisibilityToggle = { passwordVisible = !passwordVisible }
-            )
-            ForgotPasswordButton {
-                navController.navigate("registration")
-            }
-            Button(text = "Войти") {
-                authViewModel.login(
-                    object : CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            responseMessage = "Error! $message"
-                            showDialog = true
-                        }
+                    AuthForm(
+                        login = login,
+                        password = password,
+                        passwordVisible = passwordVisible,
+                        onLoginChange = { authViewModel.setLogin(it) },
+                        onPasswordChange = { authViewModel.setPassword(it) },
+                        onPasswordVisibilityToggle = { passwordVisible = !passwordVisible }
+                    )
+                    ForgotPasswordButton {
+                        navController.navigate("registration")
                     }
-                )
-            }
-            RegisterButton {
-                navController.navigate("registration")
+                    Button(text = "Войти") {
+                        authViewModel.login(
+                            object : CoroutinesErrorHandler {
+                                override fun onError(message: String) {
+                                    responseMessage = message
+                                    showDialog = true
+                                }
+                            }
+                        )
+                    }
+                    RegisterButton {
+                        navController.navigate("registration")
+                    }
+                }
             }
         }
 
