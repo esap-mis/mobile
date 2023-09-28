@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.domain
+package javavlsu.kb.esap.esapmobile.domain.api
 
 import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
 import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse

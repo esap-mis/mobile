@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
 import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.AuthRepository
-import javavlsu.kb.esap.esapmobile.domain.ApiResponse
+import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import javavlsu.kb.esap.esapmobile.domain.model.ServerStatusResponse

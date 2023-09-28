@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.domain
+package javavlsu.kb.esap.esapmobile.domain.api
 
 sealed class ApiResponse<out T> {
     object Loading: ApiResponse<Nothing>()

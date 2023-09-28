@@ -1,6 +1,6 @@
 package javavlsu.kb.esap.esapmobile.domain.util
 
-import javavlsu.kb.esap.esapmobile.domain.AuthApiService
+import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse
 import javavlsu.kb.esap.esapmobile.util.BASE_URL
 import kotlinx.coroutines.flow.first
