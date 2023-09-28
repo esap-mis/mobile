@@ -1,8 +1,8 @@
 package javavlsu.kb.esap.esapmobile.domain.api
 
-import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
-import javavlsu.kb.esap.esapmobile.domain.model.AuthResponse
-import javavlsu.kb.esap.esapmobile.domain.model.ServerStatusResponse
+import javavlsu.kb.esap.esapmobile.domain.model.request.AuthRequest
+import javavlsu.kb.esap.esapmobile.domain.model.response.AuthResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.ServerStatusResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

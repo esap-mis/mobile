@@ -1,7 +1,7 @@
 package javavlsu.kb.esap.esapmobile.domain.repository
 
 import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
-import javavlsu.kb.esap.esapmobile.domain.model.AuthRequest
+import javavlsu.kb.esap.esapmobile.domain.model.request.AuthRequest
 import javavlsu.kb.esap.esapmobile.domain.util.apiRequestFlow
 import javax.inject.Inject
 

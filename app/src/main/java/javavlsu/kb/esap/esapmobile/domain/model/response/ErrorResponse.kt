@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.domain.model
+package javavlsu.kb.esap.esapmobile.domain.model.response
 
 data class ErrorResponse(
     val code: Int,
