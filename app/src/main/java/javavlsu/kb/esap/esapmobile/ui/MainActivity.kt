@@ -28,9 +28,11 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navController, startDestination = "auth") {
                         composable("auth") {
                             AuthScreen(navController)
+                            SignInScreen(navController)
                         }
                         composable("registration") {
                             RegistrationScreen(navController)
+                            SignUpScreen(navController)
                         }
                         composable("main") {
                             MainScreen(navController)

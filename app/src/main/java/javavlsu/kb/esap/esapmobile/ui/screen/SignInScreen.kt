@@ -30,7 +30,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.ui.component.Button
 
 @Composable
-fun AuthScreen(
+fun SignInScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel()

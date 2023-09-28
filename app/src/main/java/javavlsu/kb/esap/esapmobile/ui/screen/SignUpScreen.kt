@@ -38,7 +38,7 @@ import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.ui.component.Button
 
 @Composable
-fun RegistrationScreen(
+fun SignUpScreen(
     navController: NavController,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
