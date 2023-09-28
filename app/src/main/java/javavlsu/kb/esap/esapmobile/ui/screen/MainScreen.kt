@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.ui.component.Button
+import javavlsu.kb.esap.esapmobile.ui.navigation.SignInScreen
 
 @Composable
 fun MainScreen(
@@ -27,9 +28,10 @@ fun MainScreen(
     ) {
         Button(
             text = "Выйти",
+            color = Color.Red,
             onClick = {
                 tokenViewModel.deleteToken()
-                navController.navigate("auth")
+                navController.navigate(SignInScreen.route)
             }
         )
     }
