@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
+import javavlsu.kb.esap.esapmobile.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.domain.util.AuthAuthenticator
 import javavlsu.kb.esap.esapmobile.domain.util.AuthInterceptor
 import javavlsu.kb.esap.esapmobile.util.BASE_URL
@@ -69,4 +70,11 @@ class NetworkConfig {
         retrofit
             .build()
             .create(AuthApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideMainAPIService(retrofit: Retrofit.Builder): MainApiService =
+        retrofit
+            .build()
+            .create(MainApiService::class.java)
 }
