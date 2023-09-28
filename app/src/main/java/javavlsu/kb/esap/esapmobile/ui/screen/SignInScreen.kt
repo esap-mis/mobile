@@ -28,6 +28,9 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.ui.component.Button
+import javavlsu.kb.esap.esapmobile.ui.navigation.MainScreen
+import javavlsu.kb.esap.esapmobile.ui.navigation.SignInScreen
+import javavlsu.kb.esap.esapmobile.ui.navigation.SignUpScreen
 
 @Composable
 fun SignInScreen(
@@ -54,7 +57,7 @@ fun SignInScreen(
 
     fun handleServerStatusSuccess() {
         if (token != null) {
-            navController.navigate("main")
+            navController.navigate(MainScreen.route)
         } else {
             when (authResponse) {
                 is ApiResponse.Failure -> {
@@ -122,7 +125,7 @@ fun SignInScreen(
                         onLoginChange = { authViewModel.setLogin(it) },
                         onPasswordChange = { authViewModel.setPassword(it) },
                         onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                        onForgotPasswordButtonClick = { navController.navigate("registration") },
+                        onForgotPasswordButtonClick = { navController.navigate(SignUpScreen.route) },
                         onSignInButtonClick = {
                             authViewModel.login(
                                 object : CoroutinesErrorHandler {
@@ -133,7 +136,7 @@ fun SignInScreen(
                                 }
                             )
                         },
-                        onRegisterButtonClick = { navController.navigate("registration") }
+                        onRegisterButtonClick = { navController.navigate(SignUpScreen.route) }
                     )
                 }
             }
@@ -142,7 +145,7 @@ fun SignInScreen(
         if (showDialog) {
             ResponseDialog(responseMessage) {
                 showDialog = false
-                navController.navigate("auth")
+                navController.navigate(SignInScreen.route)
             }
         }
     }

@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import javavlsu.kb.esap.esapmobile.ui.navigation.*
 import javavlsu.kb.esap.esapmobile.ui.screen.*
 import javavlsu.kb.esap.esapmobile.ui.theme.EsapMobileTheme
 
@@ -25,16 +26,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "auth") {
-                        composable("auth") {
-                            AuthScreen(navController)
+                    NavHost(navController = navController, startDestination = SignInScreen.route) {
+                        composable(SignInScreen.route) {
                             SignInScreen(navController)
                         }
-                        composable("registration") {
-                            RegistrationScreen(navController)
+                        composable(SignUpScreen.route) {
                             SignUpScreen(navController)
                         }
-                        composable("main") {
+                        composable(MainScreen.route) {
                             MainScreen(navController)
                         }
                     }
