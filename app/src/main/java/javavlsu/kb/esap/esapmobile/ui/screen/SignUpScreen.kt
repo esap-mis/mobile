@@ -36,7 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.ui.component.Button
-import javavlsu.kb.esap.esapmobile.ui.navigation.SignInScreen
+import javavlsu.kb.esap.esapmobile.ui.navigation.NavigationItem.SignInScreen
 
 @Composable
 fun SignUpScreen(

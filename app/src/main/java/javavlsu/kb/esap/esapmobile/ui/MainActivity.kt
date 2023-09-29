@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import javavlsu.kb.esap.esapmobile.ui.navigation.*
+import javavlsu.kb.esap.esapmobile.ui.navigation.NavigationItem.*
 import javavlsu.kb.esap.esapmobile.ui.screen.*
 import javavlsu.kb.esap.esapmobile.ui.theme.EsapMobileTheme
 

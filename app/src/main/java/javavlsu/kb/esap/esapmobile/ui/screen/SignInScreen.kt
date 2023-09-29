@@ -28,9 +28,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.ui.component.Button
-import javavlsu.kb.esap.esapmobile.ui.navigation.MainScreen
-import javavlsu.kb.esap.esapmobile.ui.navigation.SignInScreen
-import javavlsu.kb.esap.esapmobile.ui.navigation.SignUpScreen
+import javavlsu.kb.esap.esapmobile.ui.navigation.NavigationItem.*
 
 @Composable
 fun SignInScreen(
