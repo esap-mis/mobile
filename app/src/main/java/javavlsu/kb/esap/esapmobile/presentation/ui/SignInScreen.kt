@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.screen
+package javavlsu.kb.esap.esapmobile.presentation.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -26,7 +26,7 @@ import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.ui.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.Button
 
 @Composable
 fun SignInScreen(

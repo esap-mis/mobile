@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.theme
+package javavlsu.kb.esap.esapmobile.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

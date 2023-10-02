@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.theme
+package javavlsu.kb.esap.esapmobile.presentation.theme
 
 import android.app.Activity
 import android.os.Build

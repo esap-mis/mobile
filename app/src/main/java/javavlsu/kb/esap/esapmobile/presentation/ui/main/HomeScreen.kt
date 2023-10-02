@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.screen.main
+package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,8 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.ui.component.Button
-import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
 
 @Composable
 fun HomeScreen(

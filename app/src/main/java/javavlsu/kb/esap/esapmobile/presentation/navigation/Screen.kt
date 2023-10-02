@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.navigation
+package javavlsu.kb.esap.esapmobile.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

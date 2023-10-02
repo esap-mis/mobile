@@ -1,12 +1,12 @@
-package javavlsu.kb.esap.esapmobile.ui.graph
+package javavlsu.kb.esap.esapmobile.presentation.graph
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
-import javavlsu.kb.esap.esapmobile.ui.screen.SignInScreen
-import javavlsu.kb.esap.esapmobile.ui.screen.SignUpScreen
+import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.ui.SignInScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.SignUpScreen
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavController

@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.graph
+package javavlsu.kb.esap.esapmobile.presentation.graph
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
-import javavlsu.kb.esap.esapmobile.ui.screen.main.HomeScreen
-import javavlsu.kb.esap.esapmobile.ui.screen.main.ProfileScreen
-import javavlsu.kb.esap.esapmobile.ui.screen.main.SettingsScreen
+import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.ProfileScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
 
 @Composable
 fun MainScreenNavGraph(

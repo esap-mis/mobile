@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui
+package javavlsu.kb.esap.esapmobile.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,8 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import javavlsu.kb.esap.esapmobile.ui.graph.RootNavHost
-import javavlsu.kb.esap.esapmobile.ui.theme.EsapMobileTheme
+import javavlsu.kb.esap.esapmobile.presentation.graph.RootNavHost
+import javavlsu.kb.esap.esapmobile.presentation.theme.EsapMobileTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.graph
+package javavlsu.kb.esap.esapmobile.presentation.graph
 
 sealed class Graph(
     val root: String

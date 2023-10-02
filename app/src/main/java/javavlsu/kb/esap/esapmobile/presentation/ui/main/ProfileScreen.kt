@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.screen.main
+package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,13 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SettingsScreen() {
+fun ProfileScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Настройки"
-        )
+        Text(text = "Профиль")
     }
 }

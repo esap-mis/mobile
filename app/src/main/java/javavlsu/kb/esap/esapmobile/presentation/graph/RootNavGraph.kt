@@ -1,11 +1,11 @@
-package javavlsu.kb.esap.esapmobile.ui.graph
+package javavlsu.kb.esap.esapmobile.presentation.graph
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import javavlsu.kb.esap.esapmobile.ui.screen.main.MainScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.MainScreen
 
 @Composable
 fun RootNavHost(

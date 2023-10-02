@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.component
+package javavlsu.kb.esap.esapmobile.presentation.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
