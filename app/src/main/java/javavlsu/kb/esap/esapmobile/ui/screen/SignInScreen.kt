@@ -22,20 +22,19 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.ui.component.Button
-import javavlsu.kb.esap.esapmobile.ui.graph.Graph
-import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
 
 @Composable
 fun SignInScreen(
-    navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
-    tokenViewModel: TokenViewModel = hiltViewModel()
+    tokenViewModel: TokenViewModel = hiltViewModel(),
+    navigateToSignUp: () -> Unit,
+    navigateToMain: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -56,7 +55,7 @@ fun SignInScreen(
 
     fun handleServerStatusSuccess() {
         if (token != null) {
-            navController.navigate(Graph.Main.root)
+            navigateToMain()
         } else {
             when (authResponse) {
                 is ApiResponse.Failure -> {
@@ -124,7 +123,7 @@ fun SignInScreen(
                         onLoginChange = { authViewModel.setLogin(it) },
                         onPasswordChange = { authViewModel.setPassword(it) },
                         onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                        onForgotPasswordButtonClick = { navController.navigate(Screen.SignUp.route) },
+                        onForgotPasswordButtonClick = { navigateToSignUp() },
                         onSignInButtonClick = {
                             authViewModel.login(
                                 object : CoroutinesErrorHandler {
@@ -135,7 +134,7 @@ fun SignInScreen(
                                 }
                             )
                         },
-                        onRegisterButtonClick = { navController.navigate(Screen.SignUp.route) }
+                        onRegisterButtonClick = { navigateToSignUp() }
                     )
                 }
             }
@@ -144,7 +143,7 @@ fun SignInScreen(
         if (showDialog) {
             ResponseDialog(responseMessage) {
                 showDialog = false
-                navController.navigate(Screen.SignIn.route)
+                navigateBack()
             }
         }
     }

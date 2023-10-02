@@ -11,15 +11,15 @@ sealed class Screen(
     val route: String,
     val icon: ImageVector
 ) {
-    object SignIn: Screen(title = "SignIn", route = "signin", icon = Icons.Default.Home)
+    object SignIn: Screen(title = "Вход", route = "signin", icon = Icons.Default.Home)
 
-    object SignUp: Screen(title = "SignUp", route = "signup", icon = Icons.Default.Home)
+    object SignUp: Screen(title = "Регистрация", route = "signup", icon = Icons.Default.Home)
 
     object Main {
-        object Home: Screen(title = "Home", route = "home", icon = Icons.Default.Home)
+        object Home: Screen(title = "Главная", route = "home", icon = Icons.Default.Home)
 
-        object Profile: Screen(title = "Profile", route = "profile", icon = Icons.Default.Person)
+        object Profile: Screen(title = "Профиль", route = "profile", icon = Icons.Default.Person)
 
-        object Settings: Screen(title = "Settings", route = "settings", icon = Icons.Default.Settings)
+        object Settings: Screen(title = "Настройки", route = "settings", icon = Icons.Default.Settings)
     }
 }

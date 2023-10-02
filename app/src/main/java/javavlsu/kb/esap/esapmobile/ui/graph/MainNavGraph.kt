@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import javavlsu.kb.esap.esapmobile.ui.navigation.ProfileScreen
 import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
-import javavlsu.kb.esap.esapmobile.ui.navigation.SettingsScreen
-import javavlsu.kb.esap.esapmobile.ui.screen.HomeScreen
+import javavlsu.kb.esap.esapmobile.ui.screen.main.HomeScreen
+import javavlsu.kb.esap.esapmobile.ui.screen.main.ProfileScreen
+import javavlsu.kb.esap.esapmobile.ui.screen.main.SettingsScreen
 
 @Composable
 fun MainScreenNavGraph(

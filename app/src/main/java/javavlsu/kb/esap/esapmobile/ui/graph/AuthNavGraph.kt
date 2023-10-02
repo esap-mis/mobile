@@ -8,16 +8,27 @@ import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
 import javavlsu.kb.esap.esapmobile.ui.screen.SignInScreen
 import javavlsu.kb.esap.esapmobile.ui.screen.SignUpScreen
 
-fun NavGraphBuilder.authNavGraph(navController: NavController) {
+fun NavGraphBuilder.authNavGraph(
+    navController: NavController
+) {
     navigation(
-        route = Graphs.AUTH.root,
+        route = Graph.Auth.root,
         startDestination = Screen.SignIn.route
     ) {
         composable(route = Screen.SignIn.route) {
-            SignInScreen(navController = navController)
+            SignInScreen(
+                navigateToSignUp = { navController.navigate(Screen.SignUp.route) },
+                navigateToMain = { navController.navigate(Graph.Main.root) },
+                navigateBack = { navController.navigate(Screen.SignIn.route) }
+            )
         }
         composable(route = Screen.SignUp.route) {
-            SignUpScreen(navController = navController)
+            SignUpScreen(
+                navigateToSignIn = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.SignIn.route)
+                }
+            )
         }
     }
 }

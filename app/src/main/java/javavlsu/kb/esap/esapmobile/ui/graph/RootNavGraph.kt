@@ -4,25 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import javavlsu.kb.esap.esapmobile.ui.screen.MainScreen
+import androidx.navigation.compose.rememberNavController
+import javavlsu.kb.esap.esapmobile.ui.screen.main.MainScreen
 
 @Composable
-fun RootNavHost(navHostController: NavHostController) {
+fun RootNavHost(
+    navHostController: NavHostController
+) {
     NavHost(
         navController = navHostController,
-        startDestination = Graphs.AUTH.root
+        startDestination = Graph.Auth.root
     ) {
         authNavGraph(navController = navHostController)
-        composable(route = Graphs.MAIN.root) {
-            MainScreen()
+        composable(route = Graph.Main.root) {
+            val navController = rememberNavController()
+            MainScreen(navHostController = navController)
         }
     }
-}
-
-
-sealed class Graphs(
-    val root: String
-) {
-    object AUTH : Graphs("auth_graph")
-    object MAIN : Graphs("main_graph")
 }

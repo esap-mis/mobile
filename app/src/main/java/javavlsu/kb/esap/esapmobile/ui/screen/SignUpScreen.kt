@@ -40,8 +40,8 @@ import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
 
 @Composable
 fun SignUpScreen(
-    navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel(),
+    navigateToSignIn: () -> Unit
 ) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -128,10 +128,7 @@ fun SignUpScreen(
         }
 
         TextButton(
-            onClick = {
-                navController.popBackStack()
-                navController.navigate(Screen.SignIn.route)
-            },
+            onClick = { navigateToSignIn() },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(

@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.ui.screen
+package javavlsu.kb.esap.esapmobile.ui.screen.main
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement

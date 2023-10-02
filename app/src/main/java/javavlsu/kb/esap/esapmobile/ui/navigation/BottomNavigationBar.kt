@@ -16,28 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun ProfileScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Profile Screen")
-    }
-}
-
-@Composable
-fun SettingsScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Settings Screen"
-        )
-    }
-}
-
-@Composable
 fun BottomNavigationBar(
     navController: NavController
 ) {
