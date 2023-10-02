@@ -36,7 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.ui.component.Button
-import javavlsu.kb.esap.esapmobile.ui.navigation.NavigationItem.SignInScreen
+import javavlsu.kb.esap.esapmobile.ui.navigation.Screen
 
 @Composable
 fun SignUpScreen(
@@ -130,7 +130,7 @@ fun SignUpScreen(
         TextButton(
             onClick = {
                 navController.popBackStack()
-                navController.navigate(SignInScreen.route)
+                navController.navigate(Screen.SignIn.route)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
