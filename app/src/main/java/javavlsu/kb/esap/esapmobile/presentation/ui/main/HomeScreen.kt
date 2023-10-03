@@ -37,10 +37,12 @@ fun HomeScreen(
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    val token by tokenViewModel.token.observeAsState()
     val userInfoResponse by mainViewModel.userInfoResponse.observeAsState()
 
     LaunchedEffect(Unit) {
         mainViewModel.getUserInfo(
+            "Bearer ${token.toString()}",
             object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     responseMessage = message
