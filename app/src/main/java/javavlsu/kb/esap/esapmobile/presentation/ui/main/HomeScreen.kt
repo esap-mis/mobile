@@ -1,10 +1,10 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,29 +20,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
-import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController = rememberNavController(),
     mainViewModel: MainViewModel = hiltViewModel(),
-    tokenViewModel: TokenViewModel = hiltViewModel()
+    tokenViewModel: TokenViewModel = hiltViewModel(),
+    navigateToSignIn: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val token by tokenViewModel.token.observeAsState()
     val userInfoResponse by mainViewModel.userInfoResponse.observeAsState()
 
-    LaunchedEffect(Unit) {
-        mainViewModel.getUserInfo(
-            "Bearer ${token.toString()}",
+    LaunchedEffect(token) {
+        val tokenValue = token.toString()
+        mainViewModel.getUserInfo("Bearer $tokenValue",
             object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     responseMessage = message
@@ -52,10 +49,6 @@ fun HomeScreen(
         )
     }
 
-    LaunchedEffect(userInfoResponse) {
-        Log.w("USER_INFO", userInfoResponse.toString())
-    }
-
     Column(
         modifier = Modifier
             .padding(40.dp)
@@ -63,22 +56,27 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (userInfoResponse is ApiResponse.Success) {
+        if (userInfoResponse is ApiResponse.Loading) {
+            CircularProgressIndicator(
+                color = Color.Blue,
+                modifier = Modifier.padding(16.dp)
+            )
+        } else if (userInfoResponse is ApiResponse.Success) {
+            val user = (userInfoResponse as ApiResponse.Success).data
             Text(
-                text = "Добро пожаловать, ${(userInfoResponse as ApiResponse.Success).data.firstName}",
+                text = "Добро пожаловать, ${user.firstName}",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
+            Button(
+                text = "Выйти",
+                color = Color.Red,
+                onClick = {
+                    tokenViewModel.deleteToken()
+                    navigateToSignIn()
+                }
+            )
         }
-
-        Button(
-            text = "Выйти",
-            color = Color.Red,
-            onClick = {
-                tokenViewModel.deleteToken()
-                navController.navigate(Screen.SignIn.route)
-            }
-        )
     }
 }
