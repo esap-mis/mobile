@@ -2,6 +2,8 @@ package javavlsu.kb.esap.esapmobile.presentation.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -166,7 +168,10 @@ fun AuthForm(
         onValueChange = onLoginChange,
         shape = MaterialTheme.shapes.medium,
         label = { Text("Логин") },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Person, contentDescription = "Логин")
+        }
     )
     Spacer(modifier = Modifier.size(30.dp))
 
@@ -185,6 +190,9 @@ fun AuthForm(
             }) {
                 Icon(image, description)
             }
+        },
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Lock, contentDescription = "Логин")
         }
     )
 
