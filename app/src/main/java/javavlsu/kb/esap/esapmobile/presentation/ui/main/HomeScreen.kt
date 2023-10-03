@@ -1,10 +1,23 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,12 +39,14 @@ import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
+import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 
 @Composable
 fun HomeScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
-    navigateToSignIn: () -> Unit
+    navigateToSignIn: () -> Unit,
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -51,10 +67,9 @@ fun HomeScreen(
 
     Column(
         modifier = Modifier
-            .padding(40.dp)
+            .padding(20.dp)
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (userInfoResponse is ApiResponse.Loading) {
             CircularProgressIndicator(
@@ -63,12 +78,70 @@ fun HomeScreen(
             )
         } else if (userInfoResponse is ApiResponse.Success) {
             val user = (userInfoResponse as ApiResponse.Success).data
-            Text(
-                text = "Добро пожаловать, ${user.firstName}",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = "Добрый день, ${user.firstName} \uD83D\uDC4B",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black,
+                    textAlign = TextAlign.Left
+                )
+                Spacer(modifier = Modifier.width(40.dp))
+
+                Box(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .background(color = Gray40, shape = CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
+                        tint = Color.Gray,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.MedicalServices,
+                    tint = Color.Blue,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = "Медицинская карта",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Blue,
+                    textAlign = TextAlign.Left
+                )
+            }
+            Spacer(modifier = Modifier.size(32.dp))
+
+            Button(
+                text = "Записаться на прием",
+                color = Green80,
+                onClick = {}
             )
+            Spacer(modifier = Modifier.size(16.dp))
+
             Button(
                 text = "Выйти",
                 color = Color.Red,
