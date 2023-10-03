@@ -29,11 +29,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
@@ -86,7 +88,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Добрый день, ${user.firstName} \uD83D\uDC4B",
+                    text = "${stringResource(R.string.hello)} ${user.firstName} ${stringResource(R.string.smile)}",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
                     color = Color.Black,
@@ -125,7 +127,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
-                    text = "Медицинская карта",
+                    text = stringResource(R.string.medical_record),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Blue,
@@ -135,14 +137,14 @@ fun HomeScreen(
             Spacer(modifier = Modifier.size(32.dp))
 
             Button(
-                text = "Записаться на прием",
+                text = stringResource(R.string.make_appointment),
                 color = Green80,
                 onClick = {}
             )
             Spacer(modifier = Modifier.size(16.dp))
 
             Button(
-                text = "Выйти",
+                text = stringResource(R.string.logout),
                 color = Color.Red,
                 onClick = {
                     tokenViewModel.deleteToken()

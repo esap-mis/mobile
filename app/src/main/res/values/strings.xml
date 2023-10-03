@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">ЕСАП</string>
+
+    <!-- Auth -->
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="dont_have_account">Еще нет аккаунта?</string>
+    <string name="signin">Войти</string>
+    <string name="register">Зарегистрируйтесь</string>
+    <string name="server_response">Ответ сервера</string>
+    <string name="ok">Ок</string>
+
+    <!-- Main -->
+    <string name="hello">Добрый день,</string>
+    <string name="smile">👋</string>
+    <string name="medical_record">Медицинская карта</string>
+    <string name="make_appointment">Записаться на прием</string>
+    <string name="logout">Выйти</string>
 </resources>

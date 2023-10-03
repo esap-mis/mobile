@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
@@ -93,7 +95,7 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "ЕСАП",
+            text = stringResource(R.string.app_name),
             fontSize = 44.sp,
             fontWeight = FontWeight.ExtraBold,
             color = Color.Blue,
@@ -167,10 +169,12 @@ fun AuthForm(
         value = login,
         onValueChange = onLoginChange,
         shape = MaterialTheme.shapes.medium,
-        label = { Text("Логин") },
+        label = {
+            Text(stringResource(R.string.login))
+        },
         modifier = Modifier.fillMaxWidth(),
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Person, contentDescription = "Логин")
+            Icon(imageVector = Icons.Default.Person, contentDescription = null)
         }
     )
     Spacer(modifier = Modifier.size(30.dp))
@@ -179,27 +183,28 @@ fun AuthForm(
         value = password,
         onValueChange = onPasswordChange,
         shape = MaterialTheme.shapes.medium,
-        label = { Text("Пароль") },
+        label = {
+            Text(stringResource(R.string.password))
+        },
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-            val description = if (passwordVisible) "Скрыть" else "Показать"
             IconButton(onClick = {
                 onPasswordVisibilityToggle()
             }) {
-                Icon(image, description)
+                Icon(imageVector = image, contentDescription = null)
             }
         },
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Lock, contentDescription = "Логин")
+            Icon(imageVector = Icons.Default.Lock, contentDescription = null)
         }
     )
 
     ForgotPasswordButton(onForgotPasswordButtonClick)
 
     Button(
-        text = "Войти",
+        text = stringResource(R.string.signin),
         onClick = onSignInButtonClick
     )
 
@@ -215,7 +220,7 @@ fun ForgotPasswordButton(onClick: () -> Unit) {
     ) {
         TextButton(onClick = onClick) {
             Text(
-                text = "Забыли пароль?",
+                text = stringResource(R.string.forgot_password),
                 color = Color.Black
             )
         }
@@ -233,13 +238,13 @@ fun RegisterButton(onClick: () -> Unit) {
                 withStyle(
                     style = SpanStyle(color = Color.Black)
                 ) {
-                    append("Еще нет аккаунта?")
+                    append(stringResource(R.string.dont_have_account))
                 }
                 append(" ")
                 withStyle(
                     style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
                 ) {
-                    append("Зарегистрируйтесь")
+                    append(stringResource(R.string.register))
                 }
             },
             fontFamily = FontFamily.SansSerif,
@@ -252,15 +257,19 @@ fun RegisterButton(onClick: () -> Unit) {
 fun ResponseDialog(responseMessage: String, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = { onDismiss() },
-        title = { Text("Server Response") },
-        text = { Text(responseMessage) },
+        title = {
+            Text(stringResource(R.string.server_response))
+        },
+        text = {
+            Text(responseMessage)
+        },
         confirmButton = {
             Button(
                 onClick = { onDismiss() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Blue),
             ) {
-                Text("OK")
+                Text(stringResource(R.string.ok))
             }
         }
     )
