@@ -83,7 +83,7 @@ fun HomeScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = "Добрый день, ${user.firstName} \uD83D\uDC4B",
@@ -92,7 +92,6 @@ fun HomeScreen(
                     color = Color.Black,
                     textAlign = TextAlign.Left
                 )
-                Spacer(modifier = Modifier.width(40.dp))
 
                 Box(
                     modifier = Modifier
