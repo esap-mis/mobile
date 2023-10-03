@@ -210,15 +210,9 @@ fun AuthForm(
 fun ForgotPasswordButton(onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-        }
         TextButton(onClick = onClick) {
             Text(
                 text = "Забыли пароль?",
