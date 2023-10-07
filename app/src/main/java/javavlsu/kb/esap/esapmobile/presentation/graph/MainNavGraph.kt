@@ -22,7 +22,7 @@ fun MainScreenNavGraph(
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         composable(route = Screen.Main.Home.route) {
-            HomeScreen()
+            HomeScreen(navigateToSignIn = {})
         }
         composable(route = Screen.Main.Profile.route) {
             ProfileScreen()
