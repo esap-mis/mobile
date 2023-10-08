@@ -16,12 +16,21 @@ class TokenViewModel @Inject constructor(
 ): ViewModel() {
 
     val token = MutableLiveData<String?>()
+    val roles = MutableLiveData<String?>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             tokenManager.getToken().collect {
                 withContext(Dispatchers.Main) {
                     token.value = it
+                }
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            tokenManager.getRoles().collect {
+                withContext(Dispatchers.Main) {
+                    roles.value = it
                 }
             }
         }
@@ -36,6 +45,18 @@ class TokenViewModel @Inject constructor(
     fun deleteToken() {
         viewModelScope.launch(Dispatchers.IO) {
             tokenManager.deleteToken()
+        }
+    }
+
+    fun saveRoles(roles: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            tokenManager.saveRoles(roles)
+        }
+    }
+
+    fun deleteRoles() {
+        viewModelScope.launch(Dispatchers.IO) {
+            tokenManager.deleteRoles()
         }
     }
 }

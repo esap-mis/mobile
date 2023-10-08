@@ -68,8 +68,9 @@ fun SignInScreen(
                     showDialog = true
                 }
                 is ApiResponse.Success -> {
-                    val token = (authResponse as ApiResponse.Success).data.jwt
-                    tokenViewModel.saveToken(token)
+                    val response = (authResponse as ApiResponse.Success).data
+                    tokenViewModel.saveToken(response.jwt)
+                    tokenViewModel.saveRoles(response.roles)
                 }
                 else -> {}
             }
