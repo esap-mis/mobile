@@ -40,6 +40,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorInfoResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
@@ -48,108 +49,147 @@ import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 fun HomeScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
-    navigateToSignIn: () -> Unit,
+    navigateToSignIn: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-    val token by tokenViewModel.token.observeAsState()
-    val userInfoResponse by mainViewModel.doctorInfoResponse.observeAsState()
+    val roles by tokenViewModel.roles.observeAsState()
+    val doctorInfoResponse by mainViewModel.doctorInfoResponse.observeAsState()
 
-    LaunchedEffect(token) {
-        mainViewModel.getDoctorInfo(
-            object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    responseMessage = message
-                    showDialog = true
+    LaunchedEffect(roles) {
+        if (roles?.contains("ROLE_DOCTOR") == true || roles?.contains("ROLE_CHIEF_DOCTOR") == true) {
+            mainViewModel.getDoctorInfo(
+                object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        responseMessage = message
+                        showDialog = true
+                    }
                 }
+            )
+        } else if (roles?.contains("ROLE_PATIENT") == true) {
+//            mainViewModel.getDoctorInfo(
+//                object : CoroutinesErrorHandler {
+//                    override fun onError(message: String) {
+//                        responseMessage = message
+//                        showDialog = true
+//                    }
+//                }
+//            )
+        }
+    }
+
+    if (doctorInfoResponse is ApiResponse.Loading) {
+        CircularProgressIndicator(
+            color = Color.Blue,
+            modifier = Modifier.padding(16.dp)
+        )
+    } else if (doctorInfoResponse is ApiResponse.Success) {
+        val user = (doctorInfoResponse as ApiResponse.Success).data
+        DoctorContent(
+            user = user,
+            onMakeAppointmentClick = {},
+            onSignOutClick = {
+                tokenViewModel.deleteToken()
+                tokenViewModel.deleteRoles()
+                navigateToSignIn()
             }
         )
     }
+}
 
+@Composable
+private fun DoctorContent(
+    user: DoctorInfoResponse,
+    onMakeAppointmentClick: () -> Unit,
+    onSignOutClick: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .padding(20.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (userInfoResponse is ApiResponse.Loading) {
-            CircularProgressIndicator(
-                color = Color.Blue,
-                modifier = Modifier.padding(16.dp)
-            )
-        } else if (userInfoResponse is ApiResponse.Success) {
-            val user = (userInfoResponse as ApiResponse.Success).data
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "${stringResource(R.string.hello)} ${user.firstName} ${stringResource(R.string.smile)}",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.W600,
-                    color = Color.Black,
-                    textAlign = TextAlign.Left
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(42.dp)
-                        .background(color = Gray40, shape = CircleShape)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        tint = Color.Gray,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center)
-                    )
-                }
+        Spacer(modifier = Modifier.height(16.dp))
+        GreetingRow(user)
+        Spacer(modifier = Modifier.size(10.dp))
+        MedicalRecordRow()
+        Spacer(modifier = Modifier.size(32.dp))
+        Button(
+            text = stringResource(R.string.make_appointment),
+            color = Green80,
+            onClick = {
+                onMakeAppointmentClick()
             }
-            Spacer(modifier = Modifier.size(10.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.MedicalServices,
-                    tint = Color.Blue,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Text(
-                    text = stringResource(R.string.medical_record),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Blue,
-                    textAlign = TextAlign.Left
-                )
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Button(
+            text = stringResource(R.string.logout),
+            color = Color.Red,
+            onClick = {
+                onSignOutClick()
             }
-            Spacer(modifier = Modifier.size(32.dp))
+        )
+    }
+}
 
-            Button(
-                text = stringResource(R.string.make_appointment),
-                color = Green80,
-                onClick = {}
-            )
-            Spacer(modifier = Modifier.size(16.dp))
+@Composable
+private fun GreetingRow(user: DoctorInfoResponse) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "${stringResource(R.string.hello)} ${user.firstName} ${stringResource(R.string.smile)}",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.W600,
+            color = Color.Black,
+            textAlign = TextAlign.Left
+        )
+        SearchIcon()
+    }
+}
 
-            Button(
-                text = stringResource(R.string.logout),
-                color = Color.Red,
-                onClick = {
-                    tokenViewModel.deleteToken()
-                    navigateToSignIn()
-                }
-            )
-        }
+@Composable
+private fun SearchIcon() {
+    Box(
+        modifier = Modifier
+            .size(42.dp)
+            .background(color = Gray40, shape = CircleShape)
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Search,
+            tint = Color.Gray,
+            contentDescription = null,
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+private fun MedicalRecordRow() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.MedicalServices,
+            tint = Color.Blue,
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Text(
+            text = stringResource(R.string.medical_record),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            color = Color.Blue,
+            textAlign = TextAlign.Left
+        )
     }
 }
