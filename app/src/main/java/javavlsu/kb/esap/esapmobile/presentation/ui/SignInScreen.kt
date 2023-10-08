@@ -31,6 +31,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 
 @Composable
 fun SignInScreen(
@@ -251,26 +252,4 @@ fun RegisterButton(onClick: () -> Unit) {
             textAlign = TextAlign.Center
         )
     }
-}
-
-@Composable
-fun ResponseDialog(responseMessage: String, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = {
-            Text(stringResource(R.string.server_response))
-        },
-        text = {
-            Text(responseMessage)
-        },
-        confirmButton = {
-            Button(
-                onClick = { onDismiss() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue),
-            ) {
-                Text(stringResource(R.string.ok))
-            }
-        }
-    )
 }
