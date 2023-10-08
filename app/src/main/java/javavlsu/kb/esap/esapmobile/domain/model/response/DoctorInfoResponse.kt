@@ -1,6 +1,6 @@
 package javavlsu.kb.esap.esapmobile.domain.model.response
 
-data class UserInfoResponse(
+data class DoctorInfoResponse(
     val id: Long,
     val login: String,
     val firstName: String,

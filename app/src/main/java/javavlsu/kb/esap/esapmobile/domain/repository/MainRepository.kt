@@ -7,7 +7,7 @@ import javax.inject.Inject
 class MainRepository @Inject constructor(
     private val mainApiService: MainApiService,
 ) {
-    fun getUserInfo(token: String) = apiRequestFlow {
-        mainApiService.getUserInfo(token)
+    fun getDoctorInfo(token: String) = apiRequestFlow {
+        mainApiService.getDoctorInfo(token)
     }
 }
