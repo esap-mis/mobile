@@ -8,13 +8,15 @@ import javavlsu.kb.esap.esapmobile.presentation.navigation.BottomNavigationBar
 
 @Composable
 fun MainScreen(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    rootNavController: NavHostController
 ) {
     Scaffold(bottomBar = {
         BottomNavigationBar(navController = navHostController)
     }) { paddingValues ->
         MainScreenNavGraph(
             navController = navHostController,
+            rootNavController = rootNavController,
             paddingValues = paddingValues
         )
     }

@@ -12,13 +12,17 @@ fun RootNavHost(
     navHostController: NavHostController
 ) {
     NavHost(
+        route = Graph.Root.root,
         navController = navHostController,
         startDestination = Graph.Auth.root
     ) {
         authNavGraph(navController = navHostController)
         composable(route = Graph.Main.root) {
             val navController = rememberNavController()
-            MainScreen(navHostController = navController)
+            MainScreen(
+                navHostController = navController,
+                rootNavController = navHostController
+            )
         }
     }
 }
