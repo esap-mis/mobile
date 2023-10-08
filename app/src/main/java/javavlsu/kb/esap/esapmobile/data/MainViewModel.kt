@@ -15,10 +15,10 @@ class MainViewModel @Inject constructor(
     private val _doctorInfoResponseResponse = MutableLiveData<ApiResponse<DoctorInfoResponse>>()
     val doctorInfoResponse = _doctorInfoResponseResponse
 
-    fun getDoctorInfo(token: String, coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+    fun getDoctorInfo(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorInfoResponseResponse,
         coroutinesErrorHandler
     ) {
-        mainRepository.getDoctorInfo(token)
+        mainRepository.getDoctorInfo()
     }
 }

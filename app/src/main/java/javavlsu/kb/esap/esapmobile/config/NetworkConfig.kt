@@ -73,8 +73,9 @@ class NetworkConfig {
 
     @Singleton
     @Provides
-    fun provideMainAPIService(retrofit: Retrofit.Builder): MainApiService =
+    fun provideMainAPIService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): MainApiService =
         retrofit
+            .client(okHttpClient)
             .build()
             .create(MainApiService::class.java)
 }

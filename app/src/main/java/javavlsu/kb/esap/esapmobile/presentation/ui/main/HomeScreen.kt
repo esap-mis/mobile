@@ -56,8 +56,7 @@ fun HomeScreen(
     val userInfoResponse by mainViewModel.doctorInfoResponse.observeAsState()
 
     LaunchedEffect(token) {
-        val tokenValue = token.toString()
-        mainViewModel.getDoctorInfo("Bearer $tokenValue",
+        mainViewModel.getDoctorInfo(
             object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     responseMessage = message
