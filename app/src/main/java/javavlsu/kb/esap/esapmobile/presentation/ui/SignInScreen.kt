@@ -31,6 +31,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 
 @Composable
@@ -89,68 +90,45 @@ fun SignInScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .padding(40.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            fontSize = 44.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.size(30.dp))
+    if (serverStatusResponse is ApiResponse.Loading) {
+        CircularProgress()
+    } else {
+        if (serverStatusResponse is ApiResponse.Success) {
+            if (authResponse is ApiResponse.Loading) {
+                CircularProgress()
+            } else {
+                val login = authViewModel.login.value
+                val password = authViewModel.password.value
+                var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-        if (serverStatusResponse is ApiResponse.Loading) {
-            CircularProgressIndicator(
-                color = Color.Blue,
-                modifier = Modifier.padding(16.dp)
-            )
-        } else {
-            if (serverStatusResponse is ApiResponse.Success) {
-                if (authResponse is ApiResponse.Loading) {
-                    CircularProgressIndicator(
-                        color = Color.Blue,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                } else {
-                    val login = authViewModel.login.value
-                    val password = authViewModel.password.value
-                    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
-                    AuthForm(
-                        login = login,
-                        password = password,
-                        passwordVisible = passwordVisible,
-                        onLoginChange = { authViewModel.setLogin(it) },
-                        onPasswordChange = { authViewModel.setPassword(it) },
-                        onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                        onForgotPasswordButtonClick = { navigateToSignUp() },
-                        onSignInButtonClick = {
-                            authViewModel.login(
-                                object : CoroutinesErrorHandler {
-                                    override fun onError(message: String) {
-                                        responseMessage = message
-                                        showDialog = true
-                                    }
+                AuthForm(
+                    login = login,
+                    password = password,
+                    passwordVisible = passwordVisible,
+                    onLoginChange = { authViewModel.setLogin(it) },
+                    onPasswordChange = { authViewModel.setPassword(it) },
+                    onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
+                    onForgotPasswordButtonClick = { navigateToSignUp() },
+                    onSignInButtonClick = {
+                        authViewModel.login(
+                            object : CoroutinesErrorHandler {
+                                override fun onError(message: String) {
+                                    responseMessage = message
+                                    showDialog = true
                                 }
-                            )
-                        },
-                        onRegisterButtonClick = { navigateToSignUp() }
-                    )
-                }
+                            }
+                        )
+                    },
+                    onRegisterButtonClick = { navigateToSignUp() }
+                )
             }
         }
+    }
 
-        if (showDialog) {
-            ResponseDialog(responseMessage) {
-                showDialog = false
-                navigateBack()
-            }
+    if (showDialog) {
+        ResponseDialog(responseMessage) {
+            showDialog = false
+            navigateBack()
         }
     }
 }
@@ -167,50 +145,67 @@ fun AuthForm(
     onSignInButtonClick: () -> Unit,
     onRegisterButtonClick: () -> Unit
 ) {
-    OutlinedTextField(
-        value = login,
-        onValueChange = onLoginChange,
-        shape = MaterialTheme.shapes.medium,
-        label = {
-            Text(stringResource(R.string.login))
-        },
-        modifier = Modifier.fillMaxWidth(),
-        leadingIcon = {
-            Icon(imageVector = Icons.Default.Person, contentDescription = null)
-        }
-    )
-    Spacer(modifier = Modifier.size(30.dp))
+    Column(
+        modifier = Modifier
+            .padding(40.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(R.string.app_name),
+            fontSize = 44.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color.Blue,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.size(30.dp))
 
-    OutlinedTextField(
-        value = password,
-        onValueChange = onPasswordChange,
-        shape = MaterialTheme.shapes.medium,
-        label = {
-            Text(stringResource(R.string.password))
-        },
-        modifier = Modifier.fillMaxWidth(),
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        trailingIcon = {
-            val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-            IconButton(onClick = {
-                onPasswordVisibilityToggle()
-            }) {
-                Icon(imageVector = image, contentDescription = null)
+        OutlinedTextField(
+            value = login,
+            onValueChange = onLoginChange,
+            shape = MaterialTheme.shapes.medium,
+            label = {
+                Text(stringResource(R.string.login))
+            },
+            modifier = Modifier.fillMaxWidth(),
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Person, contentDescription = null)
             }
-        },
-        leadingIcon = {
-            Icon(imageVector = Icons.Default.Lock, contentDescription = null)
-        }
-    )
+        )
+        Spacer(modifier = Modifier.size(30.dp))
 
-    ForgotPasswordButton(onForgotPasswordButtonClick)
+        OutlinedTextField(
+            value = password,
+            onValueChange = onPasswordChange,
+            shape = MaterialTheme.shapes.medium,
+            label = {
+                Text(stringResource(R.string.password))
+            },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                IconButton(onClick = {
+                    onPasswordVisibilityToggle()
+                }) {
+                    Icon(imageVector = image, contentDescription = null)
+                }
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+            }
+        )
 
-    Button(
-        text = stringResource(R.string.signin),
-        onClick = onSignInButtonClick
-    )
+        ForgotPasswordButton(onForgotPasswordButtonClick)
 
-    RegisterButton(onRegisterButtonClick)
+        Button(
+            text = stringResource(R.string.signin),
+            onClick = onSignInButtonClick
+        )
+
+        RegisterButton(onRegisterButtonClick)
+    }
 }
 
 @Composable

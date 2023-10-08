@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MedicalServices
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +41,7 @@ import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorInfoResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 
@@ -79,10 +79,7 @@ fun HomeScreen(
     }
 
     if (doctorInfoResponse is ApiResponse.Loading) {
-        CircularProgressIndicator(
-            color = Color.Blue,
-            modifier = Modifier.padding(16.dp)
-        )
+        CircularProgress()
     } else if (doctorInfoResponse is ApiResponse.Success) {
         val user = (doctorInfoResponse as ApiResponse.Success).data
         DoctorContent(
