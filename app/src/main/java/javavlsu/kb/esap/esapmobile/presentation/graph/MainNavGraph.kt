@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.AppointmentScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.ProfileScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
@@ -28,6 +29,9 @@ fun MainScreenNavGraph(
                 rootNavController.popBackStack()
                 rootNavController.navigate(Graph.Root.root)
             })
+        }
+        composable(route = Screen.Main.Appointment.route) {
+            AppointmentScreen()
         }
         composable(route = Screen.Main.Profile.route) {
             ProfileScreen()

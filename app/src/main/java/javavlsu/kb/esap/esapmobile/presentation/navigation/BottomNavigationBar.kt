@@ -24,6 +24,7 @@ fun BottomNavigationBar(
 ) {
     val navigationItems = listOf(
         Screen.Main.Home,
+        Screen.Main.Appointment,
         Screen.Main.Profile,
         Screen.Main.Settings
     )

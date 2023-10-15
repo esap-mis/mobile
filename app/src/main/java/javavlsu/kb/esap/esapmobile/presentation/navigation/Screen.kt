@@ -3,6 +3,7 @@ package javavlsu.kb.esap.esapmobile.presentation.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -17,6 +18,8 @@ sealed class Screen(
 
     object Main {
         object Home: Screen(title = "Главная", route = "home", icon = Icons.Outlined.Home)
+
+        object Appointment: Screen(title = "Запись", route = "appointment", icon = Icons.Outlined.Schedule)
 
         object Profile: Screen(title = "Профиль", route = "profile", icon = Icons.Outlined.Person)
 

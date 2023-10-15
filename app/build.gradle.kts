@@ -70,8 +70,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
     // Navigation Compose
-    implementation("androidx.navigation:navigation-compose:2.7.3")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
+    implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-beta01")
 
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
