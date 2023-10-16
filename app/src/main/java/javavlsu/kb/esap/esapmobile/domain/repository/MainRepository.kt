@@ -10,4 +10,8 @@ class MainRepository @Inject constructor(
     fun getDoctor() = apiRequestFlow {
         mainApiService.getDoctor()
     }
+
+    fun getDoctorList() = apiRequestFlow {
+        mainApiService.getDoctorList()
+    }
 }

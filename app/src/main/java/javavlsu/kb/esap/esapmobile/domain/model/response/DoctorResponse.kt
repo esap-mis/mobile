@@ -6,5 +6,7 @@ data class DoctorResponse(
     val patronymic: String,
     val lastName: String,
     val specialization: String,
-    val gender: Int
+    val gender: Int,
+    val clinic: ClinicResponse,
+    val schedules: List<ScheduleResponse>
 )
