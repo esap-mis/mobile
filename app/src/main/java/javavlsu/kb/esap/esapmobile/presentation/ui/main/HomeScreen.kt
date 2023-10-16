@@ -39,7 +39,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorInfoResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
@@ -54,11 +54,11 @@ fun HomeScreen(
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val roles by tokenViewModel.roles.observeAsState()
-    val doctorInfoResponse by mainViewModel.doctorInfoResponse.observeAsState()
+    val doctorResponse by mainViewModel.doctorResponse.observeAsState()
 
     LaunchedEffect(roles) {
         if (roles?.contains("ROLE_DOCTOR") == true || roles?.contains("ROLE_CHIEF_DOCTOR") == true) {
-            mainViewModel.getDoctorInfo(
+            mainViewModel.getDoctor(
                 object : CoroutinesErrorHandler {
                     override fun onError(message: String) {
                         responseMessage = message
@@ -78,10 +78,10 @@ fun HomeScreen(
         }
     }
 
-    if (doctorInfoResponse is ApiResponse.Loading) {
+    if (doctorResponse is ApiResponse.Loading) {
         CircularProgress()
-    } else if (doctorInfoResponse is ApiResponse.Success) {
-        val user = (doctorInfoResponse as ApiResponse.Success).data
+    } else if (doctorResponse is ApiResponse.Success) {
+        val user = (doctorResponse as ApiResponse.Success).data
         DoctorContent(
             user = user,
             onMakeAppointmentClick = {},
@@ -96,7 +96,7 @@ fun HomeScreen(
 
 @Composable
 private fun DoctorContent(
-    user: DoctorInfoResponse,
+    user: DoctorResponse,
     onMakeAppointmentClick: () -> Unit,
     onSignOutClick: () -> Unit,
 ) {
@@ -130,7 +130,7 @@ private fun DoctorContent(
 }
 
 @Composable
-private fun GreetingRow(user: DoctorInfoResponse) {
+private fun GreetingRow(user: DoctorResponse) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
