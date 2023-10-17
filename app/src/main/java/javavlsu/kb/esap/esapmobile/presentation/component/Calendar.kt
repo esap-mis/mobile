@@ -49,10 +49,10 @@ fun Calendar(
                 onDateClickListener = { date ->
                     calendarViewModel.selectDate(date.date)
                 },
-                onPrevClickListener = { startDate ->
+                onPrevClickListener = {
                     calendarViewModel.navigateToPreviousWeek()
                 },
-                onNextClickListener = { endDate ->
+                onNextClickListener = {
                     calendarViewModel.navigateToNextWeek()
                 }
             )
