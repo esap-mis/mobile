@@ -27,16 +27,20 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
+import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 
 @Composable
 fun AppointmentScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
+    val dataSource = CalendarDataSource()
     var responseMessage by remember { mutableStateOf("") }
     val doctorListResponse by mainViewModel.doctorListResponse.observeAsState()
+    val data by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
 
-    LaunchedEffect(true) {
+    LaunchedEffect(data.selectedDate) {
         mainViewModel.getDoctorList(
+            data.selectedDate.date,
             object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     responseMessage = message
@@ -48,7 +52,7 @@ fun AppointmentScreen(
     if (doctorListResponse is ApiResponse.Loading) {
         CircularProgress()
     } else if (doctorListResponse is ApiResponse.Success) {
-        val doctors = (doctorListResponse as ApiResponse.Success).data.content
+        val doctors = (doctorListResponse as ApiResponse.Success).data
         Column(
             modifier = Modifier
                 .padding(10.dp)

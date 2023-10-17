@@ -3,9 +3,9 @@ package javavlsu.kb.esap.esapmobile.data
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorListResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,7 +16,7 @@ class MainViewModel @Inject constructor(
     private val _doctorResponse = MutableLiveData<ApiResponse<DoctorResponse>>()
     val doctorResponse = _doctorResponse
 
-    private val _doctorListResponse = MutableLiveData<ApiResponse<DoctorListResponse>>()
+    private val _doctorListResponse = MutableLiveData<ApiResponse<List<DoctorResponse>>>()
     val doctorListResponse = _doctorListResponse
 
     fun getDoctor(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
@@ -26,10 +26,10 @@ class MainViewModel @Inject constructor(
         mainRepository.getDoctor()
     }
 
-    fun getDoctorList(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+    fun getDoctorList(date: LocalDate, coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorListResponse,
         coroutinesErrorHandler
     ) {
-        mainRepository.getDoctorList()
+        mainRepository.getDoctorList(date)
     }
 }

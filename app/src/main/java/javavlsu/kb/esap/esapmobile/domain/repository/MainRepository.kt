@@ -2,6 +2,7 @@ package javavlsu.kb.esap.esapmobile.domain.repository
 
 import javavlsu.kb.esap.esapmobile.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.domain.util.apiRequestFlow
+import java.time.LocalDate
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
@@ -11,7 +12,7 @@ class MainRepository @Inject constructor(
         mainApiService.getDoctor()
     }
 
-    fun getDoctorList() = apiRequestFlow {
-        mainApiService.getDoctorList()
+    fun getDoctorList(date: LocalDate) = apiRequestFlow {
+        mainApiService.getDoctorList(date)
     }
 }
