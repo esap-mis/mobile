@@ -21,49 +21,42 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import javavlsu.kb.esap.esapmobile.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.presentation.data.CalendarUiModel
-import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun Calendar(
     modifier: Modifier = Modifier,
+    calendarViewModel: CalendarViewModel = hiltViewModel()
 ) {
-    val dataSource = CalendarDataSource()
-    var data by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
-    Column(modifier = modifier.fillMaxWidth()) {
-        Header(data = data)
-        Content(
-            data = data,
-            onDateClickListener = { date ->
-                data = data.copy(
-                    selectedDate = date,
-                    visibleDates = data.visibleDates.map {
-                        it.copy(
-                            isSelected = it.date.isEqual(date.date)
-                        )
-                    }
-                )
-            },
-            onPrevClickListener = { startDate ->
-                val finalStartDate = startDate.minusDays(1)
-                data = dataSource.getData(startDate = finalStartDate, lastSelectedDate = data.selectedDate.date)
-            },
-            onNextClickListener = { endDate ->
-                val finalStartDate = endDate.plusDays(2)
-                data = dataSource.getData(startDate = finalStartDate, lastSelectedDate = data.selectedDate.date)
-            }
-        )
+    val data by calendarViewModel.calendarData.observeAsState()
+
+    data?.let { calendarData ->
+        Column(modifier = modifier.fillMaxWidth()) {
+            Header(data = calendarData)
+            Content(
+                data = calendarData,
+                onDateClickListener = { date ->
+                    calendarViewModel.selectDate(date.date)
+                },
+                onPrevClickListener = { startDate ->
+                    calendarViewModel.navigateToPreviousWeek()
+                },
+                onNextClickListener = { endDate ->
+                    calendarViewModel.navigateToNextWeek()
+                }
+            )
+        }
     }
 }
 

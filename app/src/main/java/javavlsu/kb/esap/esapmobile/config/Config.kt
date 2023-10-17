@@ -8,6 +8,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.domain.repository.AuthRepository
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
+import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 
 
 @Module
@@ -19,4 +20,7 @@ class Config {
 
     @Provides
     fun provideMainRepository(mainApiService: MainApiService) = MainRepository(mainApiService)
+
+    @Provides
+    fun provideCalendarDataSource() = CalendarDataSource()
 }

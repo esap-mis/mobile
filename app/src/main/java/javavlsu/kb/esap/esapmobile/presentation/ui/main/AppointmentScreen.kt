@@ -21,26 +21,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import javavlsu.kb.esap.esapmobile.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
-import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 
 @Composable
 fun AppointmentScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
+    calendarViewModel: CalendarViewModel = hiltViewModel()
 ) {
-    val dataSource = CalendarDataSource()
     var responseMessage by remember { mutableStateOf("") }
     val doctorListResponse by mainViewModel.doctorListResponse.observeAsState()
-    val data by remember { mutableStateOf(dataSource.getData(lastSelectedDate = dataSource.today)) }
+    val data by calendarViewModel.calendarData.observeAsState()
 
-    LaunchedEffect(data.selectedDate) {
+    LaunchedEffect(data!!.selectedDate) {
         mainViewModel.getDoctorList(
-            data.selectedDate.date,
+            data!!.selectedDate.date,
             object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     responseMessage = message
