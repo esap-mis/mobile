@@ -3,6 +3,7 @@ package javavlsu.kb.esap.esapmobile.presentation.theme
 import androidx.compose.ui.graphics.Color
 
 val Blue = Color(0xFF377AE4)
+val NightBlue = Color(0xFF284F8A)
 
 val Blue80 = Color(0xFF5F93E5)
 val BlueGrey80 = Color(0xFF738FAE)

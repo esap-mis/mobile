@@ -1,12 +1,22 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +40,8 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
+import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
+import javavlsu.kb.esap.esapmobile.presentation.theme.NightBlue
 
 @Composable
 fun AppointmentScreen(
@@ -62,11 +76,17 @@ fun AppointmentScreen(
             Calendar()
             Spacer(modifier = Modifier.size(30.dp))
 
-            Text(
-                text = "Врачи",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row(modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.Start),
+            ) {
+                Text(
+                    text = "ВРАЧИ",
+                    fontSize = 20.sp,
+                    color = NightBlue,
+                    fontWeight = FontWeight.W600,
+                )
+            }
             if (doctors.isNotEmpty()) {
                 doctors.forEach { doctor ->
                     DoctorCard(doctor)
@@ -84,24 +104,59 @@ fun DoctorCard(doctor: DoctorResponse) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Text(
-                text = "${doctor.lastName} ${doctor.firstName} ${doctor.patronymic}",
-                fontWeight = FontWeight.W600,
-                fontSize = 20.sp
-            )
-            Text(text = "Профессия: ${doctor.specialization}", fontSize = 16.sp)
-            Text(text = "Клиника: ${doctor.clinic.name}", fontSize = 16.sp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Gray40)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        tint = Color.Gray,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column {
+                    Text(
+                        text = "${doctor.lastName} ${doctor.firstName} ${doctor.patronymic}",
+                        fontWeight = FontWeight.W500,
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        text = doctor.specialization,
+                        color = Color.Gray,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             if (doctor.schedules.isNotEmpty()) {
-                Text(text = "Доступное время приема:", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(
+                    text = "Доступное время приема:",
+                    fontWeight = FontWeight.W500,
+                    fontSize = 18.sp
+                )
                 for (schedule in doctor.schedules) {
-                    Text(text = "Дата: ${schedule.date}, Время: ${schedule.endDoctorAppointment}", fontSize = 16.sp)
+                    Text(text = schedule.endDoctorAppointment)
                 }
             }
         }
