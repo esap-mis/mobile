@@ -12,9 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -45,6 +44,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
+import javavlsu.kb.esap.esapmobile.presentation.component.VerticalGrid
 import javavlsu.kb.esap.esapmobile.presentation.data.TimeSlot
 import javavlsu.kb.esap.esapmobile.presentation.data.calculateAvailableTimeSlots
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray20
@@ -97,8 +97,10 @@ fun AppointmentScreen(
                 )
             }
             if (doctors.isNotEmpty()) {
-                doctors.forEach { doctor ->
-                    DoctorCard(doctor)
+                LazyColumn {
+                    items(doctors) { doctor ->
+                        DoctorCard(doctor)
+                    }
                 }
             } else {
                 Text("Нет данных о врачах.")
@@ -167,15 +169,23 @@ fun DoctorCard(doctor: DoctorResponse) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules, doctor.schedules[0].appointments)
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(4),
+//                LazyVerticalGrid(
+//                    columns = GridCells.Fixed(4),
+//                    content = {
+//                        items(availableTimeSlots) { timeSlot ->
+//                            TimeSlotCard(timeSlot)
+//                        }
+//                    },
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+//                    verticalArrangement = Arrangement.spacedBy(8.dp)
+//                )
+                VerticalGrid(
+                    columns = 4,
                     content = {
-                        items(availableTimeSlots) { timeSlot ->
+                        availableTimeSlots.forEach { timeSlot ->
                             TimeSlotCard(timeSlot)
                         }
-                    },
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    }
                 )
             }
         }
