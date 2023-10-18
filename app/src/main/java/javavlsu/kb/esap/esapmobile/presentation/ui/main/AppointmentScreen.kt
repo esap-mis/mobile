@@ -1,6 +1,7 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,8 +45,12 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
+import javavlsu.kb.esap.esapmobile.presentation.data.TimeSlot
+import javavlsu.kb.esap.esapmobile.presentation.data.calculateAvailableTimeSlots
+import javavlsu.kb.esap.esapmobile.presentation.theme.Gray20
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.NightBlue
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AppointmentScreen(
@@ -117,7 +126,7 @@ fun DoctorCard(doctor: DoctorResponse) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(70.dp)
+                        .size(60.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Gray40)
                 ) {
@@ -155,10 +164,47 @@ fun DoctorCard(doctor: DoctorResponse) {
                     fontWeight = FontWeight.W500,
                     fontSize = 18.sp
                 )
-                for (schedule in doctor.schedules) {
-                    Text(text = schedule.endDoctorAppointment)
-                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules, doctor.schedules[0].appointments)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(4),
+                    content = {
+                        items(availableTimeSlots) { timeSlot ->
+                            TimeSlotCard(timeSlot)
+                        }
+                    },
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                )
             }
+        }
+    }
+}
+
+@Composable
+fun TimeSlotCard(
+    timeSlot: TimeSlot,
+) {
+    Card(
+        modifier = Modifier
+            .clip(RoundedCornerShape(10.dp)),
+        colors = CardDefaults.cardColors(containerColor = Gray20)
+    ) {
+        Column(
+            modifier = Modifier.padding(
+                horizontal = 18.dp,
+                vertical = 8.dp
+            ),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = timeSlot.startTime.format(DateTimeFormatter.ofPattern("HH:mm")),
+                color = Color.Gray,
+                fontWeight = FontWeight.W500,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
