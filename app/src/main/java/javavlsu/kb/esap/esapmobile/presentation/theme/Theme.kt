@@ -1,6 +1,7 @@
 package javavlsu.kb.esap.esapmobile.presentation.theme
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -57,9 +58,10 @@ fun EsapMobileTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            val insetsController = WindowCompat.getInsetsController(window, view)
+            val activity = (view.context as Activity)
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+            activity.window.statusBarColor = colorScheme.primary.toArgb()
+            val insetsController = WindowCompat.getInsetsController(activity.window, view)
             insetsController.hide(WindowInsetsCompat.Type.navigationBars())
             insetsController.isAppearanceLightStatusBars = darkTheme
         }

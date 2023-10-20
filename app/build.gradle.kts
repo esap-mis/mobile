@@ -71,7 +71,7 @@ dependencies {
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.4")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-beta01")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-rc01")
 
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
