@@ -8,11 +8,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ProfileScreen() {
+fun ResultsScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Профиль")
+        Text(
+            text = "Результаты"
+        )
     }
 }

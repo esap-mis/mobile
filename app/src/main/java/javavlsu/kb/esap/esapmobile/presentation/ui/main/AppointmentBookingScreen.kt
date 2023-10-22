@@ -55,7 +55,7 @@ import javavlsu.kb.esap.esapmobile.presentation.theme.NightBlue
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun AppointmentScreen(
+fun AppointmentBookingScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     calendarViewModel: CalendarViewModel = hiltViewModel()
 ) {

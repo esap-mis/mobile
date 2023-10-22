@@ -8,10 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.AppointmentScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.AppointmentBookingScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.ProfileScreen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.AppointmentsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.ResultsScreen
 
 @Composable
 fun MainScreenNavGraph(
@@ -30,14 +30,14 @@ fun MainScreenNavGraph(
                 rootNavController.navigate(Graph.Root.root)
             })
         }
-        composable(route = Screen.Main.Appointment.route) {
-            AppointmentScreen()
+        composable(route = Screen.Main.AppointmentBooking.route) {
+            AppointmentBookingScreen()
         }
-        composable(route = Screen.Main.Profile.route) {
-            ProfileScreen()
+        composable(route = Screen.Main.Appointments.route) {
+            AppointmentsScreen()
         }
-        composable(route = Screen.Main.Settings.route) {
-            SettingsScreen()
+        composable(route = Screen.Main.Results.route) {
+            ResultsScreen()
         }
     }
 }
