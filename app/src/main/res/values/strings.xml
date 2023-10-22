@@ -17,4 +17,9 @@
     <string name="medical_record">Медицинская карта</string>
     <string name="make_appointment">Записаться на прием</string>
     <string name="logout">Выйти</string>
+
+    <!-- Appointment -->
+    <string name="doctors">ВРАЧИ</string>
+    <string name="havent_doctors_data">Нет данных о врачах</string>
+    <string name="available_appointment_times">"Доступное время приема:</string>
 </resources>

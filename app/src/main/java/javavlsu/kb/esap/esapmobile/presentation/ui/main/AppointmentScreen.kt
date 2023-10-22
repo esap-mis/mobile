@@ -32,11 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
@@ -90,7 +92,7 @@ fun AppointmentScreen(
                 .align(Alignment.Start),
             ) {
                 Text(
-                    text = "ВРАЧИ",
+                    text = stringResource(R.string.doctors),
                     fontSize = 20.sp,
                     color = NightBlue,
                     fontWeight = FontWeight.W600,
@@ -103,7 +105,7 @@ fun AppointmentScreen(
                     }
                 }
             } else {
-                Text("Нет данных о врачах.")
+                Text(stringResource(R.string.havent_doctors_data))
             }
         }
     }
@@ -162,7 +164,7 @@ fun DoctorCard(doctor: DoctorResponse) {
 
             if (doctor.schedules.isNotEmpty()) {
                 Text(
-                    text = "Доступное время приема:",
+                    text = stringResource(R.string.available_appointment_times),
                     fontWeight = FontWeight.W500,
                     fontSize = 18.sp
                 )
@@ -198,6 +200,7 @@ fun TimeSlotCard(
 ) {
     Card(
         modifier = Modifier
+            .padding(2.dp)
             .clip(RoundedCornerShape(10.dp)),
         colors = CardDefaults.cardColors(containerColor = Gray20)
     ) {
