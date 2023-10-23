@@ -12,6 +12,7 @@ import javavlsu.kb.esap.esapmobile.presentation.ui.main.AppointmentBookingScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.AppointmentsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.ResultsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
 
 @Composable
 fun MainScreenNavGraph(
@@ -38,6 +39,9 @@ fun MainScreenNavGraph(
         }
         composable(route = Screen.Main.Results.route) {
             ResultsScreen()
+        }
+        composable(route = Screen.Main.More.Settings.route) {
+            SettingsScreen()
         }
     }
 }

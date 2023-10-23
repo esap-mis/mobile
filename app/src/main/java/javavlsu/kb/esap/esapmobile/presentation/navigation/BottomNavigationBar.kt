@@ -23,7 +23,8 @@ import javavlsu.kb.esap.esapmobile.presentation.theme.Blue
 
 @Composable
 fun BottomNavigationBar(
-    navController: NavController
+    navController: NavController,
+    onMoreButtonClick: () -> Unit
 ) {
     val navigationItems = listOf(
         Screen.Main.Home,
@@ -67,7 +68,11 @@ fun BottomNavigationBar(
                         navController.popBackStack()
                     }
                     selectedScreen = index
-                    navController.navigate(screen.route)
+                    if (selectedScreen == 4) {
+                        onMoreButtonClick()
+                    } else {
+                        navController.navigate(screen.route)
+                    }
                 },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.White

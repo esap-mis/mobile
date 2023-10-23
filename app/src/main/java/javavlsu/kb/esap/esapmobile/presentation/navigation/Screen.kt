@@ -20,6 +20,9 @@ sealed class Screen(
 
         object Results: Screen(title = "Результаты", route = "settings", icon = R.drawable.results)
 
-        object More: Screen(title = "Еще", route = "more", icon = R.drawable.menu)
+        object More: Screen(title = "Еще", route = "more", icon = R.drawable.drawer_menu) {
+
+            object Settings: Screen(title = "Настройки", route = "settings", icon = R.drawable.settings)
+        }
     }
 }
