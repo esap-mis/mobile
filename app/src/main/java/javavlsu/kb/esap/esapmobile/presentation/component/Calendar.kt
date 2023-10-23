@@ -42,7 +42,7 @@ fun Calendar(
     val data by calendarViewModel.calendarData.observeAsState()
 
     data?.let { calendarData ->
-        Column(modifier = modifier.fillMaxWidth(0.9f)) {
+        Column(modifier = modifier.fillMaxWidth(1f)) {
             Header(data = calendarData)
             Content(
                 data = calendarData,
