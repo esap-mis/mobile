@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
@@ -33,7 +34,27 @@ class NetworkConfig {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(
+    @Named("authOkHttpClient")
+    fun provideAuthOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor { chain ->
+                val originalRequest = chain.request()
+                val requestWithUserAgent = originalRequest.newBuilder()
+                    .header("User-Agent", "mobile")
+                    .build()
+                chain.proceed(requestWithUserAgent)
+            }
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    @Named("mainOkHttpClient")
+    fun provideMainOkHttpClient(
         authInterceptor: AuthInterceptor,
         authAuthenticator: AuthAuthenticator,
     ): OkHttpClient {
@@ -66,16 +87,17 @@ class NetworkConfig {
 
     @Singleton
     @Provides
-    fun provideAuthAPIService(retrofit: Retrofit.Builder): AuthApiService =
+    fun provideAuthAPIService(@Named("authOkHttpClient") authOkHttpClient: OkHttpClient, retrofit: Retrofit.Builder): AuthApiService =
         retrofit
+            .client(authOkHttpClient)
             .build()
             .create(AuthApiService::class.java)
 
     @Singleton
     @Provides
-    fun provideMainAPIService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): MainApiService =
+    fun provideMainAPIService(@Named("mainOkHttpClient") mainOkHttpClient: OkHttpClient, retrofit: Retrofit.Builder): MainApiService =
         retrofit
-            .client(okHttpClient)
+            .client(mainOkHttpClient)
             .build()
             .create(MainApiService::class.java)
 }
