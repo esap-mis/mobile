@@ -91,6 +91,27 @@ fun HomeScreen(
             if (patientResponse is ApiResponse.Success) {
                 val user = (patientResponse as ApiResponse.Success).data
                 Content(user = user)
+                Spacer(modifier = Modifier.size(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.medical_card),
+                        tint = Color.Blue,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.medical_record),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Blue,
+                        textAlign = TextAlign.Left
+                    )
+                }
                 Spacer(modifier = Modifier.size(32.dp))
                 Button(
                     text = stringResource(R.string.make_appointment),
@@ -133,29 +154,6 @@ private fun Content(
             textAlign = TextAlign.Left
         )
         SearchIcon()
-    }
-    Spacer(modifier = Modifier.size(10.dp))
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.medical_card),
-            tint = Color.Blue,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-
-        Spacer(modifier = Modifier.width(4.dp))
-
-        Text(
-            text = stringResource(R.string.medical_record),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            color = Color.Blue,
-            textAlign = TextAlign.Left
-        )
     }
 }
 

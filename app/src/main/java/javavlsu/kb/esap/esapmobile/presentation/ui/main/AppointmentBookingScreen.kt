@@ -76,8 +76,7 @@ fun AppointmentBookingScreen(
 
     if (doctorListResponse is ApiResponse.Loading) {
         CircularProgress()
-    } else if (doctorListResponse is ApiResponse.Success) {
-        val doctors = (doctorListResponse as ApiResponse.Success).data
+    } else {
         Column(
             modifier = Modifier
                 .padding(10.dp)
@@ -98,14 +97,17 @@ fun AppointmentBookingScreen(
                     fontWeight = FontWeight.W600,
                 )
             }
-            if (doctors.isNotEmpty()) {
-                LazyColumn {
-                    items(doctors) { doctor ->
-                        DoctorCard(doctor)
+            if (doctorListResponse is ApiResponse.Success) {
+                val doctors = (doctorListResponse as ApiResponse.Success).data
+                if (doctors.isNotEmpty()) {
+                    LazyColumn {
+                        items(doctors) { doctor ->
+                            DoctorCard(doctor)
+                        }
                     }
+                } else {
+                    Text(stringResource(R.string.havent_doctors_data))
                 }
-            } else {
-                Text(stringResource(R.string.havent_doctors_data))
             }
         }
     }
