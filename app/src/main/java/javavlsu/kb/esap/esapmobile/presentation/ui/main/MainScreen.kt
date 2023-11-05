@@ -14,11 +14,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import javavlsu.kb.esap.esapmobile.presentation.graph.MainScreenNavGraph
@@ -36,50 +39,56 @@ fun MainScreen(
     val items = listOf(Screen.Main.More.Settings)
     val selectedItem = remember { mutableStateOf(items[0]) }
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                Spacer(Modifier.height(12.dp))
-                items.forEach { item ->
-                    NavigationDrawerItem(
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = item.icon!!),
-                                contentDescription = null,
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    ModalDrawerSheet {
+                        Spacer(Modifier.height(12.dp))
+                        items.forEach { item ->
+                            NavigationDrawerItem(
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(id = item.icon!!),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                    )},
+                                label = { Text(item.title) },
+                                selected = item == selectedItem.value,
+                                onClick = {
+                                    scope.launch { drawerState.close() }
+                                    selectedItem.value = item
+                                    navHostController.navigate(item.route)
+                                },
                                 modifier = Modifier
-                                    .size(30.dp)
-                            )},
-                        label = { Text(item.title) },
-                        selected = item == selectedItem.value,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            selectedItem.value = item
-                            navHostController.navigate(item.route)
-                        },
-                        modifier = Modifier
-                            .padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-                }
-            }
-        },
-        content = {
-            Scaffold(
-                bottomBar = {
-                    BottomNavigationBar(
-                        navController = navHostController,
-                        onMoreButtonClick = {
-                            scope.launch { drawerState.open() }
+                                    .padding(NavigationDrawerItemDefaults.ItemPadding)
+                            )
                         }
-                    )
+                    }
                 }
-            ) { paddingValues ->
-                MainScreenNavGraph(
-                    navController = navHostController,
-                    rootNavController = rootNavController,
-                    paddingValues = paddingValues
-                )
+            },
+            content = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavigationBar(
+                                navController = navHostController,
+                                onMoreButtonClick = {
+                                    scope.launch { drawerState.open() }
+                                }
+                            )
+                        }
+                    ) { paddingValues ->
+                        MainScreenNavGraph(
+                            navController = navHostController,
+                            rootNavController = rootNavController,
+                            paddingValues = paddingValues
+                        )
+                    }
+                }
             }
-        }
-    )
+        )
+    }
 }
