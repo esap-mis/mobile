@@ -2,10 +2,11 @@ package javavlsu.kb.esap.esapmobile.domain.model.response
 
 import javavlsu.kb.esap.esapmobile.domain.model.UserResponse
 
-data class DoctorResponse(
-    val id: Long,
-    val specialization: String,
-    val schedules: List<ScheduleResponse>,
+data class PatientResponse(
+    val birthDate: String,
+    val address: String,
+    val phoneNumber: String,
+    val email: String,
     override val firstName: String,
     override val patronymic: String,
     override val lastName: String,

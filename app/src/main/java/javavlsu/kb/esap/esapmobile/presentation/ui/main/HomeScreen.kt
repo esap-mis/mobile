@@ -39,7 +39,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.domain.model.UserResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
@@ -54,7 +54,8 @@ fun HomeScreen(
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val roles by tokenViewModel.roles.observeAsState()
-    val doctorResponse by mainViewModel.doctorResponse.observeAsState()
+    val doctorResposne by mainViewModel.doctorResponse.observeAsState()
+    val patientResponse by mainViewModel.patientResponse.observeAsState()
 
     LaunchedEffect(roles) {
         if (roles?.contains("ROLE_DOCTOR") == true || roles?.contains("ROLE_CHIEF_DOCTOR") == true) {
@@ -67,70 +68,58 @@ fun HomeScreen(
                 }
             )
         } else if (roles?.contains("ROLE_PATIENT") == true) {
-//            mainViewModel.getDoctorInfo(
-//                object : CoroutinesErrorHandler {
-//                    override fun onError(message: String) {
-//                        responseMessage = message
-//                        showDialog = true
-//                    }
-//                }
-//            )
+            mainViewModel.getPatient(
+                object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        responseMessage = message
+                        showDialog = true
+                    }
+                }
+            )
         }
     }
 
-    if (doctorResponse is ApiResponse.Loading) {
+    if (patientResponse is ApiResponse.Loading || doctorResposne is ApiResponse.Loading) {
         CircularProgress()
-    } else if (doctorResponse is ApiResponse.Success) {
-        val user = (doctorResponse as ApiResponse.Success).data
-        DoctorContent(
-            user = user,
-            onMakeAppointmentClick = {},
-            onSignOutClick = {
-                tokenViewModel.deleteToken()
-                tokenViewModel.deleteRoles()
-                navigateToSignIn()
+    } else {
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (patientResponse is ApiResponse.Success) {
+                val user = (patientResponse as ApiResponse.Success).data
+                Content(user = user)
+                Spacer(modifier = Modifier.size(32.dp))
+                Button(
+                    text = stringResource(R.string.make_appointment),
+                    color = Green80,
+                    onClick = {}
+                )
+            } else if (doctorResposne is ApiResponse.Success) {
+                val user = (doctorResposne as ApiResponse.Success).data
+                Content(user = user)
             }
-        )
+            Spacer(modifier = Modifier.size(16.dp))
+            Button(
+                text = stringResource(R.string.logout),
+                color = Color.Red,
+                onClick = {
+                    tokenViewModel.deleteToken()
+                    tokenViewModel.deleteRoles()
+                    navigateToSignIn()
+                }
+            )
+        }
     }
 }
 
 @Composable
-private fun DoctorContent(
-    user: DoctorResponse,
-    onMakeAppointmentClick: () -> Unit,
-    onSignOutClick: () -> Unit,
+private fun Content(
+    user: UserResponse,
 ) {
-    Column(
-        modifier = Modifier
-            .padding(20.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        GreetingRow(user)
-        Spacer(modifier = Modifier.size(10.dp))
-        MedicalRecordRow()
-        Spacer(modifier = Modifier.size(32.dp))
-        Button(
-            text = stringResource(R.string.make_appointment),
-            color = Green80,
-            onClick = {
-                onMakeAppointmentClick()
-            }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        Button(
-            text = stringResource(R.string.logout),
-            color = Color.Red,
-            onClick = {
-                onSignOutClick()
-            }
-        )
-    }
-}
-
-@Composable
-private fun GreetingRow(user: DoctorResponse) {
+    Spacer(modifier = Modifier.height(16.dp))
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -144,6 +133,29 @@ private fun GreetingRow(user: DoctorResponse) {
             textAlign = TextAlign.Left
         )
         SearchIcon()
+    }
+    Spacer(modifier = Modifier.size(10.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.medical_card),
+            tint = Color.Blue,
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Text(
+            text = stringResource(R.string.medical_record),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            color = Color.Blue,
+            textAlign = TextAlign.Left
+        )
     }
 }
 
@@ -161,31 +173,6 @@ private fun SearchIcon() {
             modifier = Modifier
                 .size(24.dp)
                 .align(Alignment.Center)
-        )
-    }
-}
-
-@Composable
-private fun MedicalRecordRow() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.medical_card),            tint = Color.Blue,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-
-        Spacer(modifier = Modifier.width(4.dp))
-
-        Text(
-            text = stringResource(R.string.medical_record),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            color = Color.Blue,
-            textAlign = TextAlign.Left
         )
     }
 }

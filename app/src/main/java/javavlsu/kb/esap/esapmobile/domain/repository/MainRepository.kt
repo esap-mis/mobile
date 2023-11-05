@@ -12,6 +12,10 @@ class MainRepository @Inject constructor(
         mainApiService.getDoctor()
     }
 
+    fun getPatient() = apiRequestFlow {
+        mainApiService.getPatient()
+    }
+
     fun getDoctorList(date: LocalDate) = apiRequestFlow {
         mainApiService.getDoctorList(date)
     }
