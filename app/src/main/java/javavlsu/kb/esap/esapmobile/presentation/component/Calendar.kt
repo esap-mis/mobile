@@ -71,7 +71,7 @@ fun Header(
     ) {
         Text(
             text = data.selectedDate.date.format(
-                DateTimeFormatter.ofPattern("MMMM yyyy")
+                DateTimeFormatter.ofPattern("d MMMM yyyy")
             ),
             fontSize = 18.sp,
             modifier = Modifier
