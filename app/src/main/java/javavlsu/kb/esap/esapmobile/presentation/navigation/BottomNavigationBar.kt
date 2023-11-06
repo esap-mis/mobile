@@ -8,6 +8,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,20 @@ fun BottomNavigationBar(
     )
 
     var selectedScreen by remember { mutableIntStateOf(0) }
+
+    DisposableEffect(navController) {
+        val listener = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+            val destinationRoute = destination.route ?: ""
+            val index = navigationItems.indexOfFirst { it.route == destinationRoute }
+            if (index != -1 && selectedScreen != index) {
+                selectedScreen = index
+            }
+        }
+        navController.addOnDestinationChangedListener(listener)
+        onDispose {
+            navController.removeOnDestinationChangedListener(listener)
+        }
+    }
 
     NavigationBar(
         containerColor = Color.White
