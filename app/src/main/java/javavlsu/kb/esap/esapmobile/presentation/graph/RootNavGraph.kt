@@ -21,7 +21,10 @@ fun RootNavHost(
             val navController = rememberNavController()
             MainScreen(
                 navHostController = navController,
-                rootNavController = navHostController
+                onLogoutClick = {
+                    navHostController.popBackStack()
+                    navHostController.navigate(Graph.Root.root)
+                }
             )
         }
     }

@@ -17,7 +17,6 @@ import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
 @Composable
 fun MainScreenNavGraph(
     navController: NavHostController,
-    rootNavController: NavHostController,
     paddingValues: PaddingValues
 ) {
     NavHost(
@@ -26,10 +25,7 @@ fun MainScreenNavGraph(
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         composable(route = Screen.Main.Home.route) {
-            HomeScreen(navigateToSignIn = {
-                rootNavController.popBackStack()
-                rootNavController.navigate(Graph.Root.root)
-            })
+            HomeScreen()
         }
         composable(route = Screen.Main.AppointmentBooking.route) {
             AppointmentBookingScreen()

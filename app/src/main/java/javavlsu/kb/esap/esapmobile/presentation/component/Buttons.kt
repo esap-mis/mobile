@@ -13,7 +13,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Button(text: String, color: Color = Color.Blue, onClick: () -> Unit) {
+fun Button(
+    text: String,
+    color: Color = Color.Blue,
+    onClick: () -> Unit
+) {
     androidx.compose.material3.Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(

@@ -49,7 +49,6 @@ import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 fun HomeScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
-    navigateToSignIn: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -122,16 +121,6 @@ fun HomeScreen(
                 val user = (doctorResposne as ApiResponse.Success).data
                 Content(user = user)
             }
-            Spacer(modifier = Modifier.size(16.dp))
-            Button(
-                text = stringResource(R.string.logout),
-                color = Color.Red,
-                onClick = {
-                    tokenViewModel.deleteToken()
-                    tokenViewModel.deleteRoles()
-                    navigateToSignIn()
-                }
-            )
         }
     }
 }
