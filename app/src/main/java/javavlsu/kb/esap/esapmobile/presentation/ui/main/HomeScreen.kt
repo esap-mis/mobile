@@ -1,20 +1,14 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,21 +33,21 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.domain.model.UserResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
-import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
+import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 
 @Composable
 fun HomeScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
+    onMakeAppointmentClick: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val roles by tokenViewModel.roles.observeAsState()
-    val doctorResposne by mainViewModel.doctorResponse.observeAsState()
+    val doctorResponse by mainViewModel.doctorResponse.observeAsState()
     val patientResponse by mainViewModel.patientResponse.observeAsState()
 
     LaunchedEffect(roles) {
@@ -78,7 +72,7 @@ fun HomeScreen(
         }
     }
 
-    if (patientResponse is ApiResponse.Loading || doctorResposne is ApiResponse.Loading) {
+    if (patientResponse is ApiResponse.Loading || doctorResponse is ApiResponse.Loading) {
         CircularProgress()
     } else {
         Column(
@@ -89,77 +83,47 @@ fun HomeScreen(
         ) {
             if (patientResponse is ApiResponse.Success) {
                 val user = (patientResponse as ApiResponse.Success).data
-                Content(user = user)
-                Spacer(modifier = Modifier.size(10.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.medical_card),
-                        tint = Color.Blue,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = stringResource(R.string.medical_record),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color.Blue,
-                        textAlign = TextAlign.Left
-                    )
-                }
-                Spacer(modifier = Modifier.size(32.dp))
-                Button(
-                    text = stringResource(R.string.make_appointment),
-                    color = Green80,
-                    onClick = {}
+                Header(user = user)
+                PatientContent(
+                    onMakeAppointmentClick
                 )
-            } else if (doctorResposne is ApiResponse.Success) {
-                val user = (doctorResposne as ApiResponse.Success).data
-                Content(user = user)
+            } else if (doctorResponse is ApiResponse.Success) {
+                val user = (doctorResponse as ApiResponse.Success).data
+                Header(user = user)
             }
         }
     }
 }
 
 @Composable
-private fun Content(
-    user: UserResponse,
+private fun PatientContent(
+    onMakeAppointmentClick: () -> Unit
 ) {
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.size(10.dp))
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "${stringResource(R.string.hello)} ${user.firstName} ${stringResource(R.string.smile)}",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.W600,
-            color = Color.Black,
-            textAlign = TextAlign.Left
-        )
-        SearchIcon()
-    }
-}
-
-@Composable
-private fun SearchIcon() {
-    Box(
-        modifier = Modifier
-            .size(42.dp)
-            .background(color = Gray40, shape = CircleShape)
+        horizontalArrangement = Arrangement.Start
     ) {
         Icon(
-            imageVector = Icons.Outlined.Search,
-            tint = Color.Gray,
+            painter = painterResource(id = R.drawable.medical_card),
+            tint = Color.Blue,
             contentDescription = null,
-            modifier = Modifier
-                .size(24.dp)
-                .align(Alignment.Center)
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = stringResource(R.string.medical_record),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            color = Color.Blue,
+            textAlign = TextAlign.Left
         )
     }
+    Spacer(modifier = Modifier.size(32.dp))
+    Button(
+        text = stringResource(R.string.make_appointment),
+        color = Green80,
+        onClick = onMakeAppointmentClick
+    )
 }

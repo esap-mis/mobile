@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+
+// TODO: Вынести запрос с отображением информации о пользователе вотедльный компонент, чтобы рендерить на нескольких страницах
 @Composable
 fun AppointmentsScreen() {
     Box(

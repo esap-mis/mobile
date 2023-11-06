@@ -25,7 +25,11 @@ fun MainScreenNavGraph(
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         composable(route = Screen.Main.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                onMakeAppointmentClick = {
+                    navController.navigate(Screen.Main.AppointmentBooking.route)
+                }
+            )
         }
         composable(route = Screen.Main.AppointmentBooking.route) {
             AppointmentBookingScreen()
