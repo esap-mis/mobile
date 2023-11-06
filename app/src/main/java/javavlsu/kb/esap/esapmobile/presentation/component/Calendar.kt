@@ -99,13 +99,13 @@ fun Content(
         }) {
             Icon(
                 imageVector = Icons.Default.ChevronLeft,
-                contentDescription = "Back"
+                contentDescription = null
             )
         }
 
         LazyVerticalGrid(
             modifier = Modifier.weight(1f),
-            columns = GridCells.Adaptive(minSize = 40.dp)
+            columns = GridCells.Fixed(7)
         ) {
             items(data.visibleDates.size) { index ->
                 ContentItem(
@@ -120,7 +120,7 @@ fun Content(
         }) {
             Icon(
                 imageVector = Icons.Default.ChevronRight,
-                contentDescription = "Next"
+                contentDescription = null
             )
         }
     }
@@ -133,7 +133,10 @@ fun ContentItem(
 ) {
     Card(
         modifier = Modifier
-            .padding(vertical = 4.dp, horizontal = 4.dp)
+            .padding(
+                vertical = 2.dp,
+                horizontal = 2.dp
+            )
             .clickable {
                 onClickListener(date)
             }
@@ -148,9 +151,9 @@ fun ContentItem(
     ) {
         Column(
             modifier = Modifier
-                .width(58.dp)
+                .width(48.dp)
                 .height(58.dp)
-                .padding(6.dp)
+                .padding(2.dp)
         ) {
             Text(
                 text = date.day,
