@@ -1,6 +1,7 @@
-package javavlsu.kb.esap.esapmobile.presentation.ui.main
+package javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
@@ -49,15 +51,18 @@ import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.VerticalGrid
 import javavlsu.kb.esap.esapmobile.presentation.data.TimeSlot
 import javavlsu.kb.esap.esapmobile.presentation.data.calculateAvailableTimeSlots
+import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray20
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.NightBlue
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun AppointmentBookingScreen(
+    navController: NavController,
     mainViewModel: MainViewModel = hiltViewModel(),
-    calendarViewModel: CalendarViewModel = hiltViewModel()
+    calendarViewModel: CalendarViewModel = hiltViewModel(),
 ) {
     var responseMessage by remember { mutableStateOf("") }
     val doctorListResponse by mainViewModel.doctorListResponse.observeAsState()
@@ -102,7 +107,11 @@ fun AppointmentBookingScreen(
                 if (doctors.isNotEmpty()) {
                     LazyColumn {
                         items(doctors) { doctor ->
-                            DoctorCard(doctor)
+                            DoctorCard(
+                                date = data!!.selectedDate.date,
+                                doctor = doctor,
+                                navController = navController
+                            )
                         }
                     }
                 } else {
@@ -114,7 +123,11 @@ fun AppointmentBookingScreen(
 }
 
 @Composable
-fun DoctorCard(doctor: DoctorResponse) {
+fun DoctorCard(
+    date: LocalDate,
+    doctor: DoctorResponse,
+    navController: NavController
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,21 +186,14 @@ fun DoctorCard(doctor: DoctorResponse) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules, doctor.schedules[0].appointments)
-//                LazyVerticalGrid(
-//                    columns = GridCells.Fixed(4),
-//                    content = {
-//                        items(availableTimeSlots) { timeSlot ->
-//                            TimeSlotCard(timeSlot)
-//                        }
-//                    },
-//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-//                    verticalArrangement = Arrangement.spacedBy(8.dp)
-//                )
                 VerticalGrid(
                     columns = 4,
                     content = {
                         availableTimeSlots.forEach { timeSlot ->
-                            TimeSlotCard(timeSlot)
+                            TimeSlotCard(
+                                timeSlot = timeSlot,
+                                onClick = { navController.navigate("appointment/${date}/${timeSlot}/${doctor.id}") }
+                            )
                         }
                     }
                 )
@@ -199,10 +205,12 @@ fun DoctorCard(doctor: DoctorResponse) {
 @Composable
 fun TimeSlotCard(
     timeSlot: TimeSlot,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .padding(2.dp)
+            .clickable { onClick() }
             .clip(RoundedCornerShape(10.dp)),
         colors = CardDefaults.cardColors(containerColor = Gray20)
     ) {

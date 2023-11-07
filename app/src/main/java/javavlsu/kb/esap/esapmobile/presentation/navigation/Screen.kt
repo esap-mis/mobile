@@ -14,11 +14,14 @@ sealed class Screen(
     object Main {
         object Home: Screen(title = "Главная", route = "home", icon = R.drawable.hospital)
 
-        object AppointmentBooking: Screen(title = "Запись", route = "appointment", icon = R.drawable.make_appointments)
+        object AppointmentBooking: Screen(title = "Запись", route = "appointment", icon = R.drawable.make_appointments) {
 
-        object Appointments: Screen(title = "Приемы", route = "profile", icon = R.drawable.appointments)
+            object Confirmation: Screen(title = "Подтвердить запись", route = "appointment/{selectedDate}/{timeSlot}/{doctorId}")
+        }
 
-        object Results: Screen(title = "Результаты", route = "settings", icon = R.drawable.results)
+        object Appointments: Screen(title = "Приемы", route = "appointments", icon = R.drawable.appointments)
+
+        object Results: Screen(title = "Результаты", route = "results", icon = R.drawable.results)
 
         object More: Screen(title = "Еще", route = "more", icon = R.drawable.drawer_menu) {
 

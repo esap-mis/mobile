@@ -22,4 +22,5 @@
     <string name="doctors">ВРАЧИ</string>
     <string name="havent_doctors_data">Нет данных о врачах</string>
     <string name="available_appointment_times">"Доступное время приема:</string>
+    <string name="confirm_appointment">Подтвердить запись</string>
 </resources>

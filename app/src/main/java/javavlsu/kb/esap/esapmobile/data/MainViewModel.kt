@@ -1,11 +1,13 @@
 package javavlsu.kb.esap.esapmobile.data
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
