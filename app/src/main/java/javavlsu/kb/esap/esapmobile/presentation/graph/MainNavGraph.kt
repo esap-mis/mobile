@@ -9,10 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import javavlsu.kb.esap.esapmobile.domain.model.response.ClinicResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
-import javavlsu.kb.esap.esapmobile.presentation.data.TimeSlot
 import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentBookingScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen

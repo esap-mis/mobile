@@ -24,17 +24,24 @@ import javavlsu.kb.esap.esapmobile.presentation.theme.Blue
 
 @Composable
 fun BottomNavigationBar(
+    userRoles: String,
     navController: NavController,
     onMoreButtonClick: () -> Unit
 ) {
-    val navigationItems = listOf(
+    val patientNavigationItems = listOf(
         Screen.Main.Home,
         Screen.Main.AppointmentBooking,
         Screen.Main.Appointments,
         Screen.Main.Results,
         Screen.Main.More
     )
+    val doctorNavigationItems = listOf(
+        Screen.Main.Home,
+        Screen.Main.Appointments,
+        Screen.Main.More.Settings
+    )
 
+    val navigationItems = if (userRoles.contains("ROLE_PATIENT")) patientNavigationItems else doctorNavigationItems
     var selectedScreen by remember { mutableIntStateOf(0) }
 
     DisposableEffect(navController) {

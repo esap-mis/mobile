@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,6 +48,7 @@ fun MainScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val items = listOf(Screen.Main.More.Settings, "Logout")
     val selectedItem = remember { mutableStateOf(items[0]) }
+    val roles by tokenViewModel.roles.observeAsState()
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         ModalNavigationDrawer(
@@ -100,12 +103,15 @@ fun MainScreen(
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Scaffold(
                         bottomBar = {
-                            BottomNavigationBar(
-                                navController = navHostController,
-                                onMoreButtonClick = {
-                                    scope.launch { drawerState.open() }
-                                }
-                            )
+                            roles?.let {
+                                BottomNavigationBar(
+                                    userRoles = it,
+                                    navController = navHostController,
+                                    onMoreButtonClick = {
+                                        scope.launch { drawerState.open() }
+                                    }
+                                )
+                            }
                         }
                     ) { paddingValues ->
                         MainScreenNavGraph(
