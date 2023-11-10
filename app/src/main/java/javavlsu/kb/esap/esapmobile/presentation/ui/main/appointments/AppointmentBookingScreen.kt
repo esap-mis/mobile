@@ -51,7 +51,6 @@ import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.VerticalGrid
 import javavlsu.kb.esap.esapmobile.presentation.data.TimeSlot
 import javavlsu.kb.esap.esapmobile.presentation.data.calculateAvailableTimeSlots
-import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray20
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.NightBlue
@@ -225,7 +224,7 @@ fun TimeSlotCard(
                 text = timeSlot.startTime.format(DateTimeFormatter.ofPattern("HH:mm")),
                 color = Color.Gray,
                 fontWeight = FontWeight.W500,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 textAlign = TextAlign.Center
             )
         }
