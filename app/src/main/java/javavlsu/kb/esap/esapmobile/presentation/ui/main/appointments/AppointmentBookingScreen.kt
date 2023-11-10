@@ -191,7 +191,7 @@ fun DoctorCard(
                         availableTimeSlots.forEach { timeSlot ->
                             TimeSlotCard(
                                 timeSlot = timeSlot,
-                                onClick = { navController.navigate("appointment/${date}/${timeSlot}/${doctor.id}") }
+                                onClick = { navController.navigate("appointment/${date}/${doctor.schedules[0].id}/${timeSlot.startTime}/${doctor.id}") }
                             )
                         }
                     }

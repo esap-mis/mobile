@@ -42,14 +42,19 @@ fun MainScreenNavGraph(
             route = Screen.Main.AppointmentBooking.Confirmation.route,
             arguments = listOf(
                 navArgument("selectedDate") { type = NavType.StringType },
-                navArgument("timeSlot") { type = NavType.StringType },
+                navArgument("startTime") { type = NavType.StringType },
                 navArgument("doctorId") { type = NavType.LongType },
+                navArgument("scheduleId") { type = NavType.LongType },
             )
         ) { backStackEntry ->
             ConfirmationScreen(
                 selectedDate = backStackEntry.arguments?.getString("selectedDate")!!,
-                timeSlot = backStackEntry.arguments?.getString("timeSlot")!!,
-                doctorId = backStackEntry.arguments?.getLong("doctorId")!!
+                startTime = backStackEntry.arguments?.getString("startTime")!!,
+                doctorId = backStackEntry.arguments?.getLong("doctorId")!!,
+                scheduleId = backStackEntry.arguments?.getLong("scheduleId")!!,
+                navigateBack = {
+                    navController.navigate(Screen.Main.AppointmentBooking.route)
+                }
             )
         }
         

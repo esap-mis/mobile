@@ -36,6 +36,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Button
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
+import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 
 @Composable
@@ -91,6 +92,12 @@ fun HomeScreen(
                 val user = (doctorResponse as ApiResponse.Success).data
                 Header(user = user)
             }
+        }
+    }
+
+    if (showDialog) {
+        ResponseDialog(responseMessage) {
+            showDialog = false
         }
     }
 }

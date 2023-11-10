@@ -1,13 +1,12 @@
 package javavlsu.kb.esap.esapmobile.data
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -27,6 +26,9 @@ class MainViewModel @Inject constructor(
 
     private val _doctorResponseById = MutableLiveData<ApiResponse<DoctorResponse>>()
     val doctorResponseById = _doctorResponseById
+
+    private val _makeAppointmentResponse = MutableLiveData<ApiResponse<String>>()
+    val makeAppointmentResponse = _makeAppointmentResponse
 
     fun getDoctor(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorResponse,
@@ -54,5 +56,15 @@ class MainViewModel @Inject constructor(
         coroutinesErrorHandler
     ) {
         mainRepository.getDoctorById(doctorId)
+    }
+
+    fun makeAppointment(scheduleId: Long,
+                        appointmentRequest: AppointmentRequest,
+                        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _makeAppointmentResponse,
+        coroutinesErrorHandler
+    ) {
+        mainRepository.makeAppointment(scheduleId, appointmentRequest)
     }
 }
