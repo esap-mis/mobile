@@ -19,4 +19,8 @@ class MainRepository @Inject constructor(
     fun getDoctorList(date: LocalDate) = apiRequestFlow {
         mainApiService.getDoctorList(date)
     }
+
+    fun getDoctorById(doctorId: Long) = apiRequestFlow {
+        mainApiService.getDoctorById(doctorId)
+    }
 }

@@ -32,6 +32,17 @@ fun ConfirmationScreen(
     var responseMessage by remember { mutableStateOf("") }
     val doctorListResponse by mainViewModel.doctorListResponse.observeAsState()
 
+    LaunchedEffect(doctorId) {
+        mainViewModel.getDoctorById(
+            doctorId,
+            object : CoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    responseMessage = message
+                }
+            }
+        )
+    }
+
     LaunchedEffect(selectedDate) {
         mainViewModel.getDoctorList(
             LocalDate.parse(selectedDate),

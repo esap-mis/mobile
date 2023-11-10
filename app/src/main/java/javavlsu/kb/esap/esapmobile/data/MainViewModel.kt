@@ -25,6 +25,9 @@ class MainViewModel @Inject constructor(
     private val _doctorListResponse = MutableLiveData<ApiResponse<List<DoctorResponse>>>()
     val doctorListResponse = _doctorListResponse
 
+    private val _doctorResponseById = MutableLiveData<ApiResponse<DoctorResponse>>()
+    val doctorResponseById = _doctorResponseById
+
     fun getDoctor(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorResponse,
         coroutinesErrorHandler
@@ -44,5 +47,12 @@ class MainViewModel @Inject constructor(
         coroutinesErrorHandler
     ) {
         mainRepository.getDoctorList(date)
+    }
+
+    fun getDoctorById(doctorId: Long, coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+        _doctorResponseById,
+        coroutinesErrorHandler
+    ) {
+        mainRepository.getDoctorById(doctorId)
     }
 }
