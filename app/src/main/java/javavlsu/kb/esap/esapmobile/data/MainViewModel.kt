@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
+import javavlsu.kb.esap.esapmobile.domain.model.response.AppointmentResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
@@ -29,6 +30,9 @@ class MainViewModel @Inject constructor(
 
     private val _makeAppointmentResponse = MutableLiveData<ApiResponse<String>>()
     val makeAppointmentResponse = _makeAppointmentResponse
+
+    private val _patientAppointmentList = MutableLiveData<ApiResponse<List<AppointmentResponse>>>()
+    val patientAppointmentList = _patientAppointmentList
 
     fun getDoctor(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorResponse,
@@ -66,5 +70,12 @@ class MainViewModel @Inject constructor(
         coroutinesErrorHandler
     ) {
         mainRepository.makeAppointment(scheduleId, appointmentRequest)
+    }
+
+    fun getPatientAppointments(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+        _patientAppointmentList,
+        coroutinesErrorHandler
+    ) {
+        mainRepository.getPatientAppointments()
     }
 }
