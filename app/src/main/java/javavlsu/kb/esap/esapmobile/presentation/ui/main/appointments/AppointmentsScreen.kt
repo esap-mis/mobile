@@ -1,6 +1,8 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +19,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -113,15 +117,16 @@ fun AppointmentsScreen(
                 Header(
                     user = user,
                     isHome = false
-                ) {}
+                )
             } else if (doctorResponse is ApiResponse.Success) {
                 val user = (doctorResponse as ApiResponse.Success).data
                 Header(
                     user = user,
                     isHome = false
-                ) {} //TODO : костыль
+                )
             }
 
+            CustomToggleSwitch(onToggle = {})
             Spacer(modifier = Modifier.height(16.dp))
 
             if (userAppointmentList is ApiResponse.Success) {
@@ -142,6 +147,60 @@ fun AppointmentsScreen(
     if (showDialog) {
         ResponseDialog(responseMessage) {
             showDialog = false
+        }
+    }
+}
+
+@Composable
+fun CustomToggleSwitch(
+    onToggle: () -> Unit
+) {
+    var isUpcoming by remember { mutableStateOf(true) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Gray)
+            .clickable {
+                isUpcoming = !isUpcoming
+                onToggle()
+            }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    isUpcoming = true
+                    onToggle()
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .background(if (isUpcoming) MaterialTheme.colorScheme.primary else Color.Gray)
+            ) {
+                Text(
+                    text = stringResource(R.string.future_appointments),
+                    color = if (isUpcoming) Color.White else Color.Black)
+            }
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Button(
+                onClick = {
+                    isUpcoming = false
+                    onToggle()
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .background(if (!isUpcoming) MaterialTheme.colorScheme.primary else Color.Gray)
+            ) {
+                Text(
+                    text = stringResource(R.string.past_appointments),
+                    color = if (!isUpcoming) Color.White else Color.Black)
+            }
         }
     }
 }

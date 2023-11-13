@@ -30,6 +30,8 @@
     <string name="confirm_appointment">Подтвердить запись</string>
 
     <!-- Appointments -->
+    <string name="future_appointments">Предстоящие</string>
+    <string name="past_appointments">Прошедшие</string>
     <string name="record">Запись</string>
     <string name="dont_have_appointments">Нет приемов</string>
 </resources>

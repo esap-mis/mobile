@@ -73,7 +73,7 @@ fun HomeScreen(
         ) {
             if (patientResponse is ApiResponse.Success) {
                 val user = (patientResponse as ApiResponse.Success).data
-                Header(user = user) {}
+                Header(user = user)
                 Spacer(modifier = Modifier.size(32.dp))
                 Button(
                     text = stringResource(R.string.make_appointment),
@@ -82,7 +82,7 @@ fun HomeScreen(
                 )
             } else if (doctorResponse is ApiResponse.Success) {
                 val user = (doctorResponse as ApiResponse.Success).data
-                Header(user = user) {}
+                Header(user = user)
             }
         }
     }
