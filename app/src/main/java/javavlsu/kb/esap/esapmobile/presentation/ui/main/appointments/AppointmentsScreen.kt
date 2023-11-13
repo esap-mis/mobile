@@ -1,8 +1,6 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,11 +18,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -108,7 +106,7 @@ fun AppointmentsScreen(
     } else {
         Column(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(10.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -127,7 +125,13 @@ fun AppointmentsScreen(
             }
 
             CustomToggleSwitch(onToggle = {})
-            Spacer(modifier = Modifier.height(16.dp))
+            Divider(
+                modifier = Modifier
+                    .padding(
+                        vertical = 16.dp,
+                        horizontal = 8.dp
+                    )
+            )
 
             if (userAppointmentList is ApiResponse.Success) {
                 val appointments = (userAppointmentList as ApiResponse.Success).data
@@ -138,7 +142,7 @@ fun AppointmentsScreen(
                         }
                     }
                 } else {
-                    Text(stringResource(R.string.dont_have_appointments),)
+                    Text(stringResource(R.string.dont_have_appointments))
                 }
             }
         }
@@ -158,48 +162,53 @@ fun CustomToggleSwitch(
     var isUpcoming by remember { mutableStateOf(true) }
 
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Gray)
-            .clickable {
-                isUpcoming = !isUpcoming
-                onToggle()
-            }
+            .padding(8.dp)
+            .height(50.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(Gray40)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(6.dp)
         ) {
             Button(
+                shape = RoundedCornerShape(10.dp),
                 onClick = {
                     isUpcoming = true
                     onToggle()
                 },
-                modifier = Modifier
-                    .weight(1f)
-                    .background(if (isUpcoming) MaterialTheme.colorScheme.primary else Color.Gray)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isUpcoming) Color.White else Gray40,
+                    contentColor = if (isUpcoming) Color.Black else Color.White
+                ),
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
+                    fontSize = 16.sp,
                     text = stringResource(R.string.future_appointments),
-                    color = if (isUpcoming) Color.White else Color.Black)
+                    color = if (isUpcoming) Color.Black else Color.Gray
+                )
             }
-
-            Spacer(modifier = Modifier.width(4.dp))
-
             Button(
+                shape = RoundedCornerShape(10.dp),
                 onClick = {
                     isUpcoming = false
                     onToggle()
                 },
-                modifier = Modifier
-                    .weight(1f)
-                    .background(if (!isUpcoming) MaterialTheme.colorScheme.primary else Color.Gray)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (!isUpcoming) Color.White else Gray40,
+                    contentColor = if (!isUpcoming) Color.Black else Color.White
+                ),
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
+                    fontSize = 16.sp,
                     text = stringResource(R.string.past_appointments),
-                    color = if (!isUpcoming) Color.White else Color.Black)
+                    color = if (!isUpcoming) Color.Black else Color.Gray
+                )
             }
         }
     }
@@ -299,7 +308,7 @@ fun AppointmentCard(
                         Text(
                             text = appointment.doctor.clinic.address,
                             color = Color.Gray,
-                            fontSize = 14.sp
+                            fontSize = 16.sp
                         )
                     }
                 }

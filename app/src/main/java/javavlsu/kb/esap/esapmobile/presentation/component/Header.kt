@@ -3,10 +3,12 @@ package javavlsu.kb.esap.esapmobile.presentation.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -34,51 +36,57 @@ fun Header(
     user: UserResponse,
     isHome: Boolean = true
 ) {
-    Spacer(modifier = Modifier.height(16.dp))
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+    Column(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth(),
     ) {
-        if (isHome) {
-            Text(
-                text = "${stringResource(R.string.hello)} ${user.firstName} ${stringResource(R.string.smile)}",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.W600,
-                color = Color.Black,
-                textAlign = TextAlign.Left
-            )
-            SearchIcon()
-        } else {
-            Text(
-                text = "${user.firstName} ${user.lastName}",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.W600,
-                color = Color.Black,
-                textAlign = TextAlign.Left
-            )
-        }
-    }
-    if (user is PatientResponse) {
-        Spacer(modifier = Modifier.size(10.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.medical_card),
-                tint = Color.Blue,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = stringResource(R.string.medical_record),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Blue,
-                textAlign = TextAlign.Left
-            )
+            if (isHome) {
+                Text(
+                    text = "${stringResource(R.string.hello)} ${user.firstName} ${stringResource(R.string.smile)}",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black,
+                    textAlign = TextAlign.Left
+                )
+                SearchIcon()
+            } else {
+                Text(
+                    text = "${user.firstName} ${user.lastName}",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black,
+                    textAlign = TextAlign.Left
+                )
+            }
+        }
+        if (user is PatientResponse) {
+            Spacer(modifier = Modifier.size(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.medical_card),
+                    tint = Color.Blue,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.medical_record),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Blue,
+                    textAlign = TextAlign.Left
+                )
+            }
         }
     }
 }
