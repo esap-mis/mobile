@@ -31,8 +31,8 @@ class MainViewModel @Inject constructor(
     private val _makeAppointmentResponse = MutableLiveData<ApiResponse<String>>()
     val makeAppointmentResponse = _makeAppointmentResponse
 
-    private val _patientAppointmentList = MutableLiveData<ApiResponse<List<AppointmentResponse>>>()
-    val patientAppointmentList = _patientAppointmentList
+    private val _userAppointmentList = MutableLiveData<ApiResponse<List<AppointmentResponse>>>()
+    val userAppointmentList = _userAppointmentList
 
     fun getDoctor(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorResponse,
@@ -72,10 +72,10 @@ class MainViewModel @Inject constructor(
         mainRepository.makeAppointment(scheduleId, appointmentRequest)
     }
 
-    fun getPatientAppointments(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
-        _patientAppointmentList,
+    fun getUserAppointments(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+        _userAppointmentList,
         coroutinesErrorHandler
     ) {
-        mainRepository.getPatientAppointments()
+        mainRepository.getUserAppointments()
     }
 }

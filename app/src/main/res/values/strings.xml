@@ -28,4 +28,8 @@
     <string name="patient">Пациент</string>
     <string name="patient_phone">Телефон</string>
     <string name="confirm_appointment">Подтвердить запись</string>
+
+    <!-- Appointments -->
+    <string name="record">Запись</string>
+    <string name="dont_have_appointments">Нет приемов</string>
 </resources>

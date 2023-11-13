@@ -31,6 +31,6 @@ interface MainApiService {
         @Body appointmentRequest: AppointmentRequest
     ): Response<String>
 
-    @GET("/api/patient/appointments")
-    suspend fun getPatientAppointments(): Response<List<AppointmentResponse>>
+    @GET("/api/schedule/appointments")
+    suspend fun getUserAppointments(): Response<List<AppointmentResponse>>
 }

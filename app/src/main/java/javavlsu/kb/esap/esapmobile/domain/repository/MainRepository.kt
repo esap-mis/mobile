@@ -29,7 +29,7 @@ class MainRepository @Inject constructor(
         mainApiService.makeAppointment(scheduleId, appointmentRequest)
     }
 
-    fun getPatientAppointments() = apiRequestFlow {
-        mainApiService.getPatientAppointments()
+    fun getUserAppointments() = apiRequestFlow {
+        mainApiService.getUserAppointments()
     }
 }
