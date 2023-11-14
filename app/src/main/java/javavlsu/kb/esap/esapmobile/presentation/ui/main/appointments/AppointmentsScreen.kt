@@ -67,6 +67,7 @@ fun AppointmentsScreen(
     val doctorResponse by mainViewModel.doctorResponse.observeAsState()
     val patientResponse by mainViewModel.patientResponse.observeAsState()
     val userAppointmentList by mainViewModel.userAppointmentList.observeAsState()
+    var isUpcoming by remember { mutableStateOf(true) }
 
     LaunchedEffect(roles) {
         if (roles?.contains("ROLE_DOCTOR") == true || roles?.contains("ROLE_CHIEF_DOCTOR") == true) {
@@ -124,7 +125,9 @@ fun AppointmentsScreen(
                 )
             }
 
-            CustomToggleSwitch(onToggle = {})
+            CustomToggleSwitch(onToggle = {
+                isUpcoming = !isUpcoming
+            })
             Divider(
                 modifier = Modifier
                     .padding(
@@ -135,15 +138,16 @@ fun AppointmentsScreen(
 
             if (userAppointmentList is ApiResponse.Success) {
                 val appointments = (userAppointmentList as ApiResponse.Success).data
-                if (appointments.isNotEmpty()) {
-                    LazyColumn {
-                        items(appointments) { appointment ->
-                            AppointmentCard(appointment = appointment)
-                        }
-                    }
+
+                val filteredAppointments = if (isUpcoming) {
+                    appointments.filter { it.isUpcoming() }
                 } else {
-                    Text(stringResource(R.string.dont_have_appointments))
+                    appointments.filter { !it.isUpcoming() }
                 }
+
+                val sortedAppointments = filteredAppointments.sortedBy { it.getDateTime() }
+
+                DisplayAppointmentsList(sortedAppointments)
             }
         }
     }
@@ -152,6 +156,19 @@ fun AppointmentsScreen(
         ResponseDialog(responseMessage) {
             showDialog = false
         }
+    }
+}
+
+@Composable
+fun DisplayAppointmentsList(appointments: List<AppointmentResponse>?) {
+    if (!appointments.isNullOrEmpty()) {
+        LazyColumn {
+            items(appointments) { appointment ->
+                AppointmentCard(appointment = appointment)
+            }
+        }
+    } else {
+        Text(stringResource(R.string.dont_have_appointments))
     }
 }
 
