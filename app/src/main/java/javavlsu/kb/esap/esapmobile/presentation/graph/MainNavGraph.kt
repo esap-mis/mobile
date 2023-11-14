@@ -29,8 +29,11 @@ fun MainScreenNavGraph(
     ) {
         composable(route = Screen.Main.Home.route) {
             HomeScreen(
-                onMakeAppointmentClick = {
+                navigateToAppointmentsBooking = {
                     navController.navigate(Screen.Main.AppointmentBooking.route)
+                },
+                navigateToAppointments = {
+                    navController.navigate(Screen.Main.Appointments.route)
                 }
             )
         }

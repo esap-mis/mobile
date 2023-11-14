@@ -63,7 +63,8 @@ import java.time.format.DateTimeFormatter
 fun HomeScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
-    onMakeAppointmentClick: () -> Unit
+    navigateToAppointmentsBooking: () -> Unit,
+    navigateToAppointments: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -121,7 +122,7 @@ fun HomeScreen(
                 CustomButton(
                     text = stringResource(R.string.make_appointment),
                     color = Green80,
-                    onClick = onMakeAppointmentClick
+                    onClick = navigateToAppointmentsBooking
                 )
 
             } else if (doctorResponse is ApiResponse.Success) {
@@ -138,7 +139,10 @@ fun HomeScreen(
                     .take(5)
 
                 Spacer(modifier = Modifier.height(16.dp))
-                DisplayNextAppointments(appointments = appointments)
+                DisplayNextAppointments(
+                    appointments = appointments,
+                    onAllNextAppointmentsClick = navigateToAppointments
+                )
             }
         }
     }
@@ -151,7 +155,10 @@ fun HomeScreen(
 }
 
 @Composable
-fun DisplayNextAppointments(appointments: List<AppointmentResponse>?) {
+fun DisplayNextAppointments(
+    appointments: List<AppointmentResponse>?,
+    onAllNextAppointmentsClick: () -> Unit
+) {
     if (!appointments.isNullOrEmpty()) {
         Column(
             modifier = Modifier
@@ -173,7 +180,7 @@ fun DisplayNextAppointments(appointments: List<AppointmentResponse>?) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .clickable {}
+                        .clickable { onAllNextAppointmentsClick() }
                         .padding(end = 8.dp)
                 ) {
                     Row(
