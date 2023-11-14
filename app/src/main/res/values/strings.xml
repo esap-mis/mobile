@@ -16,6 +16,8 @@
     <string name="smile">👋</string>
     <string name="medical_record">Медицинская карта</string>
     <string name="make_appointment">Записаться на прием</string>
+    <string name="next_aapointments">Ближайшие приемы</string>
+    <string name="all">Все</string>
     <string name="dont_have_next_appointments">Нет ближайших приемов</string>
     <string name="logout">Выйти</string>
 
