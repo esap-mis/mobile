@@ -54,7 +54,6 @@ fun Header(
                     color = Color.Black,
                     textAlign = TextAlign.Left
                 )
-                SearchIcon()
             } else {
                 Text(
                     text = "${user.firstName} ${user.lastName}",
@@ -64,6 +63,7 @@ fun Header(
                     textAlign = TextAlign.Left
                 )
             }
+            SearchIcon()
         }
         if (user is PatientResponse) {
             Spacer(modifier = Modifier.size(10.dp))
