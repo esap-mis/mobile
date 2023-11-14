@@ -137,17 +137,15 @@ fun AppointmentsScreen(
             )
 
             if (userAppointmentList is ApiResponse.Success) {
-                val appointments = (userAppointmentList as ApiResponse.Success).data
+                var appointments = (userAppointmentList as ApiResponse.Success).data
 
-                val filteredAppointments = if (isUpcoming) {
+                appointments = if (isUpcoming) {
                     appointments.filter { it.isUpcoming() }
                 } else {
                     appointments.filter { !it.isUpcoming() }
                 }
 
-                val sortedAppointments = filteredAppointments.sortedBy { it.getDateTime() }
-
-                DisplayAppointmentsList(sortedAppointments)
+                DisplayAppointments(appointments.sortedBy { it.getDateTime() })
             }
         }
     }
@@ -156,19 +154,6 @@ fun AppointmentsScreen(
         ResponseDialog(responseMessage) {
             showDialog = false
         }
-    }
-}
-
-@Composable
-fun DisplayAppointmentsList(appointments: List<AppointmentResponse>?) {
-    if (!appointments.isNullOrEmpty()) {
-        LazyColumn {
-            items(appointments) { appointment ->
-                AppointmentCard(appointment = appointment)
-            }
-        }
-    } else {
-        Text(stringResource(R.string.dont_have_appointments))
     }
 }
 
@@ -232,6 +217,19 @@ fun CustomToggleSwitch(
 }
 
 @Composable
+fun DisplayAppointments(appointments: List<AppointmentResponse>?) {
+    if (!appointments.isNullOrEmpty()) {
+        LazyColumn {
+            items(appointments) { appointment ->
+                AppointmentCard(appointment = appointment)
+            }
+        }
+    } else {
+        Text(stringResource(R.string.dont_have_appointments))
+    }
+}
+
+@Composable
 fun AppointmentCard(
     appointment: AppointmentResponse
 ) {
@@ -260,7 +258,7 @@ fun AppointmentCard(
                         color = Green80,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(horizontal = 22.dp)
+                        modifier = Modifier.padding(horizontal = 27.dp)
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
@@ -278,7 +276,7 @@ fun AppointmentCard(
                         color = Color.Gray,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(horizontal = 22.dp)
+                        modifier = Modifier.padding(horizontal = 27.dp)
                     )
                 }
             }

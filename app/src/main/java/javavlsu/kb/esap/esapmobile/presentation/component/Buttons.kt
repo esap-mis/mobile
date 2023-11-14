@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Button(
+fun CustomButton(
     text: String,
     color: Color = Color.Blue,
     onClick: () -> Unit

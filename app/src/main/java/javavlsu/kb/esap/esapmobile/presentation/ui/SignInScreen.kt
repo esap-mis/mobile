@@ -30,7 +30,7 @@ import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 
@@ -199,7 +199,7 @@ fun AuthForm(
 
         ForgotPasswordButton(onForgotPasswordButtonClick)
 
-        Button(
+        CustomButton(
             text = stringResource(R.string.signin),
             onClick = onSignInButtonClick
         )

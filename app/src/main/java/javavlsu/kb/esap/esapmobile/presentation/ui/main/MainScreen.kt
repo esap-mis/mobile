@@ -32,7 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
-import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.graph.MainScreenNavGraph
 import javavlsu.kb.esap.esapmobile.presentation.navigation.BottomNavigationBar
 import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
@@ -84,7 +84,7 @@ fun MainScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Button(
+                                    CustomButton(
                                         text = stringResource(R.string.logout),
                                         color = Color.Red,
                                         onClick = {

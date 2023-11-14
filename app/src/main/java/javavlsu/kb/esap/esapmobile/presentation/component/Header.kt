@@ -38,7 +38,7 @@ fun Header(
 ) {
     Column(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(8.dp)
             .fillMaxWidth(),
     ) {
         Spacer(modifier = Modifier.height(16.dp))

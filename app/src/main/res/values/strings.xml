@@ -16,6 +16,7 @@
     <string name="smile">👋</string>
     <string name="medical_record">Медицинская карта</string>
     <string name="make_appointment">Записаться на прием</string>
+    <string name="dont_have_next_appointments">Нет ближайших приемов</string>
     <string name="logout">Выйти</string>
 
     <!-- Appointment -->
@@ -28,6 +29,7 @@
     <string name="patient">Пациент</string>
     <string name="patient_phone">Телефон</string>
     <string name="confirm_appointment">Подтвердить запись</string>
+    <string name="success_making_appointment">Вы успешно записались на прием!</string>
 
     <!-- Appointments -->
     <string name="future_appointments">Предстоящие</string>

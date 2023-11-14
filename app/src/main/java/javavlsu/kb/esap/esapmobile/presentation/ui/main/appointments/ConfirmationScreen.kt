@@ -41,7 +41,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
-import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
@@ -112,7 +112,7 @@ fun ConfirmationScreen(
                 }
 
                 Spacer(modifier = Modifier.size(16.dp))
-                Button(
+                CustomButton(
                     text = stringResource(R.string.confirm_appointment),
                     color = Green80,
                     onClick = {
@@ -132,7 +132,7 @@ fun ConfirmationScreen(
         }
         if (showDialog && makeAppointmentResponse is ApiResponse.Success) {
             ResponseDialog(
-                responseMessage = "Вы успешно записались на прием!"
+                responseMessage = stringResource(R.string.success_making_appointment)
             ) {
                 showDialog = false
                 navigateBack()
