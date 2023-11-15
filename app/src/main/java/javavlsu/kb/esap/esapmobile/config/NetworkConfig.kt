@@ -13,6 +13,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.domain.util.AuthAuthenticator
 import javavlsu.kb.esap.esapmobile.domain.util.AuthInterceptor
+import javavlsu.kb.esap.esapmobile.domain.util.BaseUrlInterceptor
 import javavlsu.kb.esap.esapmobile.domain.util.TokenManager
 import javavlsu.kb.esap.esapmobile.domain.util.NetworkManager
 import javavlsu.kb.esap.esapmobile.domain.util.UserAgentInterceptor
@@ -43,6 +44,7 @@ class NetworkConfig {
     @Provides
     @Named("authOkHttpClient")
     fun provideAuthOkHttpClient(
+        baseUrlInterceptor: BaseUrlInterceptor,
         userAgentInterceptor: UserAgentInterceptor
     ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -51,6 +53,7 @@ class NetworkConfig {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(userAgentInterceptor)
+            .addInterceptor(baseUrlInterceptor)
             .build()
     }
 
@@ -60,13 +63,15 @@ class NetworkConfig {
     fun provideMainOkHttpClient(
         authInterceptor: AuthInterceptor,
         authAuthenticator: AuthAuthenticator,
-        userAgentInterceptor: UserAgentInterceptor
+        baseUrlInterceptor: BaseUrlInterceptor,
+        userAgentInterceptor: UserAgentInterceptor,
     ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
             .addInterceptor(userAgentInterceptor)
+            .addInterceptor(baseUrlInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
             .authenticator(authAuthenticator)
@@ -82,6 +87,11 @@ class NetworkConfig {
     @Provides
     fun provideUserAgentInterceptor(): UserAgentInterceptor =
         UserAgentInterceptor("mobile")
+
+    @Singleton
+    @Provides
+    fun provideBaseUrlInterceptor(networkManager: NetworkManager): BaseUrlInterceptor =
+        BaseUrlInterceptor(networkManager)
 
     @Singleton
     @Provides

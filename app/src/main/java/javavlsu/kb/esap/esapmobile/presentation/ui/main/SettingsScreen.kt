@@ -38,14 +38,18 @@ fun SettingsScreen(
     val currentBaseUrl by settingsViewModel.baseUrl.observeAsState()
     val serverStatusResponse by authViewModel.serverStatusResponse.observeAsState()
 
-    LaunchedEffect(true) {
-        if (serverStatusResponse is ApiResponse.Success) {
-            settingsViewModel.setBaseUrl(newBaseUrl)
-            responseMessage = "URL успешно изменен"
-            showDialog = true
-        } else if (serverStatusResponse is ApiResponse.Failure) {
-            responseMessage = "Ошибка при изменении URL: ${(serverStatusResponse as ApiResponse.Failure).errorMessage}"
-            showDialog = true
+    var applyButtonClicked by remember { mutableStateOf(false) }
+
+    LaunchedEffect(currentBaseUrl) {
+        if (currentBaseUrl != null && applyButtonClicked) {
+            authViewModel.checkServerStatus(
+                object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        responseMessage = message
+                        showDialog = true
+                    }
+                }
+            )
         }
     }
 
@@ -84,19 +88,26 @@ fun SettingsScreen(
 
             Button(
                 onClick = {
-                    authViewModel.checkServerStatus(
-                        object : CoroutinesErrorHandler {
-                            override fun onError(message: String) {
-                                responseMessage = message
-                                showDialog = true
-                            }
-                        }
-                    )
+                    settingsViewModel.setBaseUrl(newBaseUrl)
+                    applyButtonClicked = true
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Применить")
             }
+        }
+    }
+
+    LaunchedEffect(serverStatusResponse) {
+        if (applyButtonClicked) {
+            if (serverStatusResponse is ApiResponse.Success) {
+                settingsViewModel.setBaseUrl(newBaseUrl)
+                responseMessage = "URL успешно изменен"
+            } else if (serverStatusResponse is ApiResponse.Failure) {
+                responseMessage =
+                    "Ошибка при изменении URL: ${(serverStatusResponse as ApiResponse.Failure).errorMessage}"
+            }
+            showDialog = true
         }
     }
 

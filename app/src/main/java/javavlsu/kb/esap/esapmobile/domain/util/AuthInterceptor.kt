@@ -15,7 +15,6 @@ class AuthInterceptor @Inject constructor(
         }
         val request = chain.request().newBuilder()
             .header("Authorization", "Bearer $token")
-            .header("User-Agent", "mobile")
 
         return chain.proceed(request.build())
     }
