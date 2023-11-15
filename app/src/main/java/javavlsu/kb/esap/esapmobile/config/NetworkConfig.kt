@@ -15,6 +15,7 @@ import javavlsu.kb.esap.esapmobile.domain.util.AuthAuthenticator
 import javavlsu.kb.esap.esapmobile.domain.util.AuthInterceptor
 import javavlsu.kb.esap.esapmobile.domain.util.TokenManager
 import javavlsu.kb.esap.esapmobile.domain.util.NetworkManager
+import javavlsu.kb.esap.esapmobile.domain.util.UserAgentInterceptor
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -41,19 +42,15 @@ class NetworkConfig {
     @Singleton
     @Provides
     @Named("authOkHttpClient")
-    fun provideAuthOkHttpClient(): OkHttpClient {
+    fun provideAuthOkHttpClient(
+        userAgentInterceptor: UserAgentInterceptor
+    ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor { chain ->
-                val originalRequest = chain.request()
-                val requestWithUserAgent = originalRequest.newBuilder()
-                    .header("User-Agent", "mobile")
-                    .build()
-                chain.proceed(requestWithUserAgent)
-            }
+            .addInterceptor(userAgentInterceptor)
             .build()
     }
 
@@ -63,11 +60,13 @@ class NetworkConfig {
     fun provideMainOkHttpClient(
         authInterceptor: AuthInterceptor,
         authAuthenticator: AuthAuthenticator,
+        userAgentInterceptor: UserAgentInterceptor
     ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
+            .addInterceptor(userAgentInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
             .authenticator(authAuthenticator)
@@ -78,6 +77,11 @@ class NetworkConfig {
     @Provides
     fun provideAuthInterceptor(tokenManager: TokenManager): AuthInterceptor =
         AuthInterceptor(tokenManager)
+
+    @Singleton
+    @Provides
+    fun provideUserAgentInterceptor(): UserAgentInterceptor =
+        UserAgentInterceptor("mobile")
 
     @Singleton
     @Provides
