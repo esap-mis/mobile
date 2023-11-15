@@ -13,8 +13,10 @@ import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.domain.util.AuthAuthenticator
 import javavlsu.kb.esap.esapmobile.domain.util.AuthInterceptor
-import javavlsu.kb.esap.esapmobile.util.BASE_URL
 import javavlsu.kb.esap.esapmobile.domain.util.TokenManager
+import javavlsu.kb.esap.esapmobile.domain.util.NetworkManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -31,6 +33,10 @@ class NetworkConfig {
     @Singleton
     @Provides
     fun provideTokenManager(@ApplicationContext context: Context): TokenManager = TokenManager(context)
+
+    @Singleton
+    @Provides
+    fun provideNetworkManager(@ApplicationContext context: Context): NetworkManager = NetworkManager(context)
 
     @Singleton
     @Provides
@@ -75,15 +81,22 @@ class NetworkConfig {
 
     @Singleton
     @Provides
-    fun provideAuthAuthenticator(tokenManager: TokenManager): AuthAuthenticator =
-        AuthAuthenticator(tokenManager)
+    fun provideAuthAuthenticator(
+        tokenManager: TokenManager,
+        networkManager: NetworkManager
+    ): AuthAuthenticator =
+        AuthAuthenticator(tokenManager, networkManager)
 
     @Singleton
     @Provides
-    fun provideRetrofitBuilder(): Retrofit.Builder =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
+    fun provideRetrofitBuilder(networkManager: NetworkManager): Retrofit.Builder {
+        val baseUrl = runBlocking {
+            networkManager.getBaseUrl().first()
+        }
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
+    }
 
     @Singleton
     @Provides

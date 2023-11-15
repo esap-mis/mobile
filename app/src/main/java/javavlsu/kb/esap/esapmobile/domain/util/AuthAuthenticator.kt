@@ -2,7 +2,6 @@ package javavlsu.kb.esap.esapmobile.domain.util
 
 import javavlsu.kb.esap.esapmobile.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.domain.model.response.AuthResponse
-import javavlsu.kb.esap.esapmobile.util.BASE_URL
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
@@ -13,6 +12,7 @@ import javax.inject.Inject
 
 class AuthAuthenticator @Inject constructor(
     private val tokenManager: TokenManager,
+    private val networkManager: NetworkManager,
 ): Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -36,12 +36,15 @@ class AuthAuthenticator @Inject constructor(
     }
 
     private suspend fun getNewToken(refreshToken: String?): retrofit2.Response<AuthResponse> {
+        val baseUrl = runBlocking {
+            networkManager.getBaseUrl().first()
+        }
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

@@ -7,7 +7,9 @@ import javavlsu.kb.esap.esapmobile.config.dataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TokenManager(private val context: Context) {
+class TokenManager(
+    private val context: Context
+) {
     companion object {
         private val TOKEN_KEY = stringPreferencesKey("jwt_token")
         private val ROLES_KEY = stringPreferencesKey("roles")
