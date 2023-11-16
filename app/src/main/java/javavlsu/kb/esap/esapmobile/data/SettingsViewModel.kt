@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javavlsu.kb.esap.esapmobile.domain.util.BaseUrlInterceptor
 import javavlsu.kb.esap.esapmobile.domain.util.NetworkManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val networkManager: NetworkManager,
+    private val baseUrlInterceptor: BaseUrlInterceptor
 ): ViewModel() {
     val baseUrl = MutableLiveData<String>()
 
@@ -30,5 +32,9 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             networkManager.setBaseUrl(newBaseUrl)
         }
+    }
+
+    fun changeBaseUrl(newUrl: String) {
+        baseUrlInterceptor.setCustomBaseUrl(newUrl);
     }
 }

@@ -40,19 +40,6 @@ fun SettingsScreen(
 
     var applyButtonClicked by remember { mutableStateOf(false) }
 
-    LaunchedEffect(currentBaseUrl) {
-        if (currentBaseUrl != null && applyButtonClicked) {
-            authViewModel.checkServerStatus(
-                object : CoroutinesErrorHandler {
-                    override fun onError(message: String) {
-                        responseMessage = message
-                        showDialog = true
-                    }
-                }
-            )
-        }
-    }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -88,8 +75,18 @@ fun SettingsScreen(
 
             Button(
                 onClick = {
-                    settingsViewModel.setBaseUrl(newBaseUrl)
                     applyButtonClicked = true
+                    settingsViewModel.changeBaseUrl(newBaseUrl)
+                    if (currentBaseUrl != null && applyButtonClicked) {
+                        authViewModel.checkServerStatus(
+                            object : CoroutinesErrorHandler {
+                                override fun onError(message: String) {
+                                    responseMessage = message
+                                    showDialog = true
+                                }
+                            }
+                        )
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
