@@ -38,4 +38,11 @@
     <string name="past_appointments">Прошедшие</string>
     <string name="record">Запись</string>
     <string name="dont_have_appointments">Нет приемов</string>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="current_url">Текущий URL:</string>
+    <string name="new_url">Новый URL</string>
+    <string name="warning">Обязательно включите символ \"/\" в конце URL</string>
+    <string name="apply_button">Применить</string>
 </resources>

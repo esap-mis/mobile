@@ -17,10 +17,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.SettingsViewModel
@@ -52,14 +55,14 @@ fun SettingsScreen(
                 .align(Alignment.TopStart)
         ) {
             Text(
-                text = "Настройки",
+                text = stringResource(R.string.settings),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Text(
-                text = "Текущий URL: $currentBaseUrl",
+                text = stringResource(R.string.current_url) + currentBaseUrl,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -67,9 +70,16 @@ fun SettingsScreen(
             OutlinedTextField(
                 value = newBaseUrl,
                 onValueChange = { newBaseUrl = it },
-                label = { Text("Новый URL") },
+                label = { Text(stringResource(R.string.new_url)) },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+            )
+            Text(
+                text = stringResource(R.string.warning),
+                fontSize = 12.sp,
+                color = Color.Gray,
+                modifier = Modifier
                     .padding(bottom = 16.dp)
             )
 
@@ -90,7 +100,7 @@ fun SettingsScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Применить")
+                Text(text = stringResource(R.string.apply_button))
             }
         }
     }
