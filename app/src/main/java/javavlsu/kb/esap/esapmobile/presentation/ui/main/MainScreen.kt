@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
@@ -36,6 +37,7 @@ import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.graph.MainScreenNavGraph
 import javavlsu.kb.esap.esapmobile.presentation.navigation.BottomNavigationBar
 import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.theme.Blue100
 import kotlinx.coroutines.launch
 
 @Composable
@@ -76,6 +78,9 @@ fun MainScreen(
                                     modifier = Modifier
                                         .padding(12.dp),
                                     shape = MaterialTheme.shapes.medium,
+                                    colors = NavigationDrawerItemDefaults.colors(
+                                        selectedContainerColor = Blue100
+                                    )
                                 )
                             } else {
                                 Column(

@@ -258,7 +258,7 @@ fun AppointmentCard(
                         color = Green80,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(horizontal = 27.dp)
+                        modifier = Modifier.padding(horizontal = 20.dp)
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
@@ -276,7 +276,7 @@ fun AppointmentCard(
                         color = Color.Gray,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(horizontal = 27.dp)
+                        modifier = Modifier.padding(horizontal = 20.dp)
                     )
                 }
             }
@@ -305,23 +305,23 @@ fun AppointmentCard(
                         Text(
                             text = "${appointment.doctor.lastName} ${appointment.doctor.firstName} ${appointment.doctor.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 20.sp
+                            fontSize = 18.sp
                         )
                         Text(
                             text = appointment.doctor.specialization,
                             color = Color.Gray,
-                            fontSize = 16.sp
+                            fontSize = 14.sp
                         )
                     } else if (appointment.patient != null) {
                         Text(
                             text = "${appointment.patient.lastName} ${appointment.patient.firstName} ${appointment.patient.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 20.sp
+                            fontSize = 18.sp
                         )
                         Text(
                             text = appointment.patient.birthDate,
                             color = Color.Gray,
-                            fontSize = 16.sp
+                            fontSize = 14.sp
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -337,13 +337,13 @@ fun AppointmentCard(
                             Text(
                                 text = appointment.doctor.clinic.address,
                                 color = Color.Gray,
-                                fontSize = 16.sp
+                                fontSize = 14.sp
                             )
                         } else if (appointment.patient != null) {
                             Text(
                                 text = appointment.patient.clinic.address,
                                 color = Color.Gray,
-                                fontSize = 16.sp
+                                fontSize = 14.sp
                             )
                         }
                     }

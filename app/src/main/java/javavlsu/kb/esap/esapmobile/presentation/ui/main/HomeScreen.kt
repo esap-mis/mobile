@@ -48,6 +48,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.AnalysisResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.AppointmentResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
@@ -72,6 +73,7 @@ fun HomeScreen(
     val doctorResponse by mainViewModel.doctorResponse.observeAsState()
     val patientResponse by mainViewModel.patientResponse.observeAsState()
     val userAppointmentList by mainViewModel.userAppointmentList.observeAsState()
+    val medicalCardResponse by mainViewModel.medicalCardResponse.observeAsState()
 
     LaunchedEffect(roles) {
         if (roles?.contains("ROLE_DOCTOR") == true || roles?.contains("ROLE_CHIEF_DOCTOR") == true) {
@@ -125,6 +127,27 @@ fun HomeScreen(
                     onClick = navigateToAppointmentsBooking
                 )
 
+                LaunchedEffect(patientResponse) {
+                    mainViewModel.getPatientMedicalCard(user.id,
+                        object : CoroutinesErrorHandler {
+                            override fun onError(message: String) {
+                                responseMessage = message
+                                showDialog = true
+                            }
+                        }
+                    )
+                }
+
+                if (medicalCardResponse is ApiResponse.Success) {
+                    val medicalCard = (medicalCardResponse as ApiResponse.Success).data
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    DisplayAnalysis(
+                        analysis = medicalCard.medicalRecord[5].analyzes, //TODO: костыль
+                        onAllClick = { }
+                    )
+                }
+
             } else if (doctorResponse is ApiResponse.Success) {
                 val user = (doctorResponse as ApiResponse.Success).data
                 Header(user = user)
@@ -141,7 +164,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 DisplayNextAppointments(
                     appointments = appointments,
-                    onAllNextAppointmentsClick = navigateToAppointments
+                    onAllClick = navigateToAppointments
                 )
             }
         }
@@ -157,7 +180,7 @@ fun HomeScreen(
 @Composable
 fun DisplayNextAppointments(
     appointments: List<AppointmentResponse>?,
-    onAllNextAppointmentsClick: () -> Unit
+    onAllClick: () -> Unit
 ) {
     if (!appointments.isNullOrEmpty()) {
         Column(
@@ -180,7 +203,7 @@ fun DisplayNextAppointments(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .clickable { onAllNextAppointmentsClick() }
+                        .clickable { onAllClick() }
                         .padding(end = 8.dp)
                 ) {
                     Row(
@@ -205,7 +228,10 @@ fun DisplayNextAppointments(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            LazyRow {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 items(appointments) { appointment ->
                     NextAppointmentCard(appointment = appointment)
                 }
@@ -255,7 +281,7 @@ fun NextAppointmentCard(
                         Text(
                             text = "${appointment.doctor.lastName} ${appointment.doctor.firstName} ${appointment.doctor.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 20.sp
+                            fontSize = 18.sp
                         )
                         Text(
                             text = appointment.doctor.specialization,
@@ -266,12 +292,12 @@ fun NextAppointmentCard(
                         Text(
                             text = "${appointment.patient.lastName} ${appointment.patient.firstName} ${appointment.patient.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 20.sp
+                            fontSize = 18.sp
                         )
                         Text(
                             text = appointment.patient.birthDate,
                             color = Color.Gray,
-                            fontSize = 16.sp
+                            fontSize = 16.sp,
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -315,6 +341,104 @@ fun NextAppointmentCard(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DisplayAnalysis(
+    analysis: List<AnalysisResponse>?,
+    onAllClick: () -> Unit
+) {
+    if (!analysis.isNullOrEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = "Результаты",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black,
+                    textAlign = TextAlign.Left
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .clickable { onAllClick() }
+                        .padding(end = 8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.all),
+                            textAlign = TextAlign.Right,
+                            fontSize = 18.sp,
+                            color = Color.Gray,
+                            modifier = Modifier
+                                .padding(5.dp)
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowForwardIos,
+                            tint = Color.Gray,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(15.dp)
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(analysis) { analysis ->
+                    AnalysisCard(analysis = analysis)
+                }
+            }
+        }
+    } else {
+        Text("Нет результатов")
+    }
+}
+
+@Composable
+fun AnalysisCard(analysis: AnalysisResponse) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = analysis.date,
+                color = Color.Gray,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+            Text(
+                text = analysis.name,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W500
+            )
+            Text(
+                text = analysis.result,
+                color = Color.Gray,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
     }
 }

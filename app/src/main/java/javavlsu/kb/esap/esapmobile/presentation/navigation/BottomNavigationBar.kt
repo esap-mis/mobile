@@ -1,6 +1,5 @@
 package javavlsu.kb.esap.esapmobile.presentation.navigation
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -66,7 +65,6 @@ fun BottomNavigationBar(
             val color = if (isSelected) Blue else Color.Gray
 
             NavigationBarItem(
-                modifier = Modifier.clickable { },
                 icon = {
                     Icon(
                         painter = painterResource(id = screen.icon!!),
@@ -79,7 +77,7 @@ fun BottomNavigationBar(
                 label = {
                     Text(
                         text = screen.title,
-                        fontSize = 11.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.W600,
                         color = color,
                     )

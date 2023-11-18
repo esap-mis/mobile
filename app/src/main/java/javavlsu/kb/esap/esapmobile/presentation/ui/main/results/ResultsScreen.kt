@@ -44,6 +44,7 @@ import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.UserResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
@@ -57,6 +58,7 @@ fun ResultsScreen(
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val patientResponse by mainViewModel.patientResponse.observeAsState()
+    val medicalCardResponse by mainViewModel.medicalCardResponse.observeAsState()
 
     LaunchedEffect(Unit) {
         mainViewModel.getPatient(
@@ -84,10 +86,26 @@ fun ResultsScreen(
                     user = user,
                     isHome = false
                 )
-                MedicalCardRecords(
-                    user = user,
-                    navController = navController
-                )
+
+                LaunchedEffect(patientResponse) {
+                    mainViewModel.getPatientMedicalCard(user.id,
+                        object : CoroutinesErrorHandler {
+                            override fun onError(message: String) {
+                                responseMessage = message
+                                showDialog = true
+                            }
+                        }
+                    )
+                }
+
+                if (medicalCardResponse is ApiResponse.Success) {
+                    val medicalCard = (medicalCardResponse as ApiResponse.Success).data
+                    MedicalCardRecords(
+                        user = user,
+                        medicalCard = medicalCard,
+                        navController = navController
+                    )
+                }
             }
         }
     }
@@ -102,6 +120,7 @@ fun ResultsScreen(
 @Composable
 fun MedicalCardRecords(
     user: UserResponse,
+    medicalCard: MedicalCardResponse,
     navController: NavController
 ) {
     LazyColumn(
@@ -109,9 +128,13 @@ fun MedicalCardRecords(
             .fillMaxSize()
     ) {
         item {
+            val analysisCount = medicalCard.medicalRecord
+                .flatMap { it.analyzes }
+                .count()
+
             ResultCard(
                 title = "Анализы",
-                content = "Анализы: 15",
+                content = "Анализы: $analysisCount",
                 icon = R.drawable.analyses,
                 navigateToScreen = {
                     navController.navigate("results/analysis/${user.id}")
@@ -122,7 +145,7 @@ fun MedicalCardRecords(
         item {
             ResultCard(
                 title = "Заключения врачей",
-                content = "Заключений: 3",
+                content = "Заключений: ${medicalCard.medicalRecord.size}",
                 icon = R.drawable.medical_reports,
                 navigateToScreen = {
                     navController.navigate("results/report/${user.id}")
@@ -156,7 +179,7 @@ fun ResultCard(
             Row(Modifier.padding(8.dp)) {
                 Box(
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(50.dp)
                         .clip(RoundedCornerShape(40.dp))
                         .background(Gray40)
                 ) {
@@ -178,7 +201,7 @@ fun ResultCard(
                 Text(
                     text = title,
                     fontWeight = FontWeight.W500,
-                    fontSize = 20.sp
+                    fontSize = 18.sp
                 )
                 Text(
                     text = content,
@@ -199,7 +222,7 @@ fun ResultCard(
                     tint = Color.Gray,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(15.dp)
                 )
             }
         }

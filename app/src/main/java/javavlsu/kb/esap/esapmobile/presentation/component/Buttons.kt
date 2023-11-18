@@ -25,7 +25,9 @@ fun CustomButton(
             containerColor = color
         ),
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = text,

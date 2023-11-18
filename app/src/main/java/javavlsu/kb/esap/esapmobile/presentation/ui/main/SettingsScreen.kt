@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +27,7 @@ import javavlsu.kb.esap.esapmobile.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.SettingsViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 
 @Composable
@@ -46,12 +46,13 @@ fun SettingsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(10.dp),
         contentAlignment = Alignment.TopStart
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(8.dp)
                 .align(Alignment.TopStart)
         ) {
             Text(
@@ -83,7 +84,8 @@ fun SettingsScreen(
                     .padding(bottom = 16.dp)
             )
 
-            Button(
+            CustomButton(
+                text = stringResource(R.string.apply_button),
                 onClick = {
                     applyButtonClicked = true
                     settingsViewModel.changeBaseUrl(newBaseUrl)
@@ -97,11 +99,8 @@ fun SettingsScreen(
                             }
                         )
                     }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = stringResource(R.string.apply_button))
-            }
+                }
+            )
         }
     }
 
