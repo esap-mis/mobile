@@ -14,8 +14,10 @@ import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.Appointment
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.ConfirmationScreen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.ResultsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ResultsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.AnalysisScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ReportsScreen
 
 @Composable
 fun MainScreenNavGraph(
@@ -40,7 +42,6 @@ fun MainScreenNavGraph(
         composable(route = Screen.Main.AppointmentBooking.route) {
             AppointmentBookingScreen(navController)
         }
-
         composable(
             route = Screen.Main.AppointmentBooking.Confirmation.route,
             arguments = listOf(
@@ -60,12 +61,33 @@ fun MainScreenNavGraph(
                 }
             )
         }
-        
         composable(route = Screen.Main.Appointments.route) {
             AppointmentsScreen()
         }
+
         composable(route = Screen.Main.Results.route) {
-            ResultsScreen()
+            ResultsScreen(navController)
+        }
+        composable(
+            route = Screen.Main.Results.Analysis.route,
+            arguments = listOf(
+                navArgument("patientId") { type = NavType.LongType },
+            )
+        ) { backStackEntry ->
+            val patientId = backStackEntry.arguments?.getString("patientId")
+            AnalysisScreen(
+                patientId = backStackEntry.arguments?.getLong("patientId")!!,
+            )
+        }
+        composable(
+            route = Screen.Main.Results.Reports.route,
+            arguments = listOf(
+                navArgument("patientId") { type = NavType.LongType },
+            )
+        ) { backStackEntry ->
+            ReportsScreen(
+                patientId = backStackEntry.arguments?.getLong("patientId")!!,
+            )
         }
         composable(route = Screen.Main.More.Settings.route) {
             SettingsScreen()

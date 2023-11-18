@@ -3,6 +3,7 @@ package javavlsu.kb.esap.esapmobile.domain.api
 import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
 import javavlsu.kb.esap.esapmobile.domain.model.response.AppointmentResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -33,4 +34,7 @@ interface MainApiService {
 
     @GET("/api/schedule/appointments")
     suspend fun getUserAppointments(): Response<List<AppointmentResponse>>
+
+    @GET("/api/medicalCard/patient/{patientId}")
+    suspend fun getMedicalCard(@Path("patientId") patientId: Long): Response<MedicalCardResponse>
 }

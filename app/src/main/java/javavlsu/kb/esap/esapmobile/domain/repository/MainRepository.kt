@@ -32,4 +32,8 @@ class MainRepository @Inject constructor(
     fun getUserAppointments() = apiRequestFlow {
         mainApiService.getUserAppointments()
     }
+
+    fun getMedicalCard(patientId: Long) = apiRequestFlow {
+        mainApiService.getMedicalCard(patientId)
+    }
 }

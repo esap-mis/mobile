@@ -6,6 +6,7 @@ import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
 import javavlsu.kb.esap.esapmobile.domain.model.response.AppointmentResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
 import java.time.LocalDate
@@ -33,6 +34,9 @@ class MainViewModel @Inject constructor(
 
     private val _userAppointmentList = MutableLiveData<ApiResponse<List<AppointmentResponse>>>()
     val userAppointmentList = _userAppointmentList
+
+    private val _medicalCardResponse = MutableLiveData<ApiResponse<MedicalCardResponse>>()
+    val medicalCardResponse = _medicalCardResponse
 
     fun getDoctor(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
         _doctorResponse,
@@ -77,5 +81,12 @@ class MainViewModel @Inject constructor(
         coroutinesErrorHandler
     ) {
         mainRepository.getUserAppointments()
+    }
+
+    fun getPatientMedicalCard(patientId: Long, coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+        _medicalCardResponse,
+        coroutinesErrorHandler
+    ) {
+        mainRepository.getMedicalCard(patientId)
     }
 }

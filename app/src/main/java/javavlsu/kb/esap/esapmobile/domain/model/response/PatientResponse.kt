@@ -7,6 +7,7 @@ data class PatientResponse(
     val address: String,
     val phoneNumber: String,
     val email: String,
+    override val id: Long,
     override val firstName: String,
     override val patronymic: String,
     override val lastName: String,

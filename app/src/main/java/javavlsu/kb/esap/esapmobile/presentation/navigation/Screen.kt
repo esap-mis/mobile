@@ -21,7 +21,12 @@ sealed class Screen(
 
         object Appointments: Screen(title = "Приемы", route = "appointments", icon = R.drawable.appointments)
 
-        object Results: Screen(title = "Результат", route = "results", icon = R.drawable.results)
+        object Results: Screen(title = "Результаты", route = "results", icon = R.drawable.results) {
+
+            object Analysis: Screen(title = "Анализы", route = "results/analysis/{patientId}")
+
+            object Reports: Screen(title = "Заключения врачей", route = "results/report/{patientId}")
+        }
 
         object More: Screen(title = "Еще", route = "more", icon = R.drawable.drawer_menu) {
 
