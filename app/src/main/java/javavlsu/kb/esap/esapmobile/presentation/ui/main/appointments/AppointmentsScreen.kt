@@ -301,16 +301,29 @@ fun AppointmentCard(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
-                    Text(
-                        text = "${appointment.doctor.lastName} ${appointment.doctor.firstName} ${appointment.doctor.patronymic}",
-                        fontWeight = FontWeight.W500,
-                        fontSize = 20.sp
-                    )
-                    Text(
-                        text = appointment.doctor.specialization,
-                        color = Color.Gray,
-                        fontSize = 16.sp
-                    )
+                    if (appointment.doctor != null) {
+                        Text(
+                            text = "${appointment.doctor.lastName} ${appointment.doctor.firstName} ${appointment.doctor.patronymic}",
+                            fontWeight = FontWeight.W500,
+                            fontSize = 20.sp
+                        )
+                        Text(
+                            text = appointment.doctor.specialization,
+                            color = Color.Gray,
+                            fontSize = 16.sp
+                        )
+                    } else if (appointment.patient != null) {
+                        Text(
+                            text = "${appointment.patient.lastName} ${appointment.patient.firstName} ${appointment.patient.patronymic}",
+                            fontWeight = FontWeight.W500,
+                            fontSize = 20.sp
+                        )
+                        Text(
+                            text = appointment.patient.birthDate,
+                            color = Color.Gray,
+                            fontSize = 16.sp
+                        )
+                    }
                     Spacer(modifier = Modifier.height(10.dp))
                     Divider()
                     Spacer(modifier = Modifier.height(10.dp))
@@ -320,11 +333,19 @@ fun AppointmentCard(
                             tint = Color.Gray,
                             contentDescription = null,
                         )
-                        Text(
-                            text = appointment.doctor.clinic.address,
-                            color = Color.Gray,
-                            fontSize = 16.sp
-                        )
+                        if (appointment.doctor != null) {
+                            Text(
+                                text = appointment.doctor.clinic.address,
+                                color = Color.Gray,
+                                fontSize = 16.sp
+                            )
+                        } else if (appointment.patient != null) {
+                            Text(
+                                text = appointment.patient.clinic.address,
+                                color = Color.Gray,
+                                fontSize = 16.sp
+                            )
+                        }
                     }
                 }
             }
