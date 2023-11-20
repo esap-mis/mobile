@@ -17,6 +17,8 @@
     <string name="medical_record">Медицинская карта</string>
     <string name="make_appointment">Записаться на прием</string>
     <string name="next_aapointments">Ближайшие приемы</string>
+    <string name="analysis_results">Результаты</string>
+    <string name="no_results">Нет результатов</string>
     <string name="all">Все</string>
     <string name="dont_have_next_appointments">Нет ближайших приемов</string>
     <string name="logout">Выйти</string>
@@ -38,6 +40,13 @@
     <string name="past_appointments">Прошедшие</string>
     <string name="record">Запись</string>
     <string name="dont_have_appointments">Нет приемов</string>
+
+    <!-- Results -->
+    <string name="analysis">Анализы</string>
+    <string name="no_analysis">Нет анализов</string>
+    <string name="records">Заключения врачей</string>
+    <string name="records_count">Заключений</string>
+    <string name="no_records">Нет заключений</string>
 
     <!-- Settings -->
     <string name="settings">Настройки</string>

@@ -65,7 +65,8 @@ fun HomeScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
     navigateToAppointmentsBooking: () -> Unit,
-    navigateToAppointments: () -> Unit
+    navigateToAppointments: () -> Unit,
+    navigateToAnalisis: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -144,7 +145,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     DisplayAnalysis(
                         analysis = medicalCard.medicalRecord[5].analyzes, //TODO: костыль
-                        onAllClick = { }
+                        onAllClick = { navigateToAnalisis() }
                     )
                 }
 
@@ -362,7 +363,7 @@ fun DisplayAnalysis(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = "Результаты",
+                    text = stringResource(R.string.analysis_results),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
                     color = Color.Black,
@@ -406,7 +407,7 @@ fun DisplayAnalysis(
             }
         }
     } else {
-        Text("Нет результатов")
+        Text(text = stringResource(R.string.no_results))
     }
 }
 

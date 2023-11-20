@@ -36,6 +36,9 @@ fun MainScreenNavGraph(
                 },
                 navigateToAppointments = {
                     navController.navigate(Screen.Main.Appointments.route)
+                },
+                navigateToAnalisis = {
+                    navController.navigate(Screen.Main.Results.route)
                 }
             )
         }
@@ -74,7 +77,6 @@ fun MainScreenNavGraph(
                 navArgument("patientId") { type = NavType.LongType },
             )
         ) { backStackEntry ->
-            val patientId = backStackEntry.arguments?.getString("patientId")
             AnalysisScreen(
                 patientId = backStackEntry.arguments?.getLong("patientId")!!,
             )
