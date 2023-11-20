@@ -138,7 +138,9 @@ fun MedicalCardRecords(
                 content = "${stringResource(R.string.analysis)} : $analysisCount",
                 icon = R.drawable.analyses,
                 navigateToScreen = {
-                    navController.navigate("results/analysis/${user.id}")
+                    if (analysisCount > 0) {
+                        navController.navigate("results/analysis/${user.id}")
+                    }
                 }
             )
         }
@@ -149,7 +151,9 @@ fun MedicalCardRecords(
                 content = "${stringResource(R.string.records_count)} ${medicalCard.medicalRecord.size}",
                 icon = R.drawable.medical_reports,
                 navigateToScreen = {
-                    navController.navigate("results/report/${user.id}")
+                    if (medicalCard.medicalRecord.isNotEmpty()) {
+                        navController.navigate("results/report/${user.id}")
+                    }
                 }
             )
         }
