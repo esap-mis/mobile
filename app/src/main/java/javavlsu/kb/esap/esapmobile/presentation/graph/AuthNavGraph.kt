@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.ui.ForgotPasswordScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.SignInScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.SignUpScreen
 
@@ -19,7 +20,8 @@ fun NavGraphBuilder.authNavGraph(
             SignInScreen(
                 navigateToSignUp = { navController.navigate(Screen.SignUp.route) },
                 navigateToMain = { navController.navigate(Graph.Main.root) },
-                navigateBack = { navController.navigate(Screen.SignIn.route) }
+                navigateBack = { navController.navigate(Screen.SignIn.route) },
+                navigateToForgotPassword = { navController.navigate(Screen.ForgotPassword.route) }
             )
         }
         composable(route = Screen.SignUp.route) {
@@ -28,6 +30,11 @@ fun NavGraphBuilder.authNavGraph(
                     navController.popBackStack()
                     navController.navigate(Screen.SignIn.route)
                 }
+            )
+        }
+        composable(route = Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(
+                navigateToSignIn = { navController.navigate(Screen.SignIn.route) }
             )
         }
     }

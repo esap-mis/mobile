@@ -50,4 +50,15 @@ class AuthViewModel @Inject constructor(
         val request = AuthRequest(_login.value, _password.value)
         authRepository.login(request)
     }
+
+    private val _passwordResetResponse = MutableLiveData<ApiResponse<String>>()
+    val passwordResetResponse = _passwordResetResponse
+
+    fun resetPassword(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
+        _passwordResetResponse,
+        coroutinesErrorHandler
+    ) {
+        val request = AuthRequest(_login.value, _password.value)
+        authRepository.resetPassword(request)
+    }
 }

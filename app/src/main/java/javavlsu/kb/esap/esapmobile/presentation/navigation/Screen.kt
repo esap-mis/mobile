@@ -11,6 +11,8 @@ sealed class Screen(
 
     object SignUp: Screen(title = "Регистрация", route = "signup")
 
+    object ForgotPassword: Screen(title = "Забыли пароль", route = "forgot_password")
+
     object Main {
         object Home: Screen(title = "Главная", route = "home", icon = R.drawable.hospital)
 

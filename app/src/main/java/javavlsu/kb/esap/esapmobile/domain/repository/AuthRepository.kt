@@ -15,4 +15,8 @@ class AuthRepository @Inject constructor(
     fun login(request: AuthRequest) = apiRequestFlow {
         authApiService.login(request)
     }
+
+    fun resetPassword(request: AuthRequest) = apiRequestFlow {
+        authApiService.resetPassword(request)
+    }
 }

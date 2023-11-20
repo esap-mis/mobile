@@ -40,7 +40,8 @@ fun SignInScreen(
     tokenViewModel: TokenViewModel = hiltViewModel(),
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToForgotPassword: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -63,17 +64,13 @@ fun SignInScreen(
         if (token != null) {
             navigateToMain()
         } else {
-            when (authResponse) {
-                is ApiResponse.Failure -> {
-                    responseMessage = (authResponse as ApiResponse.Failure).errorMessage
-                    showDialog = true
-                }
-                is ApiResponse.Success -> {
-                    val response = (authResponse as ApiResponse.Success).data
-                    tokenViewModel.saveToken(response.jwt)
-                    tokenViewModel.saveRoles(response.roles)
-                }
-                else -> {}
+            if (authResponse is ApiResponse.Success) {
+                val response = (authResponse as ApiResponse.Success).data
+                tokenViewModel.saveToken(response.jwt)
+                tokenViewModel.saveRoles(response.roles)
+            } else if (authResponse is ApiResponse.Failure) {
+                responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                showDialog = true
             }
         }
     }
@@ -108,7 +105,7 @@ fun SignInScreen(
                     onLoginChange = { authViewModel.setLogin(it) },
                     onPasswordChange = { authViewModel.setPassword(it) },
                     onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                    onForgotPasswordButtonClick = { navigateToSignUp() },
+                    onForgotPasswordButtonClick = { navigateToForgotPassword() },
                     onSignInButtonClick = {
                         authViewModel.login(
                             object : CoroutinesErrorHandler {

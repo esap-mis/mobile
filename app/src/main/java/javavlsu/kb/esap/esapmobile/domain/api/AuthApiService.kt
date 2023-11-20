@@ -15,6 +15,9 @@ interface AuthApiService {
     @POST("api/auth/login")
     suspend fun login(@Body request: AuthRequest): Response<AuthResponse>
 
+    @POST("api/auth/password/reset")
+    suspend fun resetPassword(@Body request: AuthRequest): Response<String>
+
     @POST("api/auth/refresh")
     suspend fun refreshToken(@Body token: String): Response<AuthResponse>
 }
