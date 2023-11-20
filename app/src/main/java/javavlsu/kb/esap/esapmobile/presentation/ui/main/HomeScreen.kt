@@ -142,9 +142,14 @@ fun HomeScreen(
                 if (medicalCardResponse is ApiResponse.Success) {
                     val medicalCard = (medicalCardResponse as ApiResponse.Success).data
 
+                    val analysis = medicalCard.medicalRecord
+                        .flatMap { record -> record.analyzes }
+                        .sortedBy { it.date }
+                        .take(5)
+
                     Spacer(modifier = Modifier.height(16.dp))
                     DisplayAnalysis(
-                        analysis = medicalCard.medicalRecord[5].analyzes, //TODO: костыль
+                        analysis = analysis,
                         onAllClick = { navigateToAnalisis() }
                     )
                 }
