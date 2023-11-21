@@ -17,10 +17,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -176,29 +179,68 @@ fun DoctorCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (doctor.schedules.isNotEmpty()) {
-                Text(
-                    text = stringResource(R.string.available_appointment_times),
-                    fontWeight = FontWeight.W500,
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+            var isExpanded by remember { mutableStateOf(false) }
+            val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules, doctor.schedules[0].appointments)
 
-                val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules, doctor.schedules[0].appointments)
-                VerticalGrid(
-                    columns = 4,
-                    content = {
-                        availableTimeSlots.forEach { timeSlot ->
-                            TimeSlotCard(
-                                timeSlot = timeSlot,
-                                onClick = { navController.navigate("appointment/${date}/${doctor.schedules[0].id}/${timeSlot.startTime}/${doctor.id}") }
-                            )
-                        }
-                    }
+            if (doctor.schedules.isNotEmpty()) {
+                ExpandableTimeSlotsList(
+                    isExpanded = isExpanded,
+                    onExpandToggle = { isExpanded = !isExpanded },
+                    availableTimeSlots = availableTimeSlots,
+                    date = date,
+                    scheduleId = doctor.schedules[0].id,
+                    doctorId = doctor.id,
+                    navController = navController
                 )
             }
         }
     }
+}
+
+@Composable
+fun ExpandableTimeSlotsList(
+    isExpanded: Boolean,
+    onExpandToggle: () -> Unit,
+    availableTimeSlots: List<TimeSlot>,
+    date: LocalDate,
+    scheduleId: Long,
+    doctorId: Long,
+    navController: NavController
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.available_appointment_times),
+            fontWeight = FontWeight.W500,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        if (availableTimeSlots.size > 8) {
+            IconButton(
+                onClick = onExpandToggle,
+            ) {
+                Icon(
+                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    VerticalGrid(
+        columns = 4,
+        content = {
+            val displayedTimeSlots = if (isExpanded) availableTimeSlots else availableTimeSlots.take(8)
+            displayedTimeSlots.forEach { timeSlot ->
+                TimeSlotCard(
+                    timeSlot = timeSlot,
+                    onClick = { navController.navigate("appointment/${date}/${scheduleId}/${timeSlot.startTime}/${doctorId}") }
+                )
+            }
+        }
+    )
 }
 
 @Composable

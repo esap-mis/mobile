@@ -9,7 +9,7 @@ import java.util.stream.Stream
 
 class CalendarDataSource {
 
-    val today: LocalDate
+    private val today: LocalDate
         get() {
             return LocalDate.now()
         }
@@ -24,7 +24,7 @@ class CalendarDataSource {
     private fun getDatesBetween(startDate: LocalDate, endDate: LocalDate): List<LocalDate> {
         val numOfDays = ChronoUnit.DAYS.between(startDate, endDate)
         return Stream.iterate(startDate) { date ->
-            date.plusDays(/* daysToAdd = */ 1)
+            date.plusDays(1)
         }
             .limit(numOfDays)
             .collect(Collectors.toList())
