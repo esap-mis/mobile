@@ -57,6 +57,7 @@ import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -66,7 +67,7 @@ fun HomeScreen(
     tokenViewModel: TokenViewModel = hiltViewModel(),
     navigateToAppointmentsBooking: () -> Unit,
     navigateToAppointments: () -> Unit,
-    navigateToAnalisis: () -> Unit
+    navigateToMedicalCard: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -120,7 +121,10 @@ fun HomeScreen(
         ) {
             if (patientResponse is ApiResponse.Success) {
                 val user = (patientResponse as ApiResponse.Success).data
-                Header(user = user)
+                Header(
+                    user = user,
+                    onMedicalCardClick = { navigateToMedicalCard() }
+                )
                 Spacer(modifier = Modifier.size(16.dp))
                 CustomButton(
                     text = stringResource(R.string.make_appointment),
@@ -150,13 +154,16 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     DisplayAnalysis(
                         analysis = analysis,
-                        onAllClick = { navigateToAnalisis() }
+                        onAllClick = { navigateToMedicalCard() }
                     )
                 }
 
             } else if (doctorResponse is ApiResponse.Success) {
                 val user = (doctorResponse as ApiResponse.Success).data
-                Header(user = user)
+                Header(
+                    user = user,
+                    onMedicalCardClick = { navigateToMedicalCard() }
+                )
             }
 
             if (userAppointmentList is ApiResponse.Success) {
@@ -417,7 +424,9 @@ fun DisplayAnalysis(
 }
 
 @Composable
-fun AnalysisCard(analysis: AnalysisResponse) {
+fun AnalysisCard(
+    analysis: AnalysisResponse
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -428,8 +437,10 @@ fun AnalysisCard(analysis: AnalysisResponse) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
+            val parsedDate = LocalDateTime.parse(analysis.date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
             Text(
-                text = analysis.date,
+                text = "${parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${parsedDate.format(
+                    DateTimeFormatter.ofPattern("HH:mm"))}",
                 color = Color.Gray,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 4.dp)

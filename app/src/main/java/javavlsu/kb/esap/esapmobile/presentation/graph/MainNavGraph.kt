@@ -31,15 +31,9 @@ fun MainScreenNavGraph(
     ) {
         composable(route = Screen.Main.Home.route) {
             HomeScreen(
-                navigateToAppointmentsBooking = {
-                    navController.navigate(Screen.Main.AppointmentBooking.route)
-                },
-                navigateToAppointments = {
-                    navController.navigate(Screen.Main.Appointments.route)
-                },
-                navigateToAnalisis = {
-                    navController.navigate(Screen.Main.Results.route)
-                }
+                navigateToAppointmentsBooking = { navController.navigate(Screen.Main.AppointmentBooking.route) },
+                navigateToAppointments = { navController.navigate(Screen.Main.Appointments.route) },
+                navigateToMedicalCard = { navController.navigate(Screen.Main.Results.route) }
             )
         }
         composable(route = Screen.Main.AppointmentBooking.route) {
@@ -65,11 +59,15 @@ fun MainScreenNavGraph(
             )
         }
         composable(route = Screen.Main.Appointments.route) {
-            AppointmentsScreen()
+            AppointmentsScreen(
+                navigateToMedicalCard = { navController.navigate(Screen.Main.Results.route) }
+            )
         }
 
         composable(route = Screen.Main.Results.route) {
-            ResultsScreen(navController)
+            ResultsScreen(
+                navController = navController
+            )
         }
         composable(
             route = Screen.Main.Results.Analysis.route,

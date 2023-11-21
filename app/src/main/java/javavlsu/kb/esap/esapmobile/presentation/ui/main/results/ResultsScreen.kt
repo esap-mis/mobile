@@ -49,6 +49,7 @@ import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
+import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 
 @Composable
@@ -85,7 +86,8 @@ fun ResultsScreen(
                 val user = (patientResponse as ApiResponse.Success).data
                 Header(
                     user = user,
-                    isHome = false
+                    isHome = false,
+                    onMedicalCardClick = { navController.navigate(Screen.Main.Results.route) }
                 )
 
                 LaunchedEffect(patientResponse) {

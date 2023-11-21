@@ -60,6 +60,7 @@ import java.time.format.DateTimeFormatter
 fun AppointmentsScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
+    navigateToMedicalCard: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -115,13 +116,15 @@ fun AppointmentsScreen(
                 val user = (patientResponse as ApiResponse.Success).data
                 Header(
                     user = user,
-                    isHome = false
+                    isHome = false,
+                    onMedicalCardClick = { navigateToMedicalCard() }
                 )
             } else if (doctorResponse is ApiResponse.Success) {
                 val user = (doctorResponse as ApiResponse.Success).data
                 Header(
                     user = user,
-                    isHome = false
+                    isHome = false,
+                    onMedicalCardClick = { navigateToMedicalCard() }
                 )
             }
 
