@@ -1,13 +1,22 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main.results
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,10 +37,12 @@ import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalRecordResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
-import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReportsScreen(
@@ -64,15 +75,21 @@ fun ReportsScreen(
         ) {
             if (medicalCardResponse is ApiResponse.Success) {
                 val medicalCard = (medicalCardResponse as ApiResponse.Success).data
-                if (medicalCard.medicalRecord.isNotEmpty()) {
-                    LazyColumn {
-                        items(medicalCard.medicalRecord) { medicalRecord ->
-                            DisplayMedicalRecord(medicalRecord)
-                        }
-                    }
-                } else {
-                    Text(text = stringResource(R.string.no_records))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .align(Alignment.Start)
+                ) {
+                    Text(
+                        text = stringResource(R.string.records),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+                MedicalRecordList(medicalCard = medicalCard)
             }
         }
     }
@@ -84,8 +101,57 @@ fun ReportsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DisplayMedicalRecord(medicalRecord: MedicalRecordResponse) {
+fun MedicalRecordList(
+    medicalCard: MedicalCardResponse
+) {
+    val searchText = remember { mutableStateOf("") }
+    val isActive = remember { mutableStateOf(false) }
+    val filteredMedicalRecords = medicalCard.medicalRecord.filter {
+        it.record.contains(searchText.value, ignoreCase = true) ||
+                it.fioAndSpecializationDoctor.contains(searchText.value, ignoreCase = true) ||
+                it.date.contains(searchText.value, ignoreCase = true)
+    }
+
+    SearchBar(
+        query = searchText.value,
+        onQueryChange = { text ->
+            searchText.value = text
+        },
+        onSearch = {},
+        active = isActive.value,
+        onActiveChange = {},
+        placeholder = { Text(text = stringResource(R.string.search_record)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(18.dp)
+                    .clickable {}
+            )
+        }
+    ) {}
+
+    if (filteredMedicalRecords.isNotEmpty()) {
+        LazyColumn {
+            items(filteredMedicalRecords) { medicalRecord ->
+                DisplayMedicalRecord(medicalRecord)
+            }
+        }
+    } else {
+        Text(text = stringResource(R.string.no_records))
+    }
+}
+
+@Composable
+fun DisplayMedicalRecord(
+    medicalRecord: MedicalRecordResponse
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,22 +163,22 @@ fun DisplayMedicalRecord(medicalRecord: MedicalRecordResponse) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Запись: ${medicalRecord.record}",
-                color = Green80,
-                fontSize = 16.sp,
+                text = medicalRecord.record,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.W500,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Text(
-                text = "Доктор: ${medicalRecord.fioAndSpecializationDoctor}",
+                text = medicalRecord.fioAndSpecializationDoctor,
                 color = Color.Gray,
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
+            val parsedDate = LocalDate.parse(medicalRecord.date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             Text(
-                text = "Дата: ${medicalRecord.date}",
+                text = parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
                 color = Color.Gray,
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }

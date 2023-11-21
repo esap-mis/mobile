@@ -52,6 +52,8 @@
     <string name="records">Заключения врачей</string>
     <string name="records_count">Заключений</string>
     <string name="no_records">Нет заключений</string>
+    <string name="search_record">Поиск заключения</string>
+    <string name="search_analysis">Поиск анализа</string>
 
     <!-- Settings -->
     <string name="settings">Настройки</string>
