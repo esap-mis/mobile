@@ -1,5 +1,6 @@
 package javavlsu.kb.esap.esapmobile.domain.api
 
+import javavlsu.kb.esap.esapmobile.domain.model.Page
 import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
 import javavlsu.kb.esap.esapmobile.domain.model.response.AppointmentResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
@@ -37,4 +38,10 @@ interface MainApiService {
 
     @GET("/api/medicalCard/patient/{patientId}")
     suspend fun getMedicalCard(@Path("patientId") patientId: Long): Response<MedicalCardResponse>
+
+    @GET("/api/patient")
+    suspend fun getPatients(
+        @Query("page") page: Int,
+        @Query("size") size: Int = 10
+    ): Response<Page<PatientResponse>>
 }

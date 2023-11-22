@@ -1,6 +1,9 @@
 package javavlsu.kb.esap.esapmobile.data
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.domain.model.request.AppointmentRequest
@@ -9,6 +12,10 @@ import javavlsu.kb.esap.esapmobile.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.domain.repository.MainRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -88,5 +95,18 @@ class MainViewModel @Inject constructor(
         coroutinesErrorHandler
     ) {
         mainRepository.getMedicalCard(patientId)
+    }
+
+    private val _patientList: MutableStateFlow<PagingData<PatientResponse>> = MutableStateFlow(PagingData.empty())
+    val patientList: StateFlow<PagingData<PatientResponse>> = _patientList
+
+    fun getPatientsList() {
+        viewModelScope.launch {
+            mainRepository.getPatients()
+                .cachedIn(viewModelScope)
+                .collectLatest { pagingData ->
+                    _patientList.value = pagingData
+                }
+        }
     }
 }

@@ -46,6 +46,11 @@
     <string name="record">Запись</string>
     <string name="dont_have_appointments">Нет приемов</string>
 
+    <!-- Patients -->
+    <string name="patients">Пациенты</string>
+    <string name="search_patient">Поиск пациента</string>
+    <string name="no_matching_patients">Нет пациентов</string>
+
     <!-- Results -->
     <string name="analysis">Анализы</string>
     <string name="no_analysis">Нет анализов</string>

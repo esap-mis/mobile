@@ -37,6 +37,7 @@ fun BottomNavigationBar(
     val doctorNavigationItems = listOf(
         Screen.Main.Home,
         Screen.Main.Appointments,
+        Screen.Main.Patients,
         Screen.Main.More.Settings
     )
 

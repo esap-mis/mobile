@@ -21,6 +21,8 @@ sealed class Screen(
             object Confirmation: Screen(title = "Подтвердить запись", route = "appointment/{selectedDate}/{scheduleId}/{startTime}/{doctorId}")
         }
 
+        object Patients: Screen(title = "Пациенты", route = "patients", icon = R.drawable.patients)
+
         object Appointments: Screen(title = "Приемы", route = "appointments", icon = R.drawable.appointments)
 
         object Results: Screen(title = "Результаты", route = "results", icon = R.drawable.results) {
