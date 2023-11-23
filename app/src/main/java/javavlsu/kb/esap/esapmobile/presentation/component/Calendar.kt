@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import javavlsu.kb.esap.esapmobile.data.CalendarViewModel
+import javavlsu.kb.esap.esapmobile.core.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.presentation.data.CalendarUiModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

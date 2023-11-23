@@ -32,11 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import javavlsu.kb.esap.esapmobile.R
-import javavlsu.kb.esap.esapmobile.data.TokenViewModel
+import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
-import javavlsu.kb.esap.esapmobile.presentation.graph.MainScreenNavGraph
-import javavlsu.kb.esap.esapmobile.presentation.navigation.BottomNavigationBar
-import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.core.navigation.graph.MainScreenNavGraph
+import javavlsu.kb.esap.esapmobile.presentation.component.navigation.BottomNavigationBar
+import javavlsu.kb.esap.esapmobile.core.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.theme.Blue100
 import kotlinx.coroutines.launch
 

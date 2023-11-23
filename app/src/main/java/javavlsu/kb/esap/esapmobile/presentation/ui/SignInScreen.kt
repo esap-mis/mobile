@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import javavlsu.kb.esap.esapmobile.R
-import javavlsu.kb.esap.esapmobile.data.AuthViewModel
-import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
-import javavlsu.kb.esap.esapmobile.data.TokenViewModel
-import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.core.data.AuthViewModel
+import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
+import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog

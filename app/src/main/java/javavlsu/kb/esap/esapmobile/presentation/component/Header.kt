@@ -28,8 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import javavlsu.kb.esap.esapmobile.R
-import javavlsu.kb.esap.esapmobile.domain.model.UserResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.UserResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 
 @Composable

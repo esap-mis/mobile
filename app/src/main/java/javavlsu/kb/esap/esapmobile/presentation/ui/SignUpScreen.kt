@@ -33,7 +33,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import javavlsu.kb.esap.esapmobile.data.AuthViewModel
+import javavlsu.kb.esap.esapmobile.core.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 
 @Composable

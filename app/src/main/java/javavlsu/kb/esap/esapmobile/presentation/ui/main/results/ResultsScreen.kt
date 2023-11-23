@@ -41,15 +41,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import javavlsu.kb.esap.esapmobile.R
-import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
-import javavlsu.kb.esap.esapmobile.data.MainViewModel
-import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.domain.model.UserResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.MedicalCardResponse
+import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
+import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.UserResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
-import javavlsu.kb.esap.esapmobile.presentation.navigation.Screen
+import javavlsu.kb.esap.esapmobile.core.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 
 @Composable
