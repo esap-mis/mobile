@@ -118,12 +118,10 @@ fun SignUpScreen(
         )
 
         Spacer(modifier = Modifier.size(30.dp))
-        CustomButton(text = "Зарегистрироваться") {
-//            viewModel.performLogin(login, password) { result ->
-//                responseMessage = result
-//                showDialog = true
-//            }
-        }
+        CustomButton(
+            text = "Зарегистрироваться",
+            onClick = { }
+        )
 
         TextButton(
             onClick = { navigateToSignIn() },

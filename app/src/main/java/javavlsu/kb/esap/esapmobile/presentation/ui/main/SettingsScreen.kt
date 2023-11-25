@@ -86,6 +86,7 @@ fun SettingsScreen(
 
             CustomButton(
                 text = stringResource(R.string.apply_button),
+                isEnabled = false,
                 onClick = {
                     applyButtonClicked = true
                     settingsViewModel.changeBaseUrl(newBaseUrl)
