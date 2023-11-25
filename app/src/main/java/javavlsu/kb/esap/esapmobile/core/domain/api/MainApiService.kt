@@ -44,4 +44,10 @@ interface MainApiService {
         @Query("page") page: Int,
         @Query("size") size: Int = 10
     ): Response<Page<PatientResponse>>
+
+    @GET("/api/doctor")
+    suspend fun getDoctors(
+        @Query("page") page: Int,
+        @Query("size") size: Int = 10
+    ): Response<Page<DoctorResponse>>
 }

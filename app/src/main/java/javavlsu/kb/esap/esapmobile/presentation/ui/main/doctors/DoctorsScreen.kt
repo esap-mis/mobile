@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.presentation.ui.main.patients
+package javavlsu.kb.esap.esapmobile.presentation.ui.main.doctors
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,24 +42,24 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 
 @Composable
-fun PatientsScreen(
+fun DoctorsScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-    val patientsList = mainViewModel.patientsList.collectAsLazyPagingItems()
+    val doctorsList = mainViewModel.doctorsList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
-        mainViewModel.getPatientsList()
+        mainViewModel.getDoctorsList()
     }
 
-    if (patientsList.itemCount < 0) {
+    if (doctorsList.itemCount < 0) {
         CircularProgress()
     } else {
         Column(
@@ -75,13 +75,13 @@ fun PatientsScreen(
                     .align(Alignment.Start)
             ) {
                 Text(
-                    text = stringResource(R.string.patients_list),
+                    text = stringResource(R.string.doctors_list),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            PatientsList(patients = patientsList)
+            DoctorsList(doctors = doctorsList)
         }
     }
 
@@ -94,8 +94,8 @@ fun PatientsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PatientsList(
-    patients: LazyPagingItems<PatientResponse>
+fun DoctorsList(
+    doctors: LazyPagingItems<DoctorResponse>
 ) {
     var searchText by remember { mutableStateOf("") }
     SearchBar(
@@ -106,7 +106,7 @@ fun PatientsList(
         onSearch = {},
         active = false,
         onActiveChange = {},
-        placeholder = { Text(text = stringResource(R.string.search_patient)) },
+        placeholder = { Text(text = stringResource(R.string.search_doctor)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
@@ -122,15 +122,15 @@ fun PatientsList(
     ) {}
 
     Spacer(modifier = Modifier.width(16.dp))
-    if (patients.itemCount > 0) {
+    if (doctors.itemCount > 0) {
         LazyColumn {
-            items(patients.itemCount) { index ->
-                val patient = patients[index]
+            items(doctors.itemCount) { index ->
+                val patient = doctors[index]
                 if (patient!!.firstName.contains(searchText, ignoreCase = true) ||
                     patient.lastName.contains(searchText, ignoreCase = true) ||
                     patient.patronymic.contains(searchText, ignoreCase = true)
                 ) {
-                    DisplayPatientCard(patient)
+                    DisplayDoctorCard(patient)
                 }
             }
         }
@@ -140,8 +140,8 @@ fun PatientsList(
 }
 
 @Composable
-fun DisplayPatientCard(
-    patient: PatientResponse
+fun DisplayDoctorCard(
+    doctor: DoctorResponse
 ) {
     Card(
         modifier = Modifier
@@ -178,19 +178,19 @@ fun DisplayPatientCard(
 
                 Column {
                     Text(
-                        text = "${patient.lastName} ${patient.firstName} ${patient.patronymic}",
+                        text = "${doctor.lastName} ${doctor.firstName} ${doctor.patronymic}",
                         fontWeight = FontWeight.W500,
                         fontSize = 20.sp
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = patient.birthDate,
+                        text = doctor.specialization,
                         color = Color.Gray,
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = patient.address,
+                        text = doctor.clinic.address,
                         color = Color.Gray,
                         fontSize = 16.sp
                     )

@@ -97,15 +97,28 @@ class MainViewModel @Inject constructor(
         mainRepository.getMedicalCard(patientId)
     }
 
-    private val _patientList: MutableStateFlow<PagingData<PatientResponse>> = MutableStateFlow(PagingData.empty())
-    val patientList: StateFlow<PagingData<PatientResponse>> = _patientList
+    private val _patientsList: MutableStateFlow<PagingData<PatientResponse>> = MutableStateFlow(PagingData.empty())
+    val patientsList: StateFlow<PagingData<PatientResponse>> = _patientsList
 
     fun getPatientsList() {
         viewModelScope.launch {
             mainRepository.getPatients()
                 .cachedIn(viewModelScope)
                 .collectLatest { pagingData ->
-                    _patientList.value = pagingData
+                    _patientsList.value = pagingData
+                }
+        }
+    }
+
+    private val _doctorsList: MutableStateFlow<PagingData<DoctorResponse>> = MutableStateFlow(PagingData.empty())
+    val doctorsList: StateFlow<PagingData<DoctorResponse>> = _doctorsList
+
+    fun getDoctorsList() {
+        viewModelScope.launch {
+            mainRepository.getDoctors()
+                .cachedIn(viewModelScope)
+                .collectLatest { pagingData ->
+                    _doctorsList.value = pagingData
                 }
         }
     }

@@ -47,9 +47,14 @@
     <string name="dont_have_appointments">Нет приемов</string>
 
     <!-- Patients -->
-    <string name="patients">Пациенты</string>
+    <string name="patients_list">Пациенты</string>
     <string name="search_patient">Поиск пациента</string>
     <string name="no_matching_patients">Нет пациентов</string>
+
+    <!-- Doctors -->
+    <string name="doctors_list">Врачи</string>
+    <string name="search_doctor">Поиск врача</string>
+    <string name="no_matching_doctors">Нет врачей</string>
 
     <!-- Results -->
     <string name="analysis">Анализы</string>

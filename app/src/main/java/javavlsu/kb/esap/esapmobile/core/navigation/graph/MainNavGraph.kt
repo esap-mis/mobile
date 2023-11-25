@@ -16,6 +16,7 @@ import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.Appointment
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.ConfirmationScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ResultsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.doctors.DoctorsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.patients.PatientsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.AnalysisScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ReportsScreen
@@ -89,6 +90,9 @@ fun MainScreenNavGraph(
             ReportsScreen(
                 patientId = backStackEntry.arguments?.getLong("patientId")!!,
             )
+        }
+        composable(route = Screen.Main.Doctors.route) {
+            DoctorsScreen()
         }
         composable(route = Screen.Main.Patients.route) {
             PatientsScreen()

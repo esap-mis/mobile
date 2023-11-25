@@ -39,6 +39,7 @@ fun BottomNavigationBar(
         Screen.Main.Home,
         Screen.Main.Appointments,
         Screen.Main.Patients,
+        Screen.Main.Doctors,
         Screen.Main.More.Settings
     )
 
