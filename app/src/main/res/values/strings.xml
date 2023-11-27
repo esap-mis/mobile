@@ -8,6 +8,11 @@
     <string name="dont_have_account">Еще нет аккаунта?</string>
     <string name="signin">Войти</string>
     <string name="register">Зарегистрируйтесь</string>
+    <string name="reset_password">Сбросить пароль</string>
+    <string name="change_password_success">Ваш пароль успешно изменен!</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="have_account">Уже есть аккаунт?</string>
+    <string name="already_signin">Войдите</string>
     <string name="server_response">Ответ сервера</string>
     <string name="ok">Ок</string>
 
@@ -16,5 +21,54 @@
     <string name="smile">👋</string>
     <string name="medical_record">Медицинская карта</string>
     <string name="make_appointment">Записаться на прием</string>
+    <string name="next_aapointments">Ближайшие приемы</string>
+    <string name="analysis_results">Результаты</string>
+    <string name="no_results">Нет результатов</string>
+    <string name="all">Все</string>
+    <string name="dont_have_next_appointments">Нет ближайших приемов</string>
     <string name="logout">Выйти</string>
+
+    <!-- Appointment -->
+    <string name="doctors">ВРАЧИ</string>
+    <string name="havent_doctors_data">Нет данных о врачах</string>
+    <string name="available_appointment_times">"Доступное время приема:</string>
+    <string name="appointment_date_time">Дата и время приема</string>
+    <string name="clinic_address">Адрес</string>
+    <string name="clinic_phone">Контактный телефон</string>
+    <string name="patient">Пациент</string>
+    <string name="patient_phone">Телефон</string>
+    <string name="confirm_appointment">Подтвердить запись</string>
+    <string name="success_making_appointment">Вы успешно записались на прием!</string>
+
+    <!-- Appointments -->
+    <string name="future_appointments">Предстоящие</string>
+    <string name="past_appointments">Прошедшие</string>
+    <string name="record">Запись</string>
+    <string name="dont_have_appointments">Нет приемов</string>
+
+    <!-- Patients -->
+    <string name="patients_list">Пациенты</string>
+    <string name="search_patient">Поиск пациента</string>
+    <string name="no_matching_patients">Нет пациентов</string>
+
+    <!-- Doctors -->
+    <string name="doctors_list">Врачи</string>
+    <string name="search_doctor">Поиск врача</string>
+    <string name="no_matching_doctors">Нет врачей</string>
+
+    <!-- Results -->
+    <string name="analysis">Анализы</string>
+    <string name="no_analysis">Нет анализов</string>
+    <string name="records">Заключения врачей</string>
+    <string name="records_count">Заключений</string>
+    <string name="no_records">Нет заключений</string>
+    <string name="search_record">Поиск заключения</string>
+    <string name="search_analysis">Поиск анализа</string>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="current_url">Текущий URL:</string>
+    <string name="new_url">Новый URL</string>
+    <string name="warning">Обязательно включите символ \"/\" в конце URL</string>
+    <string name="apply_button">Применить</string>
 </resources>

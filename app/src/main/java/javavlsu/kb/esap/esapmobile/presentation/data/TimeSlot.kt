@@ -1,7 +1,7 @@
 package javavlsu.kb.esap.esapmobile.presentation.data
 
-import javavlsu.kb.esap.esapmobile.domain.model.response.AppointmentResponse
-import javavlsu.kb.esap.esapmobile.domain.model.response.ScheduleResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.ScheduleResponse
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 

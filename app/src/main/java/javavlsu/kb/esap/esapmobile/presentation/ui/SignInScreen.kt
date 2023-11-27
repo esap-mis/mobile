@@ -26,11 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import javavlsu.kb.esap.esapmobile.R
-import javavlsu.kb.esap.esapmobile.data.AuthViewModel
-import javavlsu.kb.esap.esapmobile.data.CoroutinesErrorHandler
-import javavlsu.kb.esap.esapmobile.data.TokenViewModel
-import javavlsu.kb.esap.esapmobile.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.presentation.component.Button
+import javavlsu.kb.esap.esapmobile.core.data.AuthViewModel
+import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
+import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 
@@ -40,7 +40,8 @@ fun SignInScreen(
     tokenViewModel: TokenViewModel = hiltViewModel(),
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToForgotPassword: () -> Unit
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -63,17 +64,13 @@ fun SignInScreen(
         if (token != null) {
             navigateToMain()
         } else {
-            when (authResponse) {
-                is ApiResponse.Failure -> {
-                    responseMessage = (authResponse as ApiResponse.Failure).errorMessage
-                    showDialog = true
-                }
-                is ApiResponse.Success -> {
-                    val response = (authResponse as ApiResponse.Success).data
-                    tokenViewModel.saveToken(response.jwt)
-                    tokenViewModel.saveRoles(response.roles)
-                }
-                else -> {}
+            if (authResponse is ApiResponse.Success) {
+                val response = (authResponse as ApiResponse.Success).data
+                tokenViewModel.saveToken(response.jwt)
+                tokenViewModel.saveRoles(response.roles)
+            } else if (authResponse is ApiResponse.Failure) {
+                responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                showDialog = true
             }
         }
     }
@@ -108,7 +105,7 @@ fun SignInScreen(
                     onLoginChange = { authViewModel.setLogin(it) },
                     onPasswordChange = { authViewModel.setPassword(it) },
                     onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                    onForgotPasswordButtonClick = { navigateToSignUp() },
+                    onForgotPasswordButtonClick = { navigateToForgotPassword() },
                     onSignInButtonClick = {
                         authViewModel.login(
                             object : CoroutinesErrorHandler {
@@ -199,7 +196,7 @@ fun AuthForm(
 
         ForgotPasswordButton(onForgotPasswordButtonClick)
 
-        Button(
+        CustomButton(
             text = stringResource(R.string.signin),
             onClick = onSignInButtonClick
         )

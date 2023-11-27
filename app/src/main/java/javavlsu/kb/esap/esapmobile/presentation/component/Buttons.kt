@@ -2,6 +2,7 @@ package javavlsu.kb.esap.esapmobile.presentation.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,15 +14,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Button(text: String, color: Color = Color.Blue, onClick: () -> Unit) {
-    androidx.compose.material3.Button(
+fun CustomButton(
+    text: String,
+    color: Color = Color.Blue,
+    onClick: () -> Unit,
+    isEnabled: Boolean = true
+) {
+    Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             contentColor = Color.White,
             containerColor = color
         ),
+        enabled = isEnabled,
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = text,

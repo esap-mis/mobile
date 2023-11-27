@@ -8,7 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import javavlsu.kb.esap.esapmobile.presentation.graph.RootNavHost
+import javavlsu.kb.esap.esapmobile.core.navigation.graph.RootNavHost
 import javavlsu.kb.esap.esapmobile.presentation.theme.EsapMobileTheme
 
 @AndroidEntryPoint
