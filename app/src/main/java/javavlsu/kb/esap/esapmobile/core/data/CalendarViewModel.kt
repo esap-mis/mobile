@@ -27,7 +27,7 @@ class CalendarViewModel @Inject constructor(
                 )
             } ?: emptyList()
         )
-        calendarData.value = updatedData
+        calendarData.value = updatedData!!
     }
 
     fun navigateToPreviousWeek() {
