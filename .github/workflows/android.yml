@@ -24,6 +24,15 @@ jobs:
     - name: Gradle Wrapper Validation
       uses: gradle/wrapper-validation-action@v1
 
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
     - name: Build APK
       run: ./gradlew :app:assembleRelease -x test
       env:
