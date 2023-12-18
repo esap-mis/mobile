@@ -1,3 +1,5 @@
+name: Android CI
+
 on:
   push:
     branches: [ "master" ]
@@ -38,15 +40,6 @@ jobs:
 
     - name: Build APK
       run: ./gradlew :app:assembleRelease -x test
-      env:
-        SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-        SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-
-    - name: Retrieve Version
-      run: |
-        echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersionName)"
-      id: android_version
 
     - name: Extract branch name
       shell: bash
@@ -60,4 +53,4 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         artifacts-branch: artifacts
         artifacts: |
-          app/build/outputs/apk/admin/release/EsapMobile-${{steps.android_version.outputs.VERSION_NAME}}.apk
+          app/build/outputs/apk/admin/release/app-release.apk
