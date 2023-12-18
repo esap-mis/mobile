@@ -109,25 +109,25 @@ fun ConfirmationScreen(
                 if (patientResponse is ApiResponse.Success) {
                     val patient = (patientResponse as ApiResponse.Success).data
                     PatientDetails(patient = patient)
-                }
 
-                Spacer(modifier = Modifier.size(16.dp))
-                CustomButton(
-                    text = stringResource(R.string.confirm_appointment),
-                    color = Green80,
-                    onClick = {
-                        mainViewModel.makeAppointment(scheduleId,
-                            AppointmentRequest(2, selectedDate, startTime),
-                            object : CoroutinesErrorHandler {
-                                override fun onError(message: String) {
-                                    responseMessage = message
-                                    showDialog = true
+                    Spacer(modifier = Modifier.size(16.dp))
+                    CustomButton(
+                        text = stringResource(R.string.confirm_appointment),
+                        color = Green80,
+                        onClick = {
+                            mainViewModel.makeAppointment(scheduleId,
+                                AppointmentRequest(patient.id, selectedDate, startTime),
+                                object : CoroutinesErrorHandler {
+                                    override fun onError(message: String) {
+                                        responseMessage = message
+                                        showDialog = true
+                                    }
                                 }
-                            }
-                        )
-                        showDialog = true
-                    }
-                )
+                            )
+                            showDialog = true
+                        }
+                    )
+                }
             }
         }
         if (showDialog && makeAppointmentResponse is ApiResponse.Success) {
