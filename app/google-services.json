@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "156502853176",
+    "firebase_url": "https://snappy-stacker-324108-default-rtdb.firebaseio.com",
+    "project_id": "snappy-stacker-324108",
+    "storage_bucket": "snappy-stacker-324108.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156502853176:android:c65ff9e324a4e89ad688cd",
+        "android_client_info": {
+          "package_name": "javavlsu.kb.esap.esapmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156502853176-j362c48sqgggltmi6uf88paieasn0n0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVCSmm2Qe0B9CPFzBV3nf2w9Ec5nUydpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156502853176-j362c48sqgggltmi6uf88paieasn0n0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

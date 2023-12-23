@@ -28,4 +28,20 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+//    private suspend fun sendTokenToServer(token: String?) {
+//        token?.let {
+//            try {
+//                val response: Response<String> = notificationApiService.registerToken(TokenRequest(token))
+//
+//                if (response.isSuccessful) {
+//                    Log.d("TOKEN", "FCM Token sent to server successfully")
+//                } else {
+//                    Log.e("TOKEN", "Failed to send FCM Token to server: ${response.message()}")
+//                }
+//            } catch (e: Exception) {
+//                Log.e("TOKEN", "Exception during FCM Token registration: ${e.message}", e)
+//            }
+//        }
+//    }
 }

@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.NotificationApiService
 import javavlsu.kb.esap.esapmobile.core.domain.util.AuthAuthenticator
 import javavlsu.kb.esap.esapmobile.core.domain.util.AuthInterceptor
 import javavlsu.kb.esap.esapmobile.core.domain.util.BaseUrlInterceptor
@@ -127,4 +128,12 @@ class NetworkConfig {
             .client(mainOkHttpClient)
             .build()
             .create(MainApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideNotificationAPIService(@Named("mainOkHttpClient") mainOkHttpClient: OkHttpClient, retrofit: Retrofit.Builder): NotificationApiService =
+        retrofit
+            .client(mainOkHttpClient)
+            .build()
+            .create(NotificationApiService::class.java)
 }

@@ -25,9 +25,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.core.data.AuthViewModel
 import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
+import javavlsu.kb.esap.esapmobile.core.data.NotificationViewModel
 import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
@@ -38,6 +40,7 @@ import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 fun SignInScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     tokenViewModel: TokenViewModel = hiltViewModel(),
+    notificationViewModel: NotificationViewModel = hiltViewModel(),
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
     navigateBack: () -> Unit,
@@ -68,6 +71,22 @@ fun SignInScreen(
                 val response = (authResponse as ApiResponse.Success).data
                 tokenViewModel.saveToken(response.jwt)
                 tokenViewModel.saveRoles(response.roles)
+
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        return@addOnCompleteListener
+                    }
+                    val deviceToken = task.result
+                    notificationViewModel.registerDeviceToken(
+                        deviceToken,
+                        object : CoroutinesErrorHandler {
+                            override fun onError(message: String) {
+                                responseMessage = message
+                                showDialog = true
+                            }
+                        }
+                    )
+                }
             } else if (authResponse is ApiResponse.Failure) {
                 responseMessage = (authResponse as ApiResponse.Failure).errorMessage
                 showDialog = true
