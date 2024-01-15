@@ -128,9 +128,12 @@ fun AppointmentsScreen(
                 )
             }
 
-            CustomToggleSwitch(onToggle = {
-                isUpcoming = !isUpcoming
-            })
+            CustomToggleSwitch(
+                isUpcoming = isUpcoming,
+                onToggle = {
+                    isUpcoming = !isUpcoming
+                }
+            )
             Divider(
                 modifier = Modifier
                     .padding(
@@ -162,10 +165,9 @@ fun AppointmentsScreen(
 
 @Composable
 fun CustomToggleSwitch(
-    onToggle: () -> Unit
+    isUpcoming: Boolean,
+    onToggle: (isUpcoming: Boolean) -> Unit
 ) {
-    var isUpcoming by remember { mutableStateOf(true) }
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -182,8 +184,9 @@ fun CustomToggleSwitch(
             Button(
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                    isUpcoming = true
-                    onToggle()
+                    if (!isUpcoming) {
+                        onToggle(true)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isUpcoming) Color.White else Gray40,
@@ -200,8 +203,9 @@ fun CustomToggleSwitch(
             Button(
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                    isUpcoming = false
-                    onToggle()
+                    if (isUpcoming) {
+                        onToggle(false)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (!isUpcoming) Color.White else Gray40,
