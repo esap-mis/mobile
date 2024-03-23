@@ -27,6 +27,8 @@ sealed class Screen(
 
         object Appointments: Screen(title = "Приемы", route = "appointments", icon = R.drawable.appointments)
 
+        object Passcode: Screen(title = "Код-пароль", route = "passcode")
+
         object Results: Screen(title = "Результаты", route = "results", icon = R.drawable.results) {
 
             object Analysis: Screen(title = "Анализы", route = "results/analysis/{patientId}")

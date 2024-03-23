@@ -20,6 +20,7 @@ import javavlsu.kb.esap.esapmobile.presentation.ui.main.doctors.DoctorsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.patients.PatientsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.AnalysisScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ReportsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.security.PasscodeScreen
 
 @Composable
 fun MainScreenNavGraph(
@@ -99,6 +100,9 @@ fun MainScreenNavGraph(
         }
         composable(route = Screen.Main.More.Settings.route) {
             SettingsScreen()
+        }
+        composable(route = Screen.Main.Passcode.route) {
+            PasscodeScreen()
         }
     }
 }
