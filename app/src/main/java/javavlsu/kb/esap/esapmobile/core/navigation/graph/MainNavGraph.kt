@@ -101,7 +101,7 @@ fun MainScreenNavGraph(
         composable(route = Screen.Main.More.Settings.route) {
             SettingsScreen()
         }
-        composable(route = Screen.Main.Passcode.route) {
+        composable(route = Screen.Main.Home.route) {
             PasscodeScreen()
         }
     }
