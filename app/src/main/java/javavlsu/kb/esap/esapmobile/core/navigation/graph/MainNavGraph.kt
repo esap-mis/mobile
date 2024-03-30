@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import javavlsu.kb.esap.esapmobile.core.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.ui.chat.ChatScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentBookingScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentsScreen
@@ -99,6 +100,9 @@ fun MainScreenNavGraph(
         }
         composable(route = Screen.Main.More.Settings.route) {
             SettingsScreen()
+        }
+        composable(route = Screen.Main.More.Chat.route) {
+            ChatScreen()
         }
     }
 }

@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.ChatApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.NotificationApiService
 import javavlsu.kb.esap.esapmobile.core.domain.util.AuthAuthenticator
@@ -136,4 +137,12 @@ class NetworkConfig {
             .client(mainOkHttpClient)
             .build()
             .create(NotificationApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideChatAPIService(@Named("mainOkHttpClient") mainOkHttpClient: OkHttpClient, retrofit: Retrofit.Builder): ChatApiService =
+        retrofit
+            .client(mainOkHttpClient)
+            .build()
+            .create(ChatApiService::class.java)
 }

@@ -71,4 +71,7 @@
     <string name="new_url">Новый URL</string>
     <string name="warning">Обязательно включите символ \"/\" в конце URL</string>
     <string name="apply_button">Применить</string>
+
+    <!-- Chat -->
+    <string name="bot_name">MedGPT</string>
 </resources>
