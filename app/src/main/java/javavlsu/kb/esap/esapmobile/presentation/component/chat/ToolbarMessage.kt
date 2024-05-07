@@ -84,7 +84,7 @@ fun ToolbarMessage(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = "Онлайн",
+                        text = stringResource(id = R.string.online),
                         color = Green40,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Medium,
