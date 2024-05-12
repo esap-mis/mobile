@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import javavlsu.kb.esap.esapmobile.core.data.dao.UserDAO
+import javavlsu.kb.esap.esapmobile.core.data.dao.UserDao
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.ChatApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
@@ -19,7 +19,7 @@ import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 class Config {
 
     @Provides
-    fun provideAuthRepository(userDAO: UserDAO,
+    fun provideAuthRepository(userDAO: UserDao,
                               authApiService: AuthApiService
     ) = AuthRepository(userDAO, authApiService)
 

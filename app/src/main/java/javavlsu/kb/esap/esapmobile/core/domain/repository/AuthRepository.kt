@@ -1,6 +1,6 @@
 package javavlsu.kb.esap.esapmobile.core.domain.repository
 
-import javavlsu.kb.esap.esapmobile.core.data.dao.UserDAO
+import javavlsu.kb.esap.esapmobile.core.data.dao.UserDao
 import javavlsu.kb.esap.esapmobile.core.data.model.User
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
 import javavlsu.kb.esap.esapmobile.core.domain.dto.request.AuthRequest
@@ -8,7 +8,7 @@ import javavlsu.kb.esap.esapmobile.core.domain.util.apiRequestFlow
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
-    private val userDAO: UserDAO,
+    private val userDao: UserDao,
     private val authApiService: AuthApiService,
 ) {
     fun checkStatus() = apiRequestFlow {
@@ -24,6 +24,6 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun insertUser(user: User) {
-        userDAO.insert(user)
+        userDao.insert(user)
     }
 }

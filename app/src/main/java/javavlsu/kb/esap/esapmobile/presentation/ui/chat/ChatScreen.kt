@@ -23,8 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import javavlsu.kb.esap.esapmobile.core.data.ChatViewModel
 import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.chat.ChatMessage
-import javavlsu.kb.esap.esapmobile.core.domain.model.chat.ChatRoles
+import javavlsu.kb.esap.esapmobile.core.data.model.chat.ChatMessage
+import javavlsu.kb.esap.esapmobile.core.data.model.chat.ChatRoles
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.MessengerItemCard
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.ReceiverMessageItemCard

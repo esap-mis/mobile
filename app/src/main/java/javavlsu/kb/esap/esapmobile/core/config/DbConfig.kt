@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javavlsu.kb.esap.esapmobile.core.data.AppDatabase
-import javavlsu.kb.esap.esapmobile.core.data.dao.UserDAO
+import javavlsu.kb.esap.esapmobile.core.data.dao.UserDao
 import javax.inject.Singleton
 
 @Module
@@ -24,7 +24,7 @@ object DbConfig {
     }
 
     @Provides
-    fun provideUserDao(appDatabase: AppDatabase): UserDAO {
-        return appDatabase.userDAO
+    fun provideUserDao(appDatabase: AppDatabase): UserDao {
+        return appDatabase.userDao
     }
 }

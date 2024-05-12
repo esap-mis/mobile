@@ -51,7 +51,7 @@ import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 fun PatientsScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
-    var responseMessage by remember { mutableStateOf("") }
+    val responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val patientsList = mainViewModel.patientsList.collectAsLazyPagingItems()
 
