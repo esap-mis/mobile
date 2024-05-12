@@ -37,6 +37,8 @@ sealed class Screen(
         object More: Screen(title = "Еще", route = "more", icon = R.drawable.drawer_menu) {
 
             object Settings: Screen(title = "Настройки", route = "settings", icon = R.drawable.settings)
+
+            object Chat: Screen(title = "Чат", route = "chat", icon = R.drawable.ic_send_message)
         }
     }
 }

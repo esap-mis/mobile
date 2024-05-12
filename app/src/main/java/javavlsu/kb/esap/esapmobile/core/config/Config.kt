@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import javavlsu.kb.esap.esapmobile.core.data.dao.UserDAO
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.ChatApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.core.domain.repository.AuthRepository
+import javavlsu.kb.esap.esapmobile.core.domain.repository.ChatRepository
 import javavlsu.kb.esap.esapmobile.core.domain.repository.MainRepository
 import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 
@@ -23,6 +25,9 @@ class Config {
 
     @Provides
     fun provideMainRepository(mainApiService: MainApiService) = MainRepository(mainApiService)
+
+    @Provides
+    fun provideChatRepository(chatApiService: ChatApiService) = ChatRepository(chatApiService)
 
     @Provides
     fun provideCalendarDataSource() = CalendarDataSource()

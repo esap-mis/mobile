@@ -48,7 +48,11 @@ fun MainScreen(
 ) {
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val items = listOf(Screen.Main.More.Settings, "Logout")
+    val items = listOf(
+        Screen.Main.More.Chat,
+        Screen.Main.More.Settings,
+        "Logout"
+    )
     val selectedItem = remember { mutableStateOf(items[0]) }
     val roles by tokenViewModel.roles.observeAsState()
 

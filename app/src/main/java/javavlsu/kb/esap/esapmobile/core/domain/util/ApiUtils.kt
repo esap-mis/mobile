@@ -13,7 +13,7 @@ import retrofit2.Response
 fun<T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = flow {
     emit(ApiResponse.Loading)
 
-    withTimeoutOrNull(20000L) {
+    withTimeoutOrNull(60000L) {
         val response = call()
 
         try {
