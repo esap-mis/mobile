@@ -48,7 +48,7 @@ import javavlsu.kb.esap.esapmobile.core.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.VerticalGrid

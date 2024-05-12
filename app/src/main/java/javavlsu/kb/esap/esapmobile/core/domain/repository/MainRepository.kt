@@ -5,9 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import javavlsu.kb.esap.esapmobile.presentation.util.PatientsPagingSource
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
-import javavlsu.kb.esap.esapmobile.core.domain.model.request.AppointmentRequest
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.request.AppointmentRequest
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.core.domain.util.apiRequestFlow
 import javavlsu.kb.esap.esapmobile.presentation.util.DoctorsPagingSource
 import kotlinx.coroutines.flow.Flow

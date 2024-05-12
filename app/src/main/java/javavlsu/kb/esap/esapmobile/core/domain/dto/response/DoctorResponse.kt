@@ -1,6 +1,6 @@
-package javavlsu.kb.esap.esapmobile.core.domain.model.response
+package javavlsu.kb.esap.esapmobile.core.domain.dto.response
 
-import javavlsu.kb.esap.esapmobile.core.domain.model.UserResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.UserResponse
 
 data class DoctorResponse(
     val specialization: String,

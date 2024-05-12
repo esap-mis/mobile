@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.core.domain.model.response
+package javavlsu.kb.esap.esapmobile.core.domain.dto.response
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

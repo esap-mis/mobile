@@ -1,11 +1,11 @@
 package javavlsu.kb.esap.esapmobile.core.domain.api
 
-import javavlsu.kb.esap.esapmobile.core.domain.model.Page
-import javavlsu.kb.esap.esapmobile.core.domain.model.request.AppointmentRequest
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.Page
+import javavlsu.kb.esap.esapmobile.core.domain.dto.request.AppointmentRequest
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.AppointmentResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.MedicalCardResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.PatientResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

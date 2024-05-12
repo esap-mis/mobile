@@ -2,7 +2,7 @@ package javavlsu.kb.esap.esapmobile.core.domain.util
 
 import com.google.gson.Gson
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.ErrorResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.ErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -6,11 +6,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.request.AppointmentRequest
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.request.AppointmentRequest
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.AppointmentResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.MedicalCardResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.PatientResponse
 import javavlsu.kb.esap.esapmobile.core.domain.repository.MainRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

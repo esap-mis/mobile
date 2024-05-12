@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.core.domain.model
+package javavlsu.kb.esap.esapmobile.core.domain.dto
 
 data class Page<T>(
     val content: List<T>,

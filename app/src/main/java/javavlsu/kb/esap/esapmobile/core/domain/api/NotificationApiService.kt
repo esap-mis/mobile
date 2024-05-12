@@ -1,6 +1,6 @@
 package javavlsu.kb.esap.esapmobile.core.domain.api
 
-import javavlsu.kb.esap.esapmobile.core.domain.model.request.TokenRequest
+import javavlsu.kb.esap.esapmobile.core.domain.dto.request.TokenRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

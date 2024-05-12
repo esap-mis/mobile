@@ -3,13 +3,17 @@ package javavlsu.kb.esap.esapmobile.core.data
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javavlsu.kb.esap.esapmobile.core.domain.model.request.AuthRequest
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.AuthResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.request.AuthRequest
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.AuthResponse
 import javavlsu.kb.esap.esapmobile.core.domain.repository.AuthRepository
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javax.inject.Inject
 import androidx.compose.runtime.State
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.ServerStatusResponse
+import androidx.lifecycle.viewModelScope
+import javavlsu.kb.esap.esapmobile.core.data.model.User
+import javavlsu.kb.esap.esapmobile.core.domain.dto.UserResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.ServerStatusResponse
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -60,5 +64,15 @@ class AuthViewModel @Inject constructor(
     ) {
         val request = AuthRequest(_login.value, _password.value)
         authRepository.resetPassword(request)
+    }
+
+    //FIXME переделать этот бред
+    fun saveUser(response: AuthResponse) = viewModelScope.launch {
+        val user = User(
+            login = login.value,
+            password = password.value,
+            roles = response.roles
+        )
+        authRepository.insertUser(user)
     }
 }

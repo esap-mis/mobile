@@ -1,7 +1,7 @@
 package javavlsu.kb.esap.esapmobile.core.domain.util
 
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.AuthResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.AuthResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.*

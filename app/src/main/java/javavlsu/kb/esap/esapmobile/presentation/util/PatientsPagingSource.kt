@@ -3,8 +3,8 @@ package javavlsu.kb.esap.esapmobile.presentation.util
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
-import javavlsu.kb.esap.esapmobile.core.domain.model.Page
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.Page
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.PatientResponse
 import retrofit2.HttpException
 import java.io.IOException
 

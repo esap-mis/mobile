@@ -45,7 +45,7 @@ import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.AppointmentResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog

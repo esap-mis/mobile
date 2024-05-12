@@ -71,6 +71,7 @@ fun SignInScreen(
                 val response = (authResponse as ApiResponse.Success).data
                 tokenViewModel.saveToken(response.jwt)
                 tokenViewModel.saveRoles(response.roles)
+                authViewModel.saveUser(response)
 
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                     if (!task.isSuccessful) {

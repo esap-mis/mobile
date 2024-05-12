@@ -1,6 +1,6 @@
-package javavlsu.kb.esap.esapmobile.core.domain.model
+package javavlsu.kb.esap.esapmobile.core.domain.dto
 
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.ClinicResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.ClinicResponse
 
 interface UserResponse {
     val id: Long

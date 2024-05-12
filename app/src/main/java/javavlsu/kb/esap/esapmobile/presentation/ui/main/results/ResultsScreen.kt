@@ -44,8 +44,8 @@ import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.UserResponse
-import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.UserResponse
+import javavlsu.kb.esap.esapmobile.core.domain.dto.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog

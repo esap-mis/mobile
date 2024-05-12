@@ -1,4 +1,4 @@
-package javavlsu.kb.esap.esapmobile.core.domain.model.request
+package javavlsu.kb.esap.esapmobile.core.domain.dto.request
 
 data class AppointmentRequest(
     val patientId: Long,
