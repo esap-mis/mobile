@@ -3,6 +3,7 @@ package javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -252,11 +253,16 @@ fun AppointmentCard(
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Row(Modifier.padding(8.dp)) {
+            Row(
+                modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+            ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .height(35.dp)
+                        .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Green20)
                 ) {
@@ -273,6 +279,7 @@ fun AppointmentCard(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .height(35.dp)
+                        .width(IntrinsicSize.Max)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Gray40)
                 ) {

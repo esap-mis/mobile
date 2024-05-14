@@ -207,7 +207,7 @@ fun DisplayNextAppointments(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = stringResource(R.string.next_aapointments),
+                    text = stringResource(R.string.next_appointments),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
                     color = Color.Black,
@@ -375,7 +375,7 @@ fun DisplayAnalysis(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = stringResource(R.string.analysis_results),
+                    text = stringResource(R.string.results),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
                     color = Color.Black,
@@ -439,14 +439,14 @@ fun AnalysisCard(
         ) {
             val parsedDate = LocalDateTime.parse(analysis.date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
             Text(
-                text = "${parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${parsedDate.format(
+                text = "${parsedDate.format(DateTimeFormatter.ofPattern("dd MMMM"))} в ${parsedDate.format(
                     DateTimeFormatter.ofPattern("HH:mm"))}",
                 color = Color.Gray,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )
             Text(
-                text = analysis.name,
+                text = analysis.name.take(15),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W500
             )

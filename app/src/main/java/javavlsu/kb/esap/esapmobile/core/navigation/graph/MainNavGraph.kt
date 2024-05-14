@@ -11,16 +11,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import javavlsu.kb.esap.esapmobile.core.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.ui.chat.ChatScreen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentBookingScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentBookingScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.ConfirmationScreen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ResultsScreen
-import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.doctors.DoctorsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.patients.PatientsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.AnalysisScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ReportsScreen
+import javavlsu.kb.esap.esapmobile.presentation.ui.main.results.ResultsScreen
 
 @Composable
 fun MainScreenNavGraph(
@@ -80,6 +80,9 @@ fun MainScreenNavGraph(
         ) { backStackEntry ->
             AnalysisScreen(
                 patientId = backStackEntry.arguments?.getLong("patientId")!!,
+                onBackPressed = {
+                    navController.navigate(Screen.Main.Results.route)
+                }
             )
         }
         composable(
@@ -90,6 +93,9 @@ fun MainScreenNavGraph(
         ) { backStackEntry ->
             ReportsScreen(
                 patientId = backStackEntry.arguments?.getLong("patientId")!!,
+                onBackPressed = {
+                    navController.navigate(Screen.Main.Results.route)
+                }
             )
         }
         composable(route = Screen.Main.Doctors.route) {

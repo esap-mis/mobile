@@ -21,8 +21,8 @@
     <string name="smile">👋</string>
     <string name="medical_record">Медицинская карта</string>
     <string name="make_appointment">Записаться на прием</string>
-    <string name="next_aapointments">Ближайшие приемы</string>
-    <string name="analysis_results">Результаты</string>
+    <string name="next_appointments">Ближайшие приемы</string>
+    <string name="results">Результаты</string>
     <string name="no_results">Нет результатов</string>
     <string name="all">Все</string>
     <string name="dont_have_next_appointments">Нет ближайших приемов</string>
@@ -64,6 +64,9 @@
     <string name="no_records">Нет заключений</string>
     <string name="search_record">Поиск заключения</string>
     <string name="search_analysis">Поиск анализа</string>
+    <string name="analysis_ready">Готов</string>
+    <string name="analysis_results">Результат анализов</string>
+    <string name="record_results">Заключение врача</string>
 
     <!-- Settings -->
     <string name="settings">Настройки</string>
