@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 
@@ -29,7 +30,7 @@ fun ReceiverMessageItemCard(
     message: String = ""
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier.padding(10.dp)
     ) {
         Surface(
             modifier = Modifier
@@ -42,7 +43,7 @@ fun ReceiverMessageItemCard(
             Image(
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 6.dp)
-                    .size(18.dp),
+                    .size(24.dp),
                 painter = painterResource(id = R.drawable.ic_chat_bot),
                 contentDescription = ""
             )
@@ -60,6 +61,7 @@ fun ReceiverMessageItemCard(
             Text(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 24.dp),
                 text = message,
+                fontSize = 16.sp,
                 style = MaterialTheme.typography.labelLarge.copy(color = Color(0xFF505050))
             )
         }

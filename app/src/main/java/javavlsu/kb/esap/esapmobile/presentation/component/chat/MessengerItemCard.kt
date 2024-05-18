@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import javavlsu.kb.esap.esapmobile.presentation.theme.Blue
 
 @Composable
@@ -29,6 +30,7 @@ fun MessengerItemCard(
                 .padding(horizontal = 24.dp, vertical = 18.dp),
             text = message,
             textAlign = TextAlign.Center,
+            fontSize = 16.sp,
             style = MaterialTheme.typography.labelLarge.copy(color = Color.White)
         )
     }
