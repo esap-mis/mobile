@@ -43,15 +43,12 @@ fun WriteMessageCard(
                 onValueChange(value)
             },
             placeholder = {
-                Text(
-                    text = stringResource(id = R.string.your_message),
-                    fontWeight = FontWeight.Bold
-                )
+                Text(text = stringResource(id = R.string.your_message))
             },
             trailingIcon = {
                 Image(
                     modifier = Modifier
-                        .size(24.dp)
+                        .size(28.dp)
                         .clickable {
                             onClickSend()
                         },

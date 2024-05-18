@@ -16,8 +16,9 @@ import javavlsu.kb.esap.esapmobile.core.domain.api.NotificationApiService
 import javavlsu.kb.esap.esapmobile.core.domain.util.AuthAuthenticator
 import javavlsu.kb.esap.esapmobile.core.domain.util.AuthInterceptor
 import javavlsu.kb.esap.esapmobile.core.domain.util.BaseUrlInterceptor
-import javavlsu.kb.esap.esapmobile.core.domain.util.TokenManager
+import javavlsu.kb.esap.esapmobile.core.domain.util.ChatHistoryStore
 import javavlsu.kb.esap.esapmobile.core.domain.util.NetworkManager
+import javavlsu.kb.esap.esapmobile.core.domain.util.TokenManager
 import javavlsu.kb.esap.esapmobile.core.domain.util.UserAgentInterceptor
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -145,4 +146,8 @@ class NetworkConfig {
             .client(mainOkHttpClient)
             .build()
             .create(ChatApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideChatHistoryStore(@ApplicationContext context: Context): ChatHistoryStore = ChatHistoryStore(context)
 }

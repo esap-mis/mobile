@@ -10,6 +10,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import javavlsu.kb.esap.esapmobile.core.data.ChatViewModel
@@ -25,6 +27,7 @@ import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.chat.ChatMessage
 import javavlsu.kb.esap.esapmobile.core.domain.model.chat.ChatRoles
+import javavlsu.kb.esap.esapmobile.core.domain.util.ChatHistoryStore
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.MessengerItemCard
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.ReceiverMessageItemCard
@@ -37,7 +40,8 @@ fun ChatScreen(
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-    val (messages, setMessages) = remember { mutableStateOf(listOf<ChatMessage>()) }
+    val chatHistoryStore = ChatHistoryStore(LocalContext.current)
+    val messages by chatHistoryStore.messagesFlow.collectAsState()
     val (input, setInput) = remember { mutableStateOf("") }
 
     fun sendMessage(message: String) {
@@ -50,7 +54,7 @@ fun ChatScreen(
                     }
                 }
             )
-            setMessages(messages + ChatMessage(ChatRoles.YOU, message))
+            chatHistoryStore.saveMessage(ChatMessage(ChatRoles.YOU, message))
             setInput("")
         }
     }
@@ -60,7 +64,7 @@ fun ChatScreen(
         if (messageResponse is ApiResponse.Success) {
             val message = (messageResponse as ApiResponse.Success).data.message
             val chatMessage = ChatMessage(ChatRoles.BOT, message.trim('"'))
-            setMessages(messages + chatMessage)
+            chatHistoryStore.saveMessage(chatMessage)
         }
     }
 
