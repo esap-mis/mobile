@@ -18,6 +18,7 @@ import javavlsu.kb.esap.esapmobile.core.domain.util.AuthInterceptor
 import javavlsu.kb.esap.esapmobile.core.domain.util.BaseUrlInterceptor
 import javavlsu.kb.esap.esapmobile.core.domain.util.ChatHistoryStore
 import javavlsu.kb.esap.esapmobile.core.domain.util.NetworkManager
+import javavlsu.kb.esap.esapmobile.core.domain.util.TimeoutInterceptor
 import javavlsu.kb.esap.esapmobile.core.domain.util.TokenManager
 import javavlsu.kb.esap.esapmobile.core.domain.util.UserAgentInterceptor
 import kotlinx.coroutines.flow.first
@@ -26,7 +27,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -69,6 +69,7 @@ class NetworkConfig {
         authAuthenticator: AuthAuthenticator,
         baseUrlInterceptor: BaseUrlInterceptor,
         userAgentInterceptor: UserAgentInterceptor,
+        timeoutInterceptor: TimeoutInterceptor
     ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -78,8 +79,8 @@ class NetworkConfig {
             .addInterceptor(baseUrlInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(timeoutInterceptor)
             .authenticator(authAuthenticator)
-            .connectTimeout(5, TimeUnit.MINUTES)
             .build()
     }
 
@@ -97,6 +98,10 @@ class NetworkConfig {
     @Provides
     fun provideBaseUrlInterceptor(networkManager: NetworkManager): BaseUrlInterceptor =
         BaseUrlInterceptor(networkManager)
+
+    @Singleton
+    @Provides
+    fun provideTimeoutInterceptor(): TimeoutInterceptor = TimeoutInterceptor()
 
     @Singleton
     @Provides
