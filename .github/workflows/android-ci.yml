@@ -12,7 +12,6 @@ jobs:
     name: Generate APK
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4.1.5
 
@@ -40,11 +39,25 @@ jobs:
             app/build/outputs/apk/release/EsapMobile.apk
             version.txt
 
+      - name: Upload version to repository
+        if: always()
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git fetch origin master
+          git checkout -b update-version origin/master
+          echo $(cat version.txt) > .version
+          git add .version
+          git commit -m 'ci: update version'
+          git push origin update-version
+
   release:
     name: Release APK
     needs: apk
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.5
 
       - name: Download build output
         uses: actions/download-artifact@v4.1.7
@@ -56,7 +69,41 @@ jobs:
         id: read_version
         run: echo "VERSION_NAME=$(cat download/version.txt | grep VERSION_NAME | cut -d'=' -f2)" >> $GITHUB_ENV
 
+      - name: Compare versions
+        id: compare_versions
+        run: |
+          if [ -f .version ]; then
+            PREVIOUS_VERSION=$(cat .version)
+          else
+            PREVIOUS_VERSION=""
+          fi
+          if [ "$PREVIOUS_VERSION" != "$VERSION_NAME" ]; then
+            echo "VERSION_CHANGED=true" >> $GITHUB_ENV
+          else
+            echo "VERSION_CHANGED=false" >> $GITHUB_ENV
+
+      - name: Get previous version tag
+        if: env.VERSION_CHANGED == 'true'
+        id: get_prev_tag
+        run: |
+          if [ -f .version ]; then
+            PREV_TAG=$(cat .version)
+          else
+            PREV_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          fi
+          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
+
+      - name: Get changelog
+        if: env.VERSION_CHANGED == 'true'
+        id: get_changelog
+        run: |
+          PREV_TAG=${{ env.PREV_TAG }}
+          CURRENT_TAG=v${{ env.VERSION_NAME }}
+          CHANGELOG=$(git log $PREV_TAG..HEAD --oneline)
+          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
+
       - name: Create Release
+        if: env.VERSION_CHANGED == 'true'
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -64,8 +111,12 @@ jobs:
         with:
           tag_name: v${{ env.VERSION_NAME }}
           release_name: ${{ github.event.repository.name }} v${{ env.VERSION_NAME }}
+          body: |
+            ## Changes
+            ${{ env.CHANGELOG }}
 
       - name: Upload Release APK
+        if: env.VERSION_CHANGED == 'true'
         id: upload_release_asset
         uses: actions/upload-release-asset@v1.0.1
         env:
