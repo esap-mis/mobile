@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import java.io.ByteArrayOutputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,6 +8,19 @@ plugins {
     kotlin("kapt")
     id("com.google.gms.google-services")
 }
+
+fun Project.gitCommitCount(): Int {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInt()
+}
+
+val majorVersion = 1
+val minorVersion = 0
+val patchVersion = 1
 
 android {
     namespace = "javavlsu.kb.esap.esapmobile"
@@ -14,8 +30,8 @@ android {
         applicationId = "javavlsu.kb.esap.esapmobile"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = gitCommitCount()
+        versionName = "$majorVersion.$minorVersion.$patchVersion"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,6 +43,26 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            resValue(
+                "string",
+                "app_version",
+                "v${defaultConfig.versionName}-${defaultConfig.versionCode}"
+            )
+            applicationVariants.all {
+                val variant = this
+                variant.outputs
+                    .map { it as BaseVariantOutputImpl }
+                    .forEach { output ->
+                        val outputFileName =
+                            "${
+                                rootProject.name.replace(
+                                    " ",
+                                    ""
+                                )
+                            }.apk"
+                        output.outputFileName = outputFileName
+                    }
+            }
         }
     }
     compileOptions {
@@ -103,4 +139,11 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+task("printVersionName") {
+    val versionName = android.defaultConfig.versionName!!
+    val fullVersion = "${versionName.replace(".", "")}-${gitCommitCount()}"
+    project.extensions.extraProperties["fullVersion"] = fullVersion
+    println(versionName)
 }
