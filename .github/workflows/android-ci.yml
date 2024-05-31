@@ -33,7 +33,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'esapmobile.jks'
-          fileDir: '/home/runner/work/mobile/app/keystore/'
+          fileDir: '/home/runner/work/mobile/mobile/app/keystore/'
           encodedString: ${{ secrets.KEYSTORE }}
 
       - name: Build APK
