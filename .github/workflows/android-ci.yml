@@ -25,8 +25,23 @@ jobs:
       - name: Set execution flag for gradlew
         run: chmod +x gradlew
 
+      - name: Gradle Wrapper Validation
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'esapmobile.jks'
+          fileDir: '/home/runner/work/mobile/mobile/app/keystore/'
+          encodedString: ${{ secrets.KEYSTORE }}
+
       - name: Build APK
         run: bash ./gradlew clean :app:assembleRelease -x test --no-daemon
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
       - name: Retrieve Version
         id: android_version
@@ -56,7 +71,24 @@ jobs:
         id: read_version
         run: echo "VERSION_NAME=$(cat download/version.txt | grep VERSION_NAME | cut -d'=' -f2)" >> $GITHUB_ENV
 
+      - uses: kaisugi/action-regex-match@v1.0.0
+        id: regex-match
+        with:
+          text: ${{ github.event.head_commit.message }}
+          regex: '^v[0-9]+\.[0-9]+\.[0-9]+$'
+
+      - name: Build Changelog
+        if: ${{ steps.regex-match.outputs.match != '' }}
+        id: changelog
+        uses: ardalanamini/auto-changelog@v3
+        with:
+          mention-authors: false
+          mention-new-contributors: false
+          include-compare: false
+          semver: false
+
       - name: Create Release
+        if: ${{ steps.regex-match.outputs.match != '' }}
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -66,6 +98,7 @@ jobs:
           release_name: ${{ github.event.repository.name }} v${{ env.VERSION_NAME }}
 
       - name: Upload Release APK
+        if: ${{ steps.regex-match.outputs.match != '' }}
         id: upload_release_asset
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -75,3 +108,4 @@ jobs:
           asset_path: download/app/build/outputs/apk/release/EsapMobile.apk
           asset_name: EsapMobile-v${{ env.VERSION_NAME }}.apk
           asset_content_type: application/zip
+          body: ${{ steps.changelog.outputs.changelog }}
