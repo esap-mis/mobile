@@ -3,7 +3,6 @@ package javavlsu.kb.esap.esapmobile.core.data
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.util.BaseUrlInterceptor
 import javavlsu.kb.esap.esapmobile.core.domain.util.NetworkManager
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-@HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val baseUrlInterceptor: BaseUrlInterceptor

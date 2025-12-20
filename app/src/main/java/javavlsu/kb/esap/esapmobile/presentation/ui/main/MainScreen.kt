@@ -4,23 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,21 +15,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
-import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
-import javavlsu.kb.esap.esapmobile.core.navigation.graph.MainScreenNavGraph
-import javavlsu.kb.esap.esapmobile.presentation.component.navigation.BottomNavigationBar
 import javavlsu.kb.esap.esapmobile.core.navigation.Screen
+import javavlsu.kb.esap.esapmobile.core.navigation.graph.MainScreenNavGraph
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
+import javavlsu.kb.esap.esapmobile.presentation.component.navigation.BottomNavigationBar
 import javavlsu.kb.esap.esapmobile.presentation.theme.Blue100
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(
     navHostController: NavHostController,
-    tokenViewModel: TokenViewModel = hiltViewModel(),
+    tokenViewModel: TokenViewModel = koinViewModel(),
     onLogoutClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()

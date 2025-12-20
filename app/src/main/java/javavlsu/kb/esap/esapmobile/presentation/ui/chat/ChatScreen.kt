@@ -8,20 +8,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import javavlsu.kb.esap.esapmobile.core.data.ChatViewModel
 import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
@@ -33,10 +26,11 @@ import javavlsu.kb.esap.esapmobile.presentation.component.chat.MessengerItemCard
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.ReceiverMessageItemCard
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.ToolbarMessage
 import javavlsu.kb.esap.esapmobile.presentation.component.chat.WriteMessageCard
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ChatScreen(
-    chatViewModel: ChatViewModel = hiltViewModel()
+    chatViewModel: ChatViewModel = koinViewModel()
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }

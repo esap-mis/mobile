@@ -1,7 +1,5 @@
 package javavlsu.kb.esap.esapmobile.presentation
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,20 +9,16 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
-import dagger.hilt.android.AndroidEntryPoint
 import javavlsu.kb.esap.esapmobile.core.navigation.graph.RootNavHost
 import javavlsu.kb.esap.esapmobile.presentation.theme.EsapMobileTheme
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

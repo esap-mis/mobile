@@ -28,16 +28,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import javavlsu.kb.esap.esapmobile.core.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.presentation.data.CalendarUiModel
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun Calendar(
     modifier: Modifier = Modifier,
-    calendarViewModel: CalendarViewModel = hiltViewModel()
+    calendarViewModel: CalendarViewModel = koinViewModel()
 ) {
     val data by calendarViewModel.calendarData.observeAsState()
 

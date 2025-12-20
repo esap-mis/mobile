@@ -1,17 +1,15 @@
 package javavlsu.kb.esap.esapmobile.core.data
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
-import dagger.hilt.android.lifecycle.HiltViewModel
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.request.AuthRequest
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.AuthResponse
-import javavlsu.kb.esap.esapmobile.core.domain.repository.AuthRepository
-import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javax.inject.Inject
-import androidx.compose.runtime.State
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.ServerStatusResponse
+import javavlsu.kb.esap.esapmobile.core.domain.repository.AuthRepository
+import javax.inject.Inject
 
-@HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ): BaseViewModel() {

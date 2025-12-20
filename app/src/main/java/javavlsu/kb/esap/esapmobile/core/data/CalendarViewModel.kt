@@ -1,13 +1,11 @@
 package javavlsu.kb.esap.esapmobile.core.data
 
 import androidx.lifecycle.MutableLiveData
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javavlsu.kb.esap.esapmobile.presentation.data.CalendarUiModel
 import javavlsu.kb.esap.esapmobile.presentation.util.CalendarDataSource
 import java.time.LocalDate
 import javax.inject.Inject
 
-@HiltViewModel
 class CalendarViewModel @Inject constructor(
     private val dataSource: CalendarDataSource,
 ): BaseViewModel() {

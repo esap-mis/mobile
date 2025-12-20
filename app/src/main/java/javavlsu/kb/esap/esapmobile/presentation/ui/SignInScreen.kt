@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.messaging.FirebaseMessaging
 import javavlsu.kb.esap.esapmobile.R
 import javavlsu.kb.esap.esapmobile.core.data.AuthViewModel
@@ -32,15 +31,16 @@ import javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler
 import javavlsu.kb.esap.esapmobile.core.data.NotificationViewModel
 import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
-import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
+import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen(
-    authViewModel: AuthViewModel = hiltViewModel(),
-    tokenViewModel: TokenViewModel = hiltViewModel(),
-    notificationViewModel: NotificationViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = koinViewModel(),
+    tokenViewModel: TokenViewModel = koinViewModel(),
+    notificationViewModel: NotificationViewModel = koinViewModel(),
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
     navigateBack: () -> Unit,

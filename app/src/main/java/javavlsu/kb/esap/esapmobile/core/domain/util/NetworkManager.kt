@@ -3,7 +3,7 @@ package javavlsu.kb.esap.esapmobile.core.domain.util
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import javavlsu.kb.esap.esapmobile.core.config.dataStore
+import javavlsu.kb.esap.esapmobile.core.di.dataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

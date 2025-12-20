@@ -1,7 +1,21 @@
 package javavlsu.kb.esap.esapmobile
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import javavlsu.kb.esap.esapmobile.core.di.appModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
-@HiltAndroidApp
-class EsapMobileApp : Application()
+class EsapMobileApp : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            androidLogger(Level.ERROR)
+            androidContext(this@EsapMobileApp)
+            modules(appModules)
+        }
+    }
+}
