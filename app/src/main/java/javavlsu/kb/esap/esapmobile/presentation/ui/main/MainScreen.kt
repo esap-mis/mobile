@@ -83,8 +83,7 @@ fun MainScreen(
                                         text = stringResource(R.string.logout),
                                         color = Color.Red,
                                         onClick = {
-                                            tokenViewModel.deleteToken()
-                                            tokenViewModel.deleteRoles()
+                                            tokenViewModel.logout()
                                             onLogoutClick()
                                         },
                                     )

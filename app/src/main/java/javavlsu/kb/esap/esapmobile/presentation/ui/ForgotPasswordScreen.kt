@@ -40,25 +40,25 @@ fun ForgotPasswordScreen(
 ) {
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-    val passwordResetResponse by authViewModel.passwordResetResponse.observeAsState()
-    val serverStatusResponse by authViewModel.serverStatusResponse.observeAsState()
+    val passwordResetResponse by authViewModel.passwordResetState.collectAsState()
+    val serverStatusResponse by authViewModel.serverStatusState.collectAsState()
 
     LaunchedEffect(true) {
         authViewModel.checkServerStatus(
-            object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    responseMessage = message
-                    showDialog = true
-                }
-            }
+//            object : CoroutinesErrorHandler {
+//                override fun onError(message: String) {
+//                    responseMessage = message
+//                    showDialog = true
+//                }
+//            }
         )
     }
 
     if (serverStatusResponse is ApiResponse.Loading) {
         CircularProgress()
     } else {
-        val login = authViewModel.login.value
-        val password = authViewModel.password.value
+        val login by authViewModel.login.collectAsState()
+        val password by authViewModel.password.collectAsState()
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
         ResetPasswordForm(
@@ -70,12 +70,12 @@ fun ForgotPasswordScreen(
             onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
             onResetPasswordButtonClick = {
                 authViewModel.resetPassword(
-                    object : CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            responseMessage = message
-                            showDialog = true
-                        }
-                    }
+//                    object : CoroutinesErrorHandler {
+//                        override fun onError(message: String) {
+//                            responseMessage = message
+//                            showDialog = true
+//                        }
+//                    }
                 )
             },
             navigateToSignIn = navigateToSignIn

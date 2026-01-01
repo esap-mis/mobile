@@ -1,8 +1,10 @@
 package javavlsu.kb.esap.esapmobile.core.domain.model.response
 
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@Serializable
 data class AppointmentResponse(
     val id: Long,
     val date: String,

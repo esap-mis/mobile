@@ -22,8 +22,11 @@ fun RootNavHost(
             MainScreen(
                 navHostController = navController,
                 onLogoutClick = {
-                    navHostController.popBackStack()
-                    navHostController.navigate(Graph.Root.root)
+                    navHostController.navigate(Graph.Auth.root) {
+                        popUpTo(Graph.Root.root) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

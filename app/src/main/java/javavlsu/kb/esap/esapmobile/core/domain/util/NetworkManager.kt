@@ -27,7 +27,7 @@ class NetworkManager(
     }
 
     private suspend fun initializeDefaultBaseUrl(): String {
-        val defaultBaseUrl = "http://10.0.2.2:8080/"
+        val defaultBaseUrl = "http://192.168.0.105:8080/"
         setBaseUrl(defaultBaseUrl)
         return defaultBaseUrl
     }

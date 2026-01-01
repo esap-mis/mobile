@@ -40,6 +40,12 @@ class TokenViewModel @Inject constructor(
         }
     }
 
+    fun saveRefreshToken(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            tokenManager.saveRefreshToken(token)
+        }
+    }
+
     fun deleteToken() {
         viewModelScope.launch(Dispatchers.IO) {
             tokenManager.deleteToken()
@@ -54,6 +60,14 @@ class TokenViewModel @Inject constructor(
 
     fun deleteRoles() {
         viewModelScope.launch(Dispatchers.IO) {
+            tokenManager.deleteRoles()
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            tokenManager.deleteToken()
+            tokenManager.deleteRefreshToken()
             tokenManager.deleteRoles()
         }
     }

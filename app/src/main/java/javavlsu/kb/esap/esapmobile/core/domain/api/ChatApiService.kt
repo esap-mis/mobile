@@ -1,16 +1,25 @@
 package javavlsu.kb.esap.esapmobile.core.domain.api
 
+import io.ktor.client.HttpClient
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
+import io.ktor.http.HttpMethod
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.ModelResponse
-import javavlsu.kb.esap.esapmobile.core.domain.util.CONNECT_TIMEOUT
-import javavlsu.kb.esap.esapmobile.core.domain.util.READ_TIMEOUT
-import javavlsu.kb.esap.esapmobile.core.domain.util.WRITE_TIMEOUT
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import javax.inject.Inject
 
-interface ChatApiService {
-    @POST("api/chat")
-    @Headers("$CONNECT_TIMEOUT:60", "$READ_TIMEOUT:300", "$WRITE_TIMEOUT:30")
-    suspend fun sendMessage(@Body message: String): Response<ModelResponse>
+interface IChatApiService {
+    suspend fun sendMessage(message: String): ApiResponse<ModelResponse>
+}
+
+class ChatApiService @Inject constructor(
+    private val mainClient: HttpClient
+) : BaseApiService(mainClient), IChatApiService {
+
+    override suspend fun sendMessage(message: String): ApiResponse<ModelResponse> {
+        return safeRequest {
+            url("api/chat")
+            method = HttpMethod.Post
+            setBody(message)
+        }
+    }
 }

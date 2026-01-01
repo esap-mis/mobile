@@ -1,5 +1,6 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -49,47 +50,62 @@ fun SignInScreen(
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val token by tokenViewModel.token.observeAsState()
-    val serverStatusResponse by authViewModel.serverStatusResponse.observeAsState()
-    val authResponse by authViewModel.authResponse.observeAsState()
+    val serverStatusResponse by authViewModel.serverStatusState.collectAsState()
+    val authResponse by authViewModel.authState.collectAsState()
 
-    LaunchedEffect(true) {
-        authViewModel.checkServerStatus(
-            object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    responseMessage = message
-                    showDialog = true
-                }
-            }
-        )
+    LaunchedEffect(Unit) {
+        authViewModel.clearAuthState()
+        authViewModel.clearServerStatusState()
+        authViewModel.clearInputFields()
+        // Мы убрали вызов checkServerStatus здесь, так как он теперь в init AuthViewModel,
+        // но так как мы используем viewModel { ... } в Koin, при каждом входе на экран
+        // будет создаваться новая ViewModel (если старая была уничтожена) или
+        // мы можем явно вызвать его, чтобы обновить статус.
+        authViewModel.checkServerStatus()
     }
 
     fun handleServerStatusSuccess() {
+        Log.d("SignInScreen", "handleServerStatusSuccess: token=$token, authResponse=$authResponse")
         if (token != null) {
+            Log.d("SignInScreen", "Token exists, navigating to main")
             navigateToMain()
         } else {
             if (authResponse is ApiResponse.Success) {
                 val response = (authResponse as ApiResponse.Success).data
+                Log.d("SignInScreen", "Auth success, saving tokens and roles")
                 tokenViewModel.saveToken(response.jwt)
+                tokenViewModel.saveRefreshToken(response.jwt)
                 tokenViewModel.saveRoles(response.roles)
 
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                     if (!task.isSuccessful) {
+                        Log.w("SignInScreen", "Fetching FCM registration token failed", task.exception)
+                        navigateToMain()
                         return@addOnCompleteListener
                     }
                     val deviceToken = task.result
+                    Log.d("SignInScreen", "FCM token: $deviceToken")
                     notificationViewModel.registerDeviceToken(
                         deviceToken,
                         object : CoroutinesErrorHandler {
                             override fun onError(message: String) {
+                                Log.e("SignInScreen", "Notification registration error: $message")
                                 responseMessage = message
                                 showDialog = true
+                                // Даже если не удалось зарегистрировать токен, пускаем в приложение
+                                navigateToMain()
                             }
                         }
                     )
+                    // В случае успеха регистрации токена тоже переходим
+                    navigateToMain()
                 }
             } else if (authResponse is ApiResponse.Failure) {
-                responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                val errorMessage = (authResponse as ApiResponse.Failure).errorMessage
+                Log.e("SignInScreen", "Auth failure: $errorMessage")
+                responseMessage = errorMessage
                 showDialog = true
+                authViewModel.clearAuthState()
             }
         }
     }
@@ -113,8 +129,8 @@ fun SignInScreen(
             if (authResponse is ApiResponse.Loading) {
                 CircularProgress()
             } else {
-                val login = authViewModel.login.value
-                val password = authViewModel.password.value
+                val login by authViewModel.login.collectAsState()
+                val password by authViewModel.password.collectAsState()
                 var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
                 AuthForm(
@@ -127,12 +143,12 @@ fun SignInScreen(
                     onForgotPasswordButtonClick = { navigateToForgotPassword() },
                     onSignInButtonClick = {
                         authViewModel.login(
-                            object : CoroutinesErrorHandler {
-                                override fun onError(message: String) {
-                                    responseMessage = message
-                                    showDialog = true
-                                }
-                            }
+//                            object : CoroutinesErrorHandler {
+//                                override fun onError(message: String) {
+//                                    responseMessage = message
+//                                    showDialog = true
+//                                }
+//                            }
                         )
                     },
                     onRegisterButtonClick = { navigateToSignUp() }

@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("kotlinx-serialization")
 }
 
 fun Project.gitCommitCount(): Int {
@@ -108,21 +109,11 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.compose.material:material-icons-extended")
 
-    // Retrofit
-    val retrofitVersion = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
-
-    // OkHttp
-    val okhttpVersion = "4.12.0"
-    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
     // LiveData
     implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
@@ -151,6 +142,21 @@ dependencies {
     implementation("io.insert-koin:koin-core:$kotlinVersion")
     implementation("io.insert-koin:koin-compose:1.1.1")
     implementation("io.insert-koin:koin-androidx-compose:$kotlinVersion")
+
+    // Ktor
+    val ktorVersion = "3.3.3"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("io.ktor:ktor-client-auth:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+    // Kotlin Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    // Slf4j
+    implementation("org.slf4j:slf4j-android:1.7.36")
 }
 
 task("printVersionName") {

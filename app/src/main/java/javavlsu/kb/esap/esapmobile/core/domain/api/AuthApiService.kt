@@ -1,23 +1,54 @@
 package javavlsu.kb.esap.esapmobile.core.domain.api
 
+import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
+import io.ktor.http.HttpMethod
 import javavlsu.kb.esap.esapmobile.core.domain.model.request.AuthRequest
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.AuthResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.ServerStatusResponse
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import javax.inject.Inject
 
-interface AuthApiService {
-    @GET("actuator/health")
-    suspend fun checkStatus(): Response<ServerStatusResponse>
+interface IAuthApiService {
+    suspend fun checkStatus(): ApiResponse<ServerStatusResponse>
+    suspend fun login(request: AuthRequest): ApiResponse<AuthResponse>
+    suspend fun resetPassword(request: AuthRequest): ApiResponse<String>
+    suspend fun refreshToken(refreshToken: String): ApiResponse<AuthResponse>
+}
 
-    @POST("api/auth/login")
-    suspend fun login(@Body request: AuthRequest): Response<AuthResponse>
+class AuthApiService @Inject constructor(
+    private val authClient: HttpClient
+) : BaseApiService(authClient), IAuthApiService {
 
-    @POST("api/auth/password/reset")
-    suspend fun resetPassword(@Body request: AuthRequest): Response<String>
+    override suspend fun checkStatus(): ApiResponse<ServerStatusResponse> {
+        return safeRequest {
+            url("actuator/health")
+            method = HttpMethod.Get
+        }
+    }
 
-    @POST("api/auth/refresh")
-    suspend fun refreshToken(@Body token: String): Response<AuthResponse>
+    override suspend fun login(request: AuthRequest): ApiResponse<AuthResponse> {
+        return safeRequest {
+            url("api/auth/login")
+            method = HttpMethod.Post
+            setBody(request)
+        }
+    }
+
+    override suspend fun resetPassword(request: AuthRequest): ApiResponse<String> {
+        return safeRequest {
+            url("api/auth/password/reset")
+            method = HttpMethod.Post
+            setBody(request)
+        }
+    }
+
+    override suspend fun refreshToken(refreshToken: String): ApiResponse<AuthResponse> {
+        return safeRequest {
+            url("api/auth/refresh")
+            method = HttpMethod.Post
+            header("Authorization", "Bearer $refreshToken")
+        }
+    }
 }

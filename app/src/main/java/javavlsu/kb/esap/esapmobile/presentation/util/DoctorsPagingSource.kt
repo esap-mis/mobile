@@ -3,10 +3,8 @@ package javavlsu.kb.esap.esapmobile.presentation.util
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
-import javavlsu.kb.esap.esapmobile.core.domain.model.Page
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
-import retrofit2.HttpException
-import java.io.IOException
 
 class DoctorsPagingSource(
     private val mainApiService: MainApiService
@@ -19,19 +17,23 @@ class DoctorsPagingSource(
                 page = currentPage
             )
 
-            if (response.isSuccessful) {
-                val doctors = (response.body() as Page<DoctorResponse>)
-                LoadResult.Page(
-                    data = doctors.content,
-                    prevKey = if (currentPage == 0) null else currentPage - 1,
-                    nextKey = if (doctors.totalPages > currentPage + 1) currentPage + 1 else null
-                )
-            } else {
-                LoadResult.Error(HttpException(response))
+            when (response) {
+                is ApiResponse.Success -> {
+                    val doctors = response.data
+                    LoadResult.Page(
+                        data = doctors.content,
+                        prevKey = if (currentPage == 0) null else currentPage - 1,
+                        nextKey = if (doctors.totalPages > currentPage + 1) currentPage + 1 else null
+                    )
+                }
+                is ApiResponse.Failure -> {
+                    LoadResult.Error(Exception(response.errorMessage))
+                }
+                is ApiResponse.Loading -> {
+                    LoadResult.Error(Exception("Loading"))
+                }
             }
-        } catch (exception: IOException) {
-            LoadResult.Error(exception)
-        } catch (exception: HttpException) {
+        } catch (exception: Exception) {
             LoadResult.Error(exception)
         }
     }

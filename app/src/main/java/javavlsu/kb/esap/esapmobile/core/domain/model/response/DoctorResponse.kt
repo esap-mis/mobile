@@ -1,7 +1,9 @@
 package javavlsu.kb.esap.esapmobile.core.domain.model.response
 
 import javavlsu.kb.esap.esapmobile.core.domain.model.UserResponse
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DoctorResponse(
     val specialization: String,
     val schedules: List<ScheduleResponse>,

@@ -30,7 +30,7 @@ fun SettingsScreen(
     var showDialog by remember { mutableStateOf(false) }
     var newBaseUrl by remember { mutableStateOf("") }
     val currentBaseUrl by settingsViewModel.baseUrl.observeAsState()
-    val serverStatusResponse by authViewModel.serverStatusResponse.observeAsState()
+    val serverStatusResponse by authViewModel.serverStatusState.collectAsState()
 
     var applyButtonClicked by remember { mutableStateOf(false) }
 
@@ -77,20 +77,11 @@ fun SettingsScreen(
 
             CustomButton(
                 text = stringResource(R.string.apply_button),
-                isEnabled = false,
+                isEnabled = newBaseUrl.isNotBlank(),
                 onClick = {
                     applyButtonClicked = true
-                    settingsViewModel.changeBaseUrl(newBaseUrl)
-                    if (currentBaseUrl != null && applyButtonClicked) {
-                        authViewModel.checkServerStatus(
-                            object : CoroutinesErrorHandler {
-                                override fun onError(message: String) {
-                                    responseMessage = message
-                                    showDialog = true
-                                }
-                            }
-                        )
-                    }
+                    settingsViewModel.setBaseUrl(newBaseUrl)
+                    authViewModel.checkServerStatus()
                 }
             )
         }
