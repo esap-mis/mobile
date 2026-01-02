@@ -114,7 +114,7 @@ fun AppointmentsScreen(
                     isUpcoming = !isUpcoming
                 }
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .padding(
                         vertical = 16.dp,
@@ -273,7 +273,7 @@ fun AppointmentCard(
                     )
                 }
             }
-            Divider(Modifier.padding(8.dp))
+            HorizontalDivider(Modifier.padding(8.dp))
             Row(Modifier.padding(8.dp)) {
                 Box(
                     modifier = Modifier
@@ -318,7 +318,7 @@ fun AppointmentCard(
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider()
+                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Icon(
@@ -328,13 +328,13 @@ fun AppointmentCard(
                         )
                         if (appointment.doctor != null) {
                             Text(
-                                text = appointment.doctor.clinic.address,
+                                text = appointment.doctor.clinic!!.address,
                                 color = Color.Gray,
                                 fontSize = 14.sp
                             )
                         } else if (appointment.patient != null) {
                             Text(
-                                text = appointment.patient.clinic.address,
+                                text = appointment.patient.clinic!!.address,
                                 color = Color.Gray,
                                 fontSize = 14.sp
                             )

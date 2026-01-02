@@ -56,12 +56,16 @@ fun WriteMessageCard(
                     contentDescription = ""
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedPlaceholderColor = Gray40,
-                containerColor = Color.White,
+                unfocusedPlaceholderColor = Gray40,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                disabledContainerColor = Color.White,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
+                disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent
             )
         )
     }

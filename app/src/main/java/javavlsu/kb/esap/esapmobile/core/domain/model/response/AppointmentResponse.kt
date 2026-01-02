@@ -10,8 +10,8 @@ data class AppointmentResponse(
     val date: String,
     val startAppointments: String,
     val endAppointments: String,
-    val doctor: DoctorResponse?,
-    val patient: PatientResponse?
+    val doctor: DoctorResponse? = null,
+    val patient: PatientResponse? = null
 ) {
     fun isUpcoming(): Boolean {
         val appointmentDateTime =

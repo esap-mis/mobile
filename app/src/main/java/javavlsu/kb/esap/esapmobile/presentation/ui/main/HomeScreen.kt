@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
@@ -114,7 +115,7 @@ fun HomeScreen(
                 )
 
                 LaunchedEffect(patientResponse) {
-                    mainViewModel.getPatientMedicalCard(user.id,
+                    mainViewModel.getPatientMedicalCard(user.id!!,
                         object : CoroutinesErrorHandler {
                             override fun onError(message: String) {
                                 responseMessage = message
@@ -212,7 +213,7 @@ fun DisplayNextAppointments(
                                 .padding(5.dp)
                         )
                         Icon(
-                            imageVector = Icons.Default.ArrowForwardIos,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                             tint = Color.Gray,
                             contentDescription = null,
                             modifier = Modifier
@@ -295,7 +296,7 @@ fun NextAppointmentCard(
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider()
+                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Icon(
@@ -321,13 +322,13 @@ fun NextAppointmentCard(
                         )
                         if (appointment.doctor != null) {
                             Text(
-                                text = appointment.doctor.clinic.address,
+                                text = appointment.doctor.clinic!!.address,
                                 color = Color.Gray,
                                 fontSize = 16.sp
                             )
                         } else if (appointment.patient != null) {
                             Text(
-                                text = appointment.patient.clinic.address,
+                                text = appointment.patient.clinic!!.address,
                                 color = Color.Gray,
                                 fontSize = 16.sp
                             )
@@ -380,7 +381,7 @@ fun DisplayAnalysis(
                                 .padding(5.dp)
                         )
                         Icon(
-                            imageVector = Icons.Default.ArrowForwardIos,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                             tint = Color.Gray,
                             contentDescription = null,
                             modifier = Modifier

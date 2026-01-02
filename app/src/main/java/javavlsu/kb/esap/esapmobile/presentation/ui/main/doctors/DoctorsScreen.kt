@@ -171,7 +171,7 @@ fun DisplayDoctorCard(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = doctor.clinic.address,
+                        text = doctor.clinic!!.address,
                         color = Color.Gray,
                         fontSize = 16.sp
                     )

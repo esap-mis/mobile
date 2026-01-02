@@ -72,7 +72,7 @@ fun ResultsScreen(
                 )
 
                 LaunchedEffect(patientResponse) {
-                    mainViewModel.getPatientMedicalCard(user.id,
+                    mainViewModel.getPatientMedicalCard(user.id!!,
                         object : CoroutinesErrorHandler {
                             override fun onError(message: String) {
                                 responseMessage = message

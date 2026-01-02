@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -102,7 +103,7 @@ fun ConfirmationScreen(
                         color = Green80,
                         onClick = {
                             mainViewModel.makeAppointment(scheduleId,
-                                AppointmentRequest(patient.id, selectedDate, startTime),
+                                AppointmentRequest(patient.id!!, selectedDate, startTime),
                                 object : CoroutinesErrorHandler {
                                     override fun onError(message: String) {
                                         responseMessage = message
@@ -170,14 +171,14 @@ fun DoctorDetails(
             )
         }
     }
-    Divider(modifier = Modifier.padding(vertical = 16.dp))
+    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
     val parsedAppointmentDate = LocalDate.parse(appointmentDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     DetailRow(
         text = "${parsedAppointmentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в $appointmentTime",
         label = stringResource(R.string.appointment_date_time)
     )
     DetailRow(
-        text = doctor.clinic.address,
+        text = doctor.clinic!!.address,
         label = stringResource(R.string.clinic_address)
     )
     DetailRow(

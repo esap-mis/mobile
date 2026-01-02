@@ -161,7 +161,7 @@ fun DoctorCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             var isExpanded by remember { mutableStateOf(false) }
-            val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules, doctor.schedules[0].appointments)
+            val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules!!, doctor.schedules[0].appointments)
 
             if (doctor.schedules.isNotEmpty()) {
                 ExpandableTimeSlotsList(
@@ -170,7 +170,7 @@ fun DoctorCard(
                     availableTimeSlots = availableTimeSlots,
                     date = date,
                     scheduleId = doctor.schedules[0].id,
-                    doctorId = doctor.id,
+                    doctorId = doctor.id!!,
                     navController = navController
                 )
             }
