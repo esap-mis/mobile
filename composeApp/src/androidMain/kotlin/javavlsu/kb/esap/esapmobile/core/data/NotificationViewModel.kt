@@ -1,0 +1,22 @@
+package javavlsu.kb.esap.esapmobile.core.data
+
+import androidx.lifecycle.MutableLiveData
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.request.TokenRequest
+import javavlsu.kb.esap.esapmobile.core.domain.repository.NotificationRepository
+import javax.inject.Inject
+
+class NotificationViewModel @Inject constructor(
+    private val notificationRepository: NotificationRepository,
+): javavlsu.kb.esap.esapmobile.core.data.BaseViewModel() {
+    private val _tokenRegisterResponse = MutableLiveData<ApiResponse<String>>()
+    val tokenRegisterResponse = _tokenRegisterResponse
+
+    fun registerDeviceToken(token: String, coroutinesErrorHandler: javavlsu.kb.esap.esapmobile.core.data.CoroutinesErrorHandler) = baseRequest(
+        _tokenRegisterResponse,
+        coroutinesErrorHandler
+    ) {
+        val request = TokenRequest(token)
+        notificationRepository.registerDeviceToken(request)
+    }
+}
