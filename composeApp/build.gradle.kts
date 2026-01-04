@@ -177,12 +177,12 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "org.example.multiplatform_demo.MainKt"
+        mainClass = "javavlsu.kb.esap.esapmobile.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.example.multiplatform_demo"
-            packageVersion = "1.0.0"
+            packageName = "javavlsu.kb.esap.esapmobile"
+            packageVersion = "$majorVersion.$minorVersion.$patchVersion"
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.example.multiplatform_demo
+package javavlsu.kb.esap.esapmobile.core
 
 //interface Platform {
 //    val name: String

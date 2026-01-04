@@ -1,4 +1,4 @@
-package org.example.multiplatform_demo
+package javavlsu.kb.esap.esapmobile
 
 //class JVMPlatform : Platform {
 //    override val name: String = "Java ${System.getProperty("java.version")} and ${

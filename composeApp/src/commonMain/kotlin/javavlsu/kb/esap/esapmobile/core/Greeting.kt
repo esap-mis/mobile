@@ -1,4 +1,4 @@
-package org.example.multiplatform_demo
+package javavlsu.kb.esap.esapmobile.core
 
 //class Greeting {
 //    private val platform = getPlatform()
