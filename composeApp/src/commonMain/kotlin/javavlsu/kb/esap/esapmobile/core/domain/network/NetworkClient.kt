@@ -1,5 +1,6 @@
 package javavlsu.kb.esap.esapmobile.core.domain.network
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -13,7 +14,6 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.AuthResponse
 import javavlsu.kb.esap.esapmobile.core.domain.network.plugin.UserAgentInterceptorPlugin
-import javavlsu.kb.esap.esapmobile.core.domain.util.AppLogger
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
@@ -21,12 +21,9 @@ import java.util.concurrent.TimeUnit
 class NetworkClient(
     private val networkManager: NetworkManager,
     private val tokenManager: TokenManager,
-    private val appLogger: AppLogger
 ) {
-
     companion object {
-        const val NETWORK_CLIENT_TAG = "NetworkClient"
-        const val KTOR_TAG = "KtorClient"
+        private val logger = KotlinLogging.logger {}
     }
 
     private val json = Json {
@@ -42,11 +39,7 @@ class NetworkClient(
             }
 
             install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        appLogger.d(KTOR_TAG, message)
-                    }
-                }
+                logger = Logger.DEFAULT
                 level = LogLevel.ALL
             }
 
@@ -73,11 +66,7 @@ class NetworkClient(
             }
 
             install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        appLogger.d(KTOR_TAG, message)
-                    }
-                }
+                logger = Logger.DEFAULT
                 level = LogLevel.ALL
             }
 
@@ -92,7 +81,7 @@ class NetworkClient(
                     loadTokens {
                         val accessToken = tokenManager.getToken() ?: ""
                         val refreshToken = tokenManager.getRefreshToken() ?: ""
-                        appLogger.d(NETWORK_CLIENT_TAG, "loadTokens: accessToken=${accessToken.take(10)}, refreshToken=${refreshToken.take(10)}")
+                        logger.debug { "loadTokens: accessToken=${accessToken.take(10)}, refreshToken=${refreshToken.take(10)}" }
                         BearerTokens(
                             accessToken = accessToken,
                             refreshToken = refreshToken
@@ -100,10 +89,10 @@ class NetworkClient(
                     }
 
                     refreshTokens {
-                        appLogger.d(NETWORK_CLIENT_TAG, "refreshTokens: started")
+                        logger.debug { "refreshTokens: started" }
                         val newToken = refreshToken()
                         if (newToken != null) {
-                            appLogger.d(NETWORK_CLIENT_TAG, "refreshTokens: success, saving tokens")
+                            logger.debug { "refreshTokens: success, saving tokens" }
                             tokenManager.saveToken(newToken.jwt)
                             tokenManager.saveRefreshToken(newToken.jwt)
                             BearerTokens(
@@ -111,7 +100,7 @@ class NetworkClient(
                                 refreshToken = newToken.jwt
                             )
                         } else {
-                            appLogger.e(NETWORK_CLIENT_TAG, "refreshTokens: failed, clearing data")
+                            logger.debug { "refreshTokens: failed, clearing data" }
                             tokenManager.deleteToken()
                             tokenManager.deleteRefreshToken()
                             tokenManager.deleteRoles()
@@ -133,24 +122,24 @@ class NetworkClient(
 
     private suspend fun refreshToken(): AuthResponse? {
         val refreshToken = tokenManager.getRefreshToken()
-        appLogger.d(NETWORK_CLIENT_TAG, "refreshToken: refreshToken=$refreshToken")
+        logger.debug { "refreshToken: refreshToken=$refreshToken" }
         if (refreshToken.isNullOrBlank()) {
-            appLogger.e(NETWORK_CLIENT_TAG, "refreshToken: token is null or blank")
+            logger.debug { "refreshToken: token is null or blank" }
             return null
         }
         return try {
             val client = createAuthHttpClient()
             val currentBaseUrl = networkManager.getBaseUrl()
-            appLogger.d(NETWORK_CLIENT_TAG, "refreshToken: calling ${currentBaseUrl}api/auth/refresh")
+            logger.debug { "refreshToken: calling ${currentBaseUrl}api/auth/refresh" }
             val response = client.post {
                 url("${currentBaseUrl}api/auth/refresh")
                 header("Authorization", "Bearer $refreshToken")
             }
-            appLogger.d(NETWORK_CLIENT_TAG, "refreshToken: response status=${response.status}")
+            logger.debug { "refreshToken: response status=${response.status}" }
             val authResponse: AuthResponse = response.body()
             authResponse
         } catch (e: Exception) {
-            appLogger.e(NETWORK_CLIENT_TAG, "Failed to refresh token: ${e.message}", e)
+            logger.error(e) { "Failed to refresh token: ${e.message}" }
             null
         }
     }

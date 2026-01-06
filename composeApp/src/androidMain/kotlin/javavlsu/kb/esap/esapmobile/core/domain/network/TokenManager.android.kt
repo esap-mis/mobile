@@ -3,12 +3,10 @@ package javavlsu.kb.esap.esapmobile.core.domain.network
 import android.content.Context
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SharedPreferencesSettings
-import javavlsu.kb.esap.esapmobile.core.domain.util.AppLogger
 import org.koin.dsl.module
 
 class AndroidTokenManager(
     private val context: Context,
-    private val appLogger: AppLogger
 ) : TokenManager {
     private val settings: Settings by lazy {
         SharedPreferencesSettings(
@@ -16,7 +14,7 @@ class AndroidTokenManager(
         )
     }
 
-    private val tokenManager by lazy { DefaultTokenManager(settings, appLogger) }
+    private val tokenManager by lazy { DefaultTokenManager(settings) }
 
     override fun getToken(): String? = tokenManager.getToken()
 
@@ -39,6 +37,6 @@ class AndroidTokenManager(
 
 actual val tokenManagerModule = module {
     single<TokenManager> {
-        AndroidTokenManager(get(), get())
+        AndroidTokenManager(get())
     }
 }

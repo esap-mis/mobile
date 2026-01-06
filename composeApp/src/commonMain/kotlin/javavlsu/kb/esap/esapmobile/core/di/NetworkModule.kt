@@ -5,14 +5,14 @@ import javavlsu.kb.esap.esapmobile.core.domain.api.ChatApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.core.domain.api.NotificationApiService
 import javavlsu.kb.esap.esapmobile.core.domain.network.NetworkClient
-import javavlsu.kb.esap.esapmobile.core.domain.network.NetworkManager
-import javavlsu.kb.esap.esapmobile.core.domain.util.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val networkModule = module {
 
-    single { NetworkClient(get(), get(), get()) }
+    single {
+        NetworkClient(get(), get())
+    }
 
     single(named("authHttpClient")) {
         get<NetworkClient>().createAuthHttpClient()

@@ -9,17 +9,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.navigation.compose.rememberNavController
 import javavlsu.kb.esap.esapmobile.App
-import javavlsu.kb.esap.esapmobile.core.navigation.graph.RootNavHost
-import javavlsu.kb.esap.esapmobile.presentation.theme.EsapMobileTheme
-import kotlin.text.compareTo
 
 class MainActivity : ComponentActivity() {
 

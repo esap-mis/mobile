@@ -16,10 +16,6 @@ interface FileDownloader {
     suspend fun isFileDownloaded(fileName: String, fileExtension: String = "pdf"): Boolean
 
     suspend fun deleteDownloadedFile(fileName: String, fileExtension: String = "pdf"): Boolean
-
-    companion object {
-        const val TAG = "FileDownloader"
-    }
 }
 
 sealed class DownloadResult {

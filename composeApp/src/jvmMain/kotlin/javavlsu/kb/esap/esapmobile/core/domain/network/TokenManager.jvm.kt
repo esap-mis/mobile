@@ -2,18 +2,15 @@ package javavlsu.kb.esap.esapmobile.core.domain.network
 
 import com.russhwolf.settings.PropertiesSettings
 import com.russhwolf.settings.Settings
-import javavlsu.kb.esap.esapmobile.core.domain.util.AppLogger
 import org.koin.dsl.module
 import java.io.File
 import java.util.Properties
 
-class DesktopTokenManager(
-    private val appLogger: AppLogger
-) : TokenManager {
+class DesktopTokenManager : TokenManager {
 
     private val settings: Settings by lazy { createDesktopSettings() }
 
-    private val tokenManager by lazy { DefaultTokenManager(settings, appLogger) }
+    private val tokenManager by lazy { DefaultTokenManager(settings) }
 
     override fun getToken(): String? = tokenManager.getToken()
 
@@ -54,5 +51,5 @@ class DesktopTokenManager(
 }
 
 actual val tokenManagerModule = module {
-    single<TokenManager> { DesktopTokenManager(get()) }
+    single<TokenManager> { DesktopTokenManager() }
 }

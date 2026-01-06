@@ -1,7 +1,7 @@
 package javavlsu.kb.esap.esapmobile.core.domain.network
 
 import com.russhwolf.settings.Settings
-import javavlsu.kb.esap.esapmobile.core.domain.util.AppLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.module.Module
 
 interface TokenManager {
@@ -18,7 +18,6 @@ interface TokenManager {
     suspend fun deleteRoles()
 
     companion object {
-        const val TAG = "TokenManager"
         const val TOKEN_KEY = "jwt_token"
         const val REFRESH_TOKEN_KEY = "refresh_token"
         const val ROLES_KEY = "roles"
@@ -27,20 +26,23 @@ interface TokenManager {
 
 class DefaultTokenManager(
     private val settings: Settings,
-    private val appLogger: AppLogger
 ) : TokenManager {
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+    }
 
     override fun getToken(): String? {
         return settings.getStringOrNull(TokenManager.TOKEN_KEY)
     }
 
     override suspend fun saveToken(token: String) {
-        appLogger.i(TokenManager.TAG, "Saving token: $token")
+        logger.info { "Saving token: $token" }
         settings.putString(TokenManager.TOKEN_KEY, token)
     }
 
     override suspend fun deleteToken() {
-        appLogger.i(TokenManager.TAG, "Deleting token")
+        logger.info { "Deleting token" }
         settings.remove(TokenManager.TOKEN_KEY)
     }
 
@@ -49,12 +51,12 @@ class DefaultTokenManager(
     }
 
     override suspend fun saveRefreshToken(token: String) {
-        appLogger.i(TokenManager.TAG,"Saving refresh token: $token")
+        logger.info { "Saving refresh token: $token" }
         settings.putString(TokenManager.REFRESH_TOKEN_KEY, token)
     }
 
     override suspend fun deleteRefreshToken() {
-        appLogger.i(TokenManager.TAG, "Deleting refresh token")
+        logger.info { "Deleting refresh token" }
         settings.remove(TokenManager.REFRESH_TOKEN_KEY)
     }
 
@@ -63,12 +65,12 @@ class DefaultTokenManager(
     }
 
     override suspend fun saveRoles(roles: String) {
-        appLogger.i(TokenManager.TAG, "Saving roles: $roles")
+        logger.info { "Saving roles: $roles" }
         settings.putString(TokenManager.ROLES_KEY, roles)
     }
 
     override suspend fun deleteRoles() {
-        appLogger.i(TokenManager.TAG, "Deleting roles")
+        logger.info { "Deleting roles" }
         settings.remove(TokenManager.ROLES_KEY)
     }
 }
