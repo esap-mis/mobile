@@ -16,26 +16,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import javavlsu.kb.esap.esapmobile.App
 import javavlsu.kb.esap.esapmobile.core.navigation.graph.RootNavHost
 import javavlsu.kb.esap.esapmobile.presentation.theme.EsapMobileTheme
+import kotlin.text.compareTo
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            EsapMobileTheme(darkTheme = false) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val navController = rememberNavController()
-                    RootNavHost(navHostController = navController)
+            App()
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        CheckNotificationPermission()
-                    }
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                CheckNotificationPermission()
             }
         }
     }

@@ -1,8 +1,6 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.io.ByteArrayOutputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -42,15 +40,8 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
-            // Mine
             implementation(libs.androidx.core.ktx)
-            implementation(libs.androidx.navigation.compose)
-            implementation(libs.androidx.datastore)
             implementation(libs.androidx.compose.runtime)
-            implementation(libs.androidx.paging.runtime)
-            implementation(libs.androidx.paging.compose)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.material)
 
 //            testImplementation("junit:junit:4.13.2")
 //            androidTestImplementation("androidx.test.ext:junit:1.3.0")
@@ -67,20 +58,7 @@ kotlin {
             implementation(libs.accompanist.permissions)
 
             // Koin
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
             implementation(libs.koin.androidx.compose)
-
-            // Ktor
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-            implementation(libs.ktor.client.logging)
-            implementation(libs.ktor.client.auth)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-
-            // Kotlin Serialization
-            implementation(libs.kotlinx.serialization.json)
 
             // Slf4j
             implementation(libs.slf4j.android)
@@ -94,6 +72,34 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.paging.common)
+            implementation(libs.paging.compose.common)
+
+            implementation(libs.navigation.compose)
+
+            implementation(libs.compose.material3)
+            implementation(libs.compose.material.icons.core)
+            implementation(libs.compose.material.icons.extended)
+
+            // Koin
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
+            // Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.auth)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
+            // Kotlin Serialization
+            implementation(libs.kotlinx.serialization.json)
+
+            // Multiplatform settings
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
