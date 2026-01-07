@@ -33,7 +33,9 @@ class DefaultTokenManager(
     }
 
     override fun getToken(): String? {
-        return settings.getStringOrNull(TokenManager.TOKEN_KEY)
+        val token = settings.getStringOrNull(TokenManager.TOKEN_KEY)
+        logger.info { "Get token: $token" }
+        return token
     }
 
     override suspend fun saveToken(token: String) {
@@ -47,7 +49,9 @@ class DefaultTokenManager(
     }
 
     override fun getRefreshToken(): String? {
-        return settings.getStringOrNull(TokenManager.REFRESH_TOKEN_KEY)
+        val refreshToken = settings.getStringOrNull(TokenManager.REFRESH_TOKEN_KEY)
+        logger.info { "Get refresh token: $refreshToken" }
+        return refreshToken
     }
 
     override suspend fun saveRefreshToken(token: String) {
@@ -61,7 +65,9 @@ class DefaultTokenManager(
     }
 
     override fun getRoles(): String? {
-        return settings.getStringOrNull(TokenManager.ROLES_KEY)
+        val roles = settings.getStringOrNull(TokenManager.ROLES_KEY)
+        logger.info { "Get roles: $roles" }
+        return roles
     }
 
     override suspend fun saveRoles(roles: String) {

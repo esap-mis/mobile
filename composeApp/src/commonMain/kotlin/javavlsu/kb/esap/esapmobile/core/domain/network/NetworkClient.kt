@@ -81,7 +81,6 @@ class NetworkClient(
                     loadTokens {
                         val accessToken = tokenManager.getToken() ?: ""
                         val refreshToken = tokenManager.getRefreshToken() ?: ""
-                        logger.debug { "loadTokens: accessToken=${accessToken.take(10)}, refreshToken=${refreshToken.take(10)}" }
                         BearerTokens(
                             accessToken = accessToken,
                             refreshToken = refreshToken
@@ -121,9 +120,8 @@ class NetworkClient(
     }
 
     private suspend fun refreshToken(): AuthResponse? {
-        val refreshToken = tokenManager.getRefreshToken()
-        logger.debug { "refreshToken: refreshToken=$refreshToken" }
-        if (refreshToken.isNullOrBlank()) {
+        val token = tokenManager.getToken()
+        if (token.isNullOrBlank()) {
             logger.debug { "refreshToken: token is null or blank" }
             return null
         }
@@ -133,7 +131,7 @@ class NetworkClient(
             logger.debug { "refreshToken: calling ${currentBaseUrl}api/auth/refresh" }
             val response = client.post {
                 url("${currentBaseUrl}api/auth/refresh")
-                header("Authorization", "Bearer $refreshToken")
+                header("Authorization", "Bearer $token")
             }
             logger.debug { "refreshToken: response status=${response.status}" }
             val authResponse: AuthResponse = response.body()
