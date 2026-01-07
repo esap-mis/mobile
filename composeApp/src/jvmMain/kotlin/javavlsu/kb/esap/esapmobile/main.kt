@@ -1,11 +1,16 @@
 package javavlsu.kb.esap.esapmobile
 
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPosition
+import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import javavlsu.kb.esap.esapmobile.App
+import esapmobile.composeapp.generated.resources.Res
+import esapmobile.composeapp.generated.resources.app_name
 import javavlsu.kb.esap.esapmobile.core.di.appModules
+import org.jetbrains.compose.resources.stringResource
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.core.logger.Level
 
 fun main() = application {
     startKoin {
@@ -14,7 +19,11 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "ESAP Desktop",
+        title = stringResource(Res.string.app_name),
+        state = WindowState(
+            position = WindowPosition(250.dp, 10.dp),
+            size = DpSize(500.dp, 700.dp)),
+        resizable = false,
     ) {
         App()
     }

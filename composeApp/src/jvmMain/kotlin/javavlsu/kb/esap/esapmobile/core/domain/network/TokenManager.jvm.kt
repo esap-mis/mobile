@@ -1,6 +1,5 @@
 package javavlsu.kb.esap.esapmobile.core.domain.network
 
-import com.russhwolf.settings.PropertiesSettings
 import com.russhwolf.settings.Settings
 import org.koin.dsl.module
 import java.io.File
@@ -9,7 +8,6 @@ import java.util.Properties
 class DesktopTokenManager : TokenManager {
 
     private val settings: Settings by lazy { createDesktopSettings() }
-
     private val tokenManager by lazy { DefaultTokenManager(settings) }
 
     override fun getToken(): String? = tokenManager.getToken()
@@ -30,7 +28,7 @@ class DesktopTokenManager : TokenManager {
 
     override suspend fun deleteRoles() = tokenManager.deleteRoles()
 
-    private fun createDesktopSettings(): PropertiesSettings {
+    private fun createDesktopSettings(): Settings {
         val userHome = System.getProperty("user.home")
         val appDir = File(userHome, ".esap")
 
@@ -38,15 +36,15 @@ class DesktopTokenManager : TokenManager {
             appDir.mkdirs()
         }
 
-        val authProperties = File(appDir, "auth.properties")
+        val settingsFile = File(appDir, "auth.properties")
 
         val properties = Properties().apply {
-            if (authProperties.exists()) {
-                authProperties.inputStream().use { load(it) }
+            if (settingsFile.exists()) {
+                settingsFile.inputStream().use { load(it) }
             }
         }
 
-        return PropertiesSettings(properties)
+        return AutoSaveFilePropertiesSettings(properties, settingsFile)
     }
 }
 

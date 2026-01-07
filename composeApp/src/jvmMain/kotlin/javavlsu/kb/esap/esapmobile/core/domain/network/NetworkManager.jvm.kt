@@ -1,6 +1,5 @@
 package javavlsu.kb.esap.esapmobile.core.domain.network
 
-import com.russhwolf.settings.PropertiesSettings
 import com.russhwolf.settings.Settings
 import org.koin.dsl.module
 import java.io.File
@@ -9,7 +8,6 @@ import kotlin.getValue
 
 class DesktopNetworkManager : NetworkManager {
     private val settings: Settings by lazy { createDesktopSettings() }
-
     private val networkManager by lazy { DefaultNetworkManager(settings) }
 
     override suspend fun getBaseUrl(): String = networkManager.getBaseUrl()
@@ -37,7 +35,7 @@ class DesktopNetworkManager : NetworkManager {
             }
         }
 
-        return PropertiesSettings(properties)
+        return AutoSaveFilePropertiesSettings(properties, settingsFile)
     }
 }
 

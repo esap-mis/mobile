@@ -10,7 +10,8 @@ class AndroidTokenManager(
 ) : TokenManager {
     private val settings: Settings by lazy {
         SharedPreferencesSettings(
-            context.getSharedPreferences("auth_preferences", Context.MODE_PRIVATE)
+            context.getSharedPreferences("auth_preferences",
+                Context.MODE_PRIVATE)
         )
     }
 
