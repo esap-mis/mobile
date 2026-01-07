@@ -1,8 +1,8 @@
 package javavlsu.kb.esap.esapmobile.core.domain.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import app.cash.paging.Pager
+import app.cash.paging.PagingConfig
+import app.cash.paging.PagingData
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
 import javavlsu.kb.esap.esapmobile.core.domain.model.request.AppointmentRequest

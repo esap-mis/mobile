@@ -72,7 +72,6 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.androidx.paging.common)
             implementation(libs.paging.compose.common)
 
             implementation(libs.navigation.compose)

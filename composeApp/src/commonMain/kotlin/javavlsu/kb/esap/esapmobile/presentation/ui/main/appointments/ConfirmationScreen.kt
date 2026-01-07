@@ -52,7 +52,7 @@ fun ConfirmationScreen(
     val loading by mainViewModel.loading.collectAsState()
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-    val doctorResponse by mainViewModel.doctorState.collectAsState()
+    val doctorResponse by mainViewModel.doctorByIdState.collectAsState()
     val patientResponse by mainViewModel.patientState.collectAsState()
     val makeAppointmentResponse by mainViewModel.makeAppointmentState.collectAsState()
 

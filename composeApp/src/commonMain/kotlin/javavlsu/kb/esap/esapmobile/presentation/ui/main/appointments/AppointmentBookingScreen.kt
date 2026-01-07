@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.paging.PagingData
 import esapmobile.composeapp.generated.resources.Res
 import esapmobile.composeapp.generated.resources.available_appointment_times
 import esapmobile.composeapp.generated.resources.doctors
@@ -51,7 +50,7 @@ fun AppointmentBookingScreen(
 ) {
     val loading by mainViewModel.loading.collectAsState()
     var responseMessage by remember { mutableStateOf("") }
-    val doctorListResponse by mainViewModel.doctorsList.collectAsState()
+    val doctorListResponse by mainViewModel.doctorListState.collectAsState()
     val data by calendarViewModel.calendarData.collectAsState()
 
     LaunchedEffect(data!!.selectedDate) {

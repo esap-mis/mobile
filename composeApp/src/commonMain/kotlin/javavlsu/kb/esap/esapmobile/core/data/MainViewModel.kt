@@ -1,8 +1,8 @@
 package javavlsu.kb.esap.esapmobile.core.data
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
+import app.cash.paging.PagingData
+import app.cash.paging.cachedIn
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.request.AppointmentRequest
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentResponse
