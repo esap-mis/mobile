@@ -38,12 +38,12 @@ class DesktopFileDownloader : FileDownloader {
             val fullFileName = "$fileName.$fileExtension"
             val destinationFile = File(downloadsDir, fullFileName)
 
-            logger.info { "Начинаем скачивание: $url в ${destinationFile.absolutePath}" }
+            logger.info { "Starting file download: $url to ${destinationFile.absolutePath}" }
 
             withContext(Dispatchers.IO) {
                 val urlConnection = URL(url).openConnection().apply {
-                    connectTimeout = 30000
-                    readTimeout = 30000
+                    connectTimeout = 30_000
+                    readTimeout = 30_000
                 }
 
                 urlConnection.getInputStream().use { inputStream ->
@@ -55,12 +55,12 @@ class DesktopFileDownloader : FileDownloader {
                 }
             }
 
-            logger.info { "Файл успешно скачан: ${destinationFile.absolutePath}" }
+            logger.info { "File successfully downloaded: ${destinationFile.absolutePath}" }
             emit(DownloadResult.Success(destinationFile.absolutePath))
 
         } catch (e: Exception) {
-            logger.error(e) { "Ошибка при скачивании файла" }
-            emit(DownloadResult.Error(e.message ?: "Ошибка скачивания"))
+            logger.error(e) { "Error while downloading file" }
+            emit(DownloadResult.Error(e.message ?: "File download error"))
         }
     }
 
@@ -82,7 +82,7 @@ class DesktopFileDownloader : FileDownloader {
                     File(it).delete()
                 } ?: false
             } catch (e: Exception) {
-                logger.error(e) { "Ошибка при удалении файла" }
+                logger.error(e) { "Error while deleting file" }
                 false
             }
         }

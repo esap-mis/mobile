@@ -179,16 +179,23 @@ fun AnalysisCard(analysis: AnalysisResponse) {
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .height(35.dp)
-                        .weight(1f)
+                        .wrapContentWidth()
+                        .defaultMinSize(minWidth = 120.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(if (analysis.result == stringResource(Res.string.analysis_ready)) Green20 else Red20)
+                        .background(
+                            if (analysis.result == stringResource(Res.string.analysis_ready))
+                                Green20 else Red20
+                        )
                 ) {
                     Text(
                         text = analysis.result,
-                        color = if (analysis.result == stringResource(Res.string.analysis_ready)) Green80 else Red80,
+                        color = if (analysis.result == stringResource(Res.string.analysis_ready))
+                            Green80 else Red80,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(horizontal = 20.dp)
+                        maxLines = 1,
+                        softWrap = false,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
@@ -196,7 +203,8 @@ fun AnalysisCard(analysis: AnalysisResponse) {
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .height(35.dp)
-                        .width(IntrinsicSize.Max)
+                        .wrapContentWidth()
+                        .defaultMinSize(minWidth = 120.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Gray40)
                 ) {
@@ -206,7 +214,9 @@ fun AnalysisCard(analysis: AnalysisResponse) {
                         color = Color.Gray,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(horizontal = 20.dp)
+                        maxLines = 1,
+                        softWrap = false,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }
             }
