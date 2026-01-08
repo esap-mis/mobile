@@ -73,64 +73,71 @@ fun HomeScreen(
         }
     }
 
-    if (loading) {
-        CircularProgress()
-    } else {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (patientResponse is ApiResponse.Success) {
-                val user = (patientResponse as ApiResponse.Success).data
-                Header(
-                    user = user,
-                    onMedicalCardClick = { navigateToMedicalCard() }
-                )
-                Spacer(modifier = Modifier.size(16.dp))
-                CustomButton(
-                    text = stringResource(Res.string.make_appointment),
-                    color = Green80,
-                    onClick = navigateToAppointmentsBooking
-                )
+    val showLoading = loading || doctorResponse is ApiResponse.Loading || patientResponse is ApiResponse.Loading || userAppointmentList is ApiResponse.Loading || medicalCardResponse is ApiResponse.Loading
 
-                if (medicalCardResponse is ApiResponse.Success) {
-                    val medicalCard = (medicalCardResponse as ApiResponse.Success).data
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (showLoading) {
+            CircularProgress()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (patientResponse is ApiResponse.Success) {
+                    val user = (patientResponse as ApiResponse.Success).data
+                    Header(
+                        user = user,
+                        onMedicalCardClick = { navigateToMedicalCard() }
+                    )
+                    Spacer(modifier = Modifier.size(16.dp))
+                    CustomButton(
+                        text = stringResource(Res.string.make_appointment),
+                        color = Green80,
+                        onClick = navigateToAppointmentsBooking
+                    )
 
-                    val analysis = medicalCard.medicalRecord
-                        .flatMap { record -> record.analyzes }
-                        .sortedBy { it.date }
-                        .take(5)
+                    if (medicalCardResponse is ApiResponse.Success) {
+                        val medicalCard = (medicalCardResponse as ApiResponse.Success).data
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                    DisplayAnalysis(
-                        analysis = analysis,
-                        onAllClick = { navigateToMedicalCard() }
+                        val analysis = medicalCard.medicalRecord
+                            .flatMap { record -> record.analyzes }
+                            .sortedBy { it.date }
+                            .take(5)
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        DisplayAnalysis(
+                            analysis = analysis,
+                            onAllClick = { navigateToMedicalCard() }
+                        )
+                    }
+
+                } else if (doctorResponse is ApiResponse.Success) {
+                    val user = (doctorResponse as ApiResponse.Success).data
+                    Header(
+                        user = user,
+                        onMedicalCardClick = { navigateToMedicalCard() }
                     )
                 }
 
-            } else if (doctorResponse is ApiResponse.Success) {
-                val user = (doctorResponse as ApiResponse.Success).data
-                Header(
-                    user = user,
-                    onMedicalCardClick = { navigateToMedicalCard() }
-                )
-            }
+                if (userAppointmentList is ApiResponse.Success) {
+                    var appointments = (userAppointmentList as ApiResponse.Success).data
 
-            if (userAppointmentList is ApiResponse.Success) {
-                var appointments = (userAppointmentList as ApiResponse.Success).data
+                    appointments = appointments
+                        .filter { it.isUpcoming() }
+                        .sortedBy { it.getDateTime() }
+                        .take(5)
 
-                appointments = appointments
-                    .filter { it.isUpcoming() }
-                    .sortedBy { it.getDateTime() }
-                    .take(5)
-
-                Spacer(modifier = Modifier.height(16.dp))
-                DisplayNextAppointments(
-                    appointments = appointments,
-                    onAllClick = navigateToAppointments
-                )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    DisplayNextAppointments(
+                        appointments = appointments,
+                        onAllClick = navigateToAppointments
+                    )
+                }
             }
         }
     }

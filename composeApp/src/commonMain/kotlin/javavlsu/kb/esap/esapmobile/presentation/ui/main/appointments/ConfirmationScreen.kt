@@ -61,53 +61,61 @@ fun ConfirmationScreen(
         mainViewModel.getPatient()
     }
 
-    if (loading) {
-        CircularProgress()
-    } else {
-        Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    val showLoading = loading || doctorResponse is ApiResponse.Loading || patientResponse is ApiResponse.Loading
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (showLoading) {
+            CircularProgress()
+        } else {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(20.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (doctorResponse is ApiResponse.Success) {
-                    val selectedDoctor = (doctorResponse as ApiResponse.Success).data
-                    DoctorDetails(
-                        appointmentDate = selectedDate,
-                        appointmentTime = startTime,
-                        doctor = selectedDoctor
-                    )
-                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    if (doctorResponse is ApiResponse.Success) {
+                        val selectedDoctor = (doctorResponse as ApiResponse.Success).data
+                        DoctorDetails(
+                            appointmentDate = selectedDate,
+                            appointmentTime = startTime,
+                            doctor = selectedDoctor
+                        )
+                    }
 
-                if (patientResponse is ApiResponse.Success) {
-                    val patient = (patientResponse as ApiResponse.Success).data
-                    PatientDetails(patient = patient)
+                    if (patientResponse is ApiResponse.Success) {
+                        val patient = (patientResponse as ApiResponse.Success).data
+                        PatientDetails(patient = patient)
 
-                    Spacer(modifier = Modifier.size(16.dp))
-                    CustomButton(
-                        text = stringResource(Res.string.confirm_appointment),
-                        color = Green80,
-                        onClick = {
-                            mainViewModel.makeAppointment(scheduleId,
-                                AppointmentRequest(patient.id!!, selectedDate, startTime)
-                            )
-                            showDialog = true
-                        }
-                    )
+                        Spacer(modifier = Modifier.size(16.dp))
+                        CustomButton(
+                            text = stringResource(Res.string.confirm_appointment),
+                            color = Green80,
+                            onClick = {
+                                mainViewModel.makeAppointment(
+                                    scheduleId,
+                                    AppointmentRequest(patient.id!!, selectedDate, startTime)
+                                )
+                                showDialog = true
+                            }
+                        )
+                    }
                 }
             }
-        }
-        if (showDialog && makeAppointmentResponse is ApiResponse.Success) {
-            ResponseDialog(
-                responseMessage = stringResource(Res.string.success_making_appointment)
-            ) {
-                showDialog = false
-                navigateBack()
+            if (showDialog && makeAppointmentResponse is ApiResponse.Success) {
+                ResponseDialog(
+                    responseMessage = stringResource(Res.string.success_making_appointment)
+                ) {
+                    showDialog = false
+                    navigateBack()
+                }
             }
         }
     }

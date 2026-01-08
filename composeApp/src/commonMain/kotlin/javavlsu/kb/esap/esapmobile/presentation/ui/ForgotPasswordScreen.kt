@@ -36,46 +36,56 @@ fun ForgotPasswordScreen(
     authViewModel: AuthViewModel = koinViewModel(),
     navigateToSignIn: () -> Unit
 ) {
+    val loading by authViewModel.loading.collectAsState()
     var responseMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     val passwordResetResponse by authViewModel.passwordResetState.collectAsState()
-    val serverStatusResponse by authViewModel.serverStatusState.collectAsState()
 
-    LaunchedEffect(true) {
-        authViewModel.checkServerStatus()
+    LaunchedEffect(passwordResetResponse) {
+        when (passwordResetResponse) {
+            is ApiResponse.Success -> {
+                responseMessage = "Пароль успешно изменен"
+                showDialog = true
+            }
+            is ApiResponse.Failure -> {
+                responseMessage = (passwordResetResponse as ApiResponse.Failure).errorMessage
+                showDialog = true
+                authViewModel.clearPasswordResetState()
+            }
+            else -> {}
+        }
     }
 
-    if (serverStatusResponse is ApiResponse.Loading) {
-        CircularProgress()
-    } else {
-        val login by authViewModel.login.collectAsState()
-        val password by authViewModel.password.collectAsState()
-        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (loading) {
+            CircularProgress()
+        } else {
+            val login by authViewModel.login.collectAsState()
+            val password by authViewModel.password.collectAsState()
+            var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-        ResetPasswordForm(
-            login = login,
-            password = password,
-            passwordVisible = passwordVisible,
-            onLoginChange = { authViewModel.setLogin(it) },
-            onPasswordChange = { authViewModel.setPassword(it) },
-            onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-            onResetPasswordButtonClick = { authViewModel.resetPassword() },
-            navigateToSignIn = navigateToSignIn
-        )
-
-        if (passwordResetResponse is ApiResponse.Success) {
-            ResponseDialog(
-                responseMessage = stringResource(Res.string.change_password_success)
-            ) {
-                showDialog = false
-                navigateToSignIn()
-            }
+            ResetPasswordForm(
+                login = login,
+                password = password,
+                passwordVisible = passwordVisible,
+                onLoginChange = { authViewModel.setLogin(it) },
+                onPasswordChange = { authViewModel.setPassword(it) },
+                onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
+                onResetPasswordButtonClick = { authViewModel.resetPassword() },
+                navigateToSignIn = navigateToSignIn
+            )
         }
     }
 
     if (showDialog) {
         ResponseDialog(responseMessage) {
             showDialog = false
+            if (passwordResetResponse is ApiResponse.Success) {
+                navigateToSignIn()
+            }
         }
     }
 }

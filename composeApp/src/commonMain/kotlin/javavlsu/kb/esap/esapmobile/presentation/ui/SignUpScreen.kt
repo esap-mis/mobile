@@ -15,7 +15,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import javavlsu.kb.esap.esapmobile.core.data.AuthViewModel
+import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
+import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
+import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -23,6 +26,11 @@ fun SignUpScreen(
     viewModel: AuthViewModel = koinViewModel(),
     navigateToSignIn: () -> Unit
 ) {
+    val loading by viewModel.loading.collectAsState()
+    val authResponse by viewModel.authState.collectAsState()
+    var responseMessage by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var specialization by remember { mutableStateOf("") }
@@ -31,101 +39,120 @@ fun SignUpScreen(
     var selectedGender by remember { mutableStateOf("Мужской") }
     val gender = listOf("Мужской", "Женский")
 
-    Column(
-        modifier = Modifier
-            .padding(40.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    LaunchedEffect(authResponse) {
+        when (authResponse) {
+            is ApiResponse.Success -> {
+                navigateToSignIn()
+            }
+            is ApiResponse.Failure -> {
+                responseMessage = (authResponse as ApiResponse.Failure).errorMessage
+                showDialog = true
+                viewModel.clearAuthState()
+            }
+            else -> {}
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "ЕСАП",
-            fontSize = 44.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.size(30.dp))
-        OutlinedTextField(
-            value = firstName,
-            onValueChange = {
-                firstName = it
-            },
-            shape = MaterialTheme.shapes.medium,
-            label = { Text("Имя") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.size(30.dp))
-        OutlinedTextField(
-            value = lastName,
-            onValueChange = {
-                lastName = it
-            },
-            shape = MaterialTheme.shapes.medium,
-            label = { Text("Фамилия") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (loading) {
+            CircularProgress()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(40.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "ЕСАП",
+                    fontSize = 44.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.Blue,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.size(30.dp))
+                OutlinedTextField(
+                    value = firstName,
+                    onValueChange = { firstName = it },
+                    shape = MaterialTheme.shapes.medium,
+                    label = { Text("Имя") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.size(30.dp))
+                OutlinedTextField(
+                    value = lastName,
+                    onValueChange = { lastName = it },
+                    shape = MaterialTheme.shapes.medium,
+                    label = { Text("Фамилия") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        Spacer(modifier = Modifier.size(30.dp))
-        ExposedDropdownMenu(
-            options = gender,
-            selectedOption = selectedGender,
-            onOptionSelected = { gender ->
-                selectedGender = gender
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = "Пол"
-        )
+                Spacer(modifier = Modifier.size(30.dp))
+                ExposedDropdownMenu(
+                    options = gender,
+                    selectedOption = selectedGender,
+                    onOptionSelected = { selectedGender = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Пол"
+                )
 
-        Spacer(modifier = Modifier.size(30.dp))
-        ExposedDropdownMenu(
-            options = roles,
-            selectedOption = selectedRole,
-            onOptionSelected = { role ->
-                selectedRole = role
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = "Роль"
-        )
+                Spacer(modifier = Modifier.size(30.dp))
+                ExposedDropdownMenu(
+                    options = roles,
+                    selectedOption = selectedRole,
+                    onOptionSelected = { selectedRole = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Роль"
+                )
 
-        Spacer(modifier = Modifier.size(30.dp))
-        OutlinedTextField(
-            value = specialization,
-            onValueChange = {
-                specialization = it
-            },
-            shape = MaterialTheme.shapes.medium,
-            label = { Text("Специализация") },
-            modifier = Modifier.fillMaxWidth()
-        )
+                Spacer(modifier = Modifier.size(30.dp))
+                OutlinedTextField(
+                    value = specialization,
+                    onValueChange = { specialization = it },
+                    shape = MaterialTheme.shapes.medium,
+                    label = { Text("Специализация") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        Spacer(modifier = Modifier.size(30.dp))
-        CustomButton(
-            text = "Зарегистрироваться",
-            onClick = { }
-        )
+                Spacer(modifier = Modifier.size(30.dp))
+                CustomButton(
+                    text = "Зарегистрироваться",
+                    onClick = { /* TODO: viewModel.register(...) */ }
+                )
 
-        TextButton(
-            onClick = { navigateToSignIn() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(color = Color.Black)
-                    ) {
-                        append("Уже есть аккаунт?")
-                    }
-                    append(" ")
-                    withStyle(
-                        style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
-                    ) {
-                        append("Войдите")
-                    }
-                },
-                fontFamily = FontFamily.SansSerif,
-                textAlign = TextAlign.Center
-            )
+                TextButton(
+                    onClick = { navigateToSignIn() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(color = Color.Black)
+                            ) {
+                                append("Уже есть аккаунт?")
+                            }
+                            append(" ")
+                            withStyle(
+                                style = SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)
+                            ) {
+                                append("Войдите")
+                            }
+                        },
+                        fontFamily = FontFamily.SansSerif,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+
+    if (showDialog) {
+        ResponseDialog(responseMessage) {
+            showDialog = false
         }
     }
 }

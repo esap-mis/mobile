@@ -25,7 +25,6 @@ import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardRespons
 import javavlsu.kb.esap.esapmobile.core.navigation.Screen
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
-import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -37,8 +36,6 @@ fun ResultsScreen(
     navController: NavController,
     mainViewModel: MainViewModel = koinViewModel(),
 ) {
-    var responseMessage by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
     val patientResponse by mainViewModel.patientState.collectAsState()
     val medicalCardResponse by mainViewModel.medicalCardState.collectAsState()
 
@@ -46,42 +43,47 @@ fun ResultsScreen(
         mainViewModel.getPatient()
     }
 
-    if (patientResponse is ApiResponse.Loading) {
-        CircularProgress()
-    } else {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (patientResponse is ApiResponse.Success) {
-                val user = (patientResponse as ApiResponse.Success).data
-                Header(
-                    user = user,
-                    isHome = false,
-                    onMedicalCardClick = { navController.navigate(Screen.Main.Results.route) }
-                )
+    LaunchedEffect(patientResponse) {
+        if (patientResponse is ApiResponse.Success) {
+            val user = (patientResponse as ApiResponse.Success).data
+            user.id?.let { mainViewModel.getPatientMedicalCard(it) }
+        }
+    }
 
-                LaunchedEffect(patientResponse) {
-                    mainViewModel.getPatientMedicalCard(user.id!!,)
+    val showLoading = patientResponse is ApiResponse.Loading || medicalCardResponse is ApiResponse.Loading
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (showLoading) {
+            CircularProgress()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val patient = (patientResponse as? ApiResponse.Success)?.data
+                val medicalCard = (medicalCardResponse as? ApiResponse.Success)?.data
+
+                if (patient != null) {
+                    Header(
+                        user = patient,
+                        isHome = false,
+                        onMedicalCardClick = { navController.navigate(Screen.Main.Results.route) }
+                    )
                 }
 
-                if (medicalCardResponse is ApiResponse.Success) {
-                    val medicalCard = (medicalCardResponse as ApiResponse.Success).data
+                if (patient != null && medicalCard != null) {
                     MedicalCardRecords(
-                        user = user,
+                        user = patient,
                         medicalCard = medicalCard,
                         navController = navController
                     )
                 }
             }
-        }
-    }
-
-    if (showDialog) {
-        ResponseDialog(responseMessage) {
-            showDialog = false
         }
     }
 }

@@ -49,7 +49,6 @@ fun AppointmentBookingScreen(
     calendarViewModel: CalendarViewModel = koinViewModel(),
 ) {
     val loading by mainViewModel.loading.collectAsState()
-    var responseMessage by remember { mutableStateOf("") }
     val doctorListResponse by mainViewModel.doctorListState.collectAsState()
     val data by calendarViewModel.calendarData.collectAsState()
 
@@ -57,44 +56,52 @@ fun AppointmentBookingScreen(
         mainViewModel.getDoctorList(data!!.selectedDate.date,)
     }
 
-    if (loading) {
-        CircularProgress()
-    } else {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Calendar()
-            Spacer(modifier = Modifier.size(30.dp))
+    val showLoading = loading || doctorListResponse is ApiResponse.Loading
 
-            Row(modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.Start),
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (showLoading) {
+            CircularProgress()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = stringResource(Res.string.doctors),
-                    fontSize = 20.sp,
-                    color = NightBlue,
-                    fontWeight = FontWeight.W600,
-                )
-            }
+                Calendar()
+                Spacer(modifier = Modifier.size(30.dp))
 
-            if (doctorListResponse is ApiResponse.Success<*>) {
-                val doctors = (doctorListResponse as ApiResponse.Success<List<DoctorResponse>>).data
-                if (doctors.isNotEmpty()) {
-                    LazyColumn {
-                        items(doctors) { doctor ->
-                            DoctorCard(
-                                date = data!!.selectedDate.date,
-                                doctor = doctor,
-                                navController = navController
-                            )
+                Row(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.Start),
+                ) {
+                    Text(
+                        text = stringResource(Res.string.doctors),
+                        fontSize = 20.sp,
+                        color = NightBlue,
+                        fontWeight = FontWeight.W600,
+                    )
+                }
+
+                if (doctorListResponse is ApiResponse.Success<*>) {
+                    val doctors = (doctorListResponse as ApiResponse.Success<List<DoctorResponse>>).data
+                    if (doctors.isNotEmpty()) {
+                        LazyColumn {
+                            items(doctors) { doctor ->
+                                DoctorCard(
+                                    date = data!!.selectedDate.date,
+                                    doctor = doctor,
+                                    navController = navController
+                                )
+                            }
                         }
+                    } else {
+                        Text(stringResource(Res.string.havent_doctors_data))
                     }
-                } else {
-                    Text(stringResource(Res.string.havent_doctors_data))
                 }
             }
         }

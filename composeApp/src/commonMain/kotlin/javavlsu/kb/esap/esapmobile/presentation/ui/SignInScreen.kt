@@ -105,29 +105,30 @@ fun SignInScreen(
         }
     }
 
-    if (loading) {
-        CircularProgress()
-    } else {
-        if (serverStatusResponse is ApiResponse.Success) {
-            if (authResponse is ApiResponse.Loading) {
-                CircularProgress()
-            } else {
-                val login by authViewModel.login.collectAsState()
-                val password by authViewModel.password.collectAsState()
-                var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    val showLoading = loading || serverStatusResponse is ApiResponse.Loading || authResponse is ApiResponse.Loading
 
-                AuthForm(
-                    login = login,
-                    password = password,
-                    passwordVisible = passwordVisible,
-                    onLoginChange = { authViewModel.setLogin(it) },
-                    onPasswordChange = { authViewModel.setPassword(it) },
-                    onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                    onForgotPasswordButtonClick = { navigateToForgotPassword() },
-                    onSignInButtonClick = { authViewModel.login() },
-                    onRegisterButtonClick = { navigateToSignUp() }
-                )
-            }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (showLoading) {
+            CircularProgress()
+        } else {
+            val login by authViewModel.login.collectAsState()
+            val password by authViewModel.password.collectAsState()
+            var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+            AuthForm(
+                login = login,
+                password = password,
+                passwordVisible = passwordVisible,
+                onLoginChange = { authViewModel.setLogin(it) },
+                onPasswordChange = { authViewModel.setPassword(it) },
+                onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
+                onForgotPasswordButtonClick = { navigateToForgotPassword() },
+                onSignInButtonClick = { authViewModel.login() },
+                onRegisterButtonClick = { navigateToSignUp() }
+            )
         }
     }
 

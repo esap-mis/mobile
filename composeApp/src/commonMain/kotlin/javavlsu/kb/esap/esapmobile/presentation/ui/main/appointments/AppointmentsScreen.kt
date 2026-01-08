@@ -45,11 +45,6 @@ fun AppointmentsScreen(
     navigateToMedicalCard: () -> Unit
 ) {
     val loading by mainViewModel.loading.collectAsState()
-    var responseMessage by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
-    val roles by tokenViewModel.roles.collectAsState()
-    val doctorResponse by mainViewModel.doctorState.collectAsState()
-    val patientResponse by mainViewModel.patientState.collectAsState()
     val userAppointmentList by mainViewModel.userAppointmentsState.collectAsState()
     var isUpcoming by remember { mutableStateOf(true) }
 
@@ -57,62 +52,63 @@ fun AppointmentsScreen(
         mainViewModel.getUserAppointments()
     }
 
-    if (loading) {
-        CircularProgress()
-    } else {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (patientResponse is ApiResponse.Success) {
-                val user = (patientResponse as ApiResponse.Success).data
-                Header(
-                    user = user,
-                    isHome = false,
-                    onMedicalCardClick = { navigateToMedicalCard() }
-                )
-            } else if (doctorResponse is ApiResponse.Success) {
-                val user = (doctorResponse as ApiResponse.Success).data
-                Header(
-                    user = user,
-                    isHome = false,
-                    onMedicalCardClick = { navigateToMedicalCard() }
-                )
-            }
+    val showLoading = loading || userAppointmentList is ApiResponse.Loading
 
-            CustomToggleSwitch(
-                isUpcoming = isUpcoming,
-                onToggle = {
-                    isUpcoming = !isUpcoming
-                }
-            )
-            HorizontalDivider(
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (showLoading) {
+            CircularProgress()
+        } else {
+            Column(
                 modifier = Modifier
-                    .padding(
-                        vertical = 16.dp,
-                        horizontal = 8.dp
+                    .padding(10.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (mainViewModel.patientState.collectAsState().value is ApiResponse.Success) {
+                    val user = (mainViewModel.patientState.collectAsState().value as ApiResponse.Success).data
+                    Header(
+                        user = user,
+                        isHome = false,
+                        onMedicalCardClick = { navigateToMedicalCard() }
                     )
-            )
-
-            if (userAppointmentList is ApiResponse.Success) {
-                var appointments = (userAppointmentList as ApiResponse.Success).data
-
-                appointments = if (isUpcoming) {
-                    appointments.filter { it.isUpcoming() }
-                } else {
-                    appointments.filter { !it.isUpcoming() }
+                } else if (mainViewModel.doctorState.collectAsState().value is ApiResponse.Success) {
+                    val user = (mainViewModel.doctorState.collectAsState().value as ApiResponse.Success).data
+                    Header(
+                        user = user,
+                        isHome = false,
+                        onMedicalCardClick = { navigateToMedicalCard() }
+                    )
                 }
 
-                DisplayAppointments(appointments.sortedBy { it.getDateTime() })
-            }
-        }
-    }
+                CustomToggleSwitch(
+                    isUpcoming = isUpcoming,
+                    onToggle = {
+                        isUpcoming = !isUpcoming
+                    }
+                )
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(
+                            vertical = 16.dp,
+                            horizontal = 8.dp
+                        )
+                )
 
-    if (showDialog) {
-        ResponseDialog(responseMessage) {
-            showDialog = false
+                if (userAppointmentList is ApiResponse.Success) {
+                    var appointments = (userAppointmentList as ApiResponse.Success).data
+
+                    appointments = if (isUpcoming) {
+                        appointments.filter { it.isUpcoming() }
+                    } else {
+                        appointments.filter { !it.isUpcoming() }
+                    }
+
+                    DisplayAppointments(appointments.sortedBy { it.getDateTime() })
+                }
+            }
         }
     }
 }
