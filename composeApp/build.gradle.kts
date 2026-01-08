@@ -1,6 +1,8 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import com.android.builder.model.v2.dsl.SigningConfig
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.ByteArrayOutputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -13,14 +15,9 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
-//fun Project.gitCommitCount(): Int {
-//    val stdout = ByteArrayOutputStream()
-//    exec {
-//        commandLine("git", "rev-list", "--count", "HEAD")
-//        standardOutput = stdout
-//    }
-//    return stdout.toString().trim().toInt()
-//}
+val gitCommitCount = providers.exec {
+    commandLine("git", "rev-list", "--count", "HEAD")
+}.standardOutput.asText.get().trim().toInt()
 
 val majorVersion = 1
 val minorVersion = 0
@@ -122,7 +119,7 @@ android {
         applicationId = "javavlsu.kb.esap.esapmobile"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1 //gitCommitCount()
+        versionCode = gitCommitCount
         versionName = "$majorVersion.$minorVersion.$patchVersion"
 
 //        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -132,8 +129,8 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            storeFile = file("keystore/esapmobile.jks")
+        maybeCreate("release").apply {
+            storeFile = rootProject.file("keystore/esapmobile.jks")
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
@@ -196,9 +193,9 @@ compose.desktop {
     }
 }
 
-//task("printVersionName") {
-//    val versionName = android.defaultConfig.versionName!!
-//    val fullVersion = "${versionName.replace(".", "")}-${gitCommitCount()}"
-//    project.extensions.extraProperties["fullVersion"] = fullVersion
-//    println(versionName)
-//}
+tasks.register("printVersionName") {
+    val versionName = android.defaultConfig.versionName!!
+    val fullVersion = "${versionName.replace(".", "")}-${gitCommitCount}"
+    project.extensions.extraProperties["fullVersion"] = fullVersion
+    println(versionName)
+}
