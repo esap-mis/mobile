@@ -1,6 +1,7 @@
 package javavlsu.kb.esap.esapmobile.core.domain.network
 
 import com.russhwolf.settings.Settings
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.module.Module
 
 interface NetworkManager {
@@ -9,7 +10,7 @@ interface NetworkManager {
 
     companion object {
         const val BASE_URL_KEY = "base_url"
-        const val DEFAULT_BASE_URL = "http://192.168.0.105:8080/"
+        const val DEFAULT_BASE_URL = "http://192.168.0.105:8080"
     }
 }
 
@@ -18,12 +19,19 @@ class DefaultNetworkManager(
     private val defaultBaseUrl: String = NetworkManager.DEFAULT_BASE_URL
 ) : NetworkManager {
 
+    companion object {
+        private val logger = KotlinLogging.logger {}
+    }
+
     override suspend fun getBaseUrl(): String {
-        return settings.getStringOrNull(NetworkManager.BASE_URL_KEY)
+        val baseUrl = settings.getStringOrNull(NetworkManager.BASE_URL_KEY)
             ?: initializeDefaultBaseUrl()
+        logger.info { "Get base_url: $baseUrl" }
+        return baseUrl
     }
 
     override suspend fun setBaseUrl(newBaseUrl: String) {
+        logger.info { "Saving base_url: $newBaseUrl" }
         settings.putString(NetworkManager.BASE_URL_KEY, newBaseUrl)
     }
 

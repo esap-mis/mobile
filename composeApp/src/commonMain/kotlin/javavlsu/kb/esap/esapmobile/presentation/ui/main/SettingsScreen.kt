@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import esapmobile.composeapp.generated.resources.Res
 import esapmobile.composeapp.generated.resources.apply_button
+import esapmobile.composeapp.generated.resources.change_url_cuccess
 import esapmobile.composeapp.generated.resources.current_url
 import esapmobile.composeapp.generated.resources.new_url
 import esapmobile.composeapp.generated.resources.settings
@@ -66,6 +67,7 @@ fun SettingsScreen(
                 value = newBaseUrl,
                 onValueChange = { newBaseUrl = it },
                 label = { Text(stringResource(Res.string.new_url)) },
+                visualTransformation = UrlVisualTransformation(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 5.dp)
@@ -90,6 +92,7 @@ fun SettingsScreen(
         }
     }
 
+    val changeUrlSuccessMessage = stringResource(Res.string.change_url_cuccess)
     LaunchedEffect(serverStatusResponse) {
         if (applyButtonClicked) {
             if (serverStatusResponse is ApiResponse.Success) {
@@ -100,6 +103,8 @@ fun SettingsScreen(
                     "Ошибка при изменении URL: ${(serverStatusResponse as ApiResponse.Failure).errorMessage}"
             }
             showDialog = true
+            settingsViewModel.setBaseUrl("http://$newBaseUrl")
+            responseMessage = changeUrlSuccessMessage
         }
     }
 
