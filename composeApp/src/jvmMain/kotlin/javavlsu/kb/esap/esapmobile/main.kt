@@ -28,7 +28,7 @@ fun main()  {
             title = stringResource(Res.string.app_name),
             state = WindowState(
                 position = WindowPosition(250.dp, 10.dp),
-                size = DpSize(500.dp, 750.dp)),
+                size = DpSize(500.dp, 760.dp)),
             resizable = false,
         ) {
             App()
