@@ -52,18 +52,16 @@ fun BottomNavigationBar(
     }
 
     NavigationBar(
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         navigationItems.forEachIndexed { index, screen ->
             val isSelected = (selectedScreen == index)
-            val color = if (isSelected) Blue else Color.Gray
 
             NavigationBarItem(
                 icon = {
                     Icon(
                         painter = painterResource(screen.icon!!),
                         contentDescription = null,
-                        tint = color,
                         modifier = Modifier
                             .size(30.dp)
                     )
@@ -72,8 +70,7 @@ fun BottomNavigationBar(
                     Text(
                         text = screen.title,
                         fontSize = 10.sp,
-                        fontWeight = FontWeight.W600,
-                        color = color,
+                        fontWeight = FontWeight.W600
                     )
                 },
                 selected = isSelected,
@@ -89,7 +86,11 @@ fun BottomNavigationBar(
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.White
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
                 )
             )
         }

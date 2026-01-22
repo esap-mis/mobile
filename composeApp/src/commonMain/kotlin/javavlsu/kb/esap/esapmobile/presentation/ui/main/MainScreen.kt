@@ -69,7 +69,11 @@ fun MainScreen(
                                         .padding(12.dp),
                                     shape = MaterialTheme.shapes.medium,
                                     colors = NavigationDrawerItemDefaults.colors(
-                                        selectedContainerColor = Blue100
+                                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 )
                             } else {

@@ -11,16 +11,26 @@ class SettingsViewModel(
     private val networkManager: NetworkManager
 ): ViewModel() {
     val baseUrl = MutableStateFlow<String?>(null)
+    val isDarkMode = networkManager.isDarkModeFlow
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            baseUrl.value = networkManager.getBaseUrl()
+            val url = networkManager.getBaseUrl()
+            launch(Dispatchers.Main) {
+                baseUrl.value = url
+            }
         }
     }
 
     fun setBaseUrl(newBaseUrl: String) {
         viewModelScope.launch(Dispatchers.IO) {
             networkManager.setBaseUrl(newBaseUrl)
+        }
+    }
+
+    fun setIsDarkMode(dark: Boolean?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            networkManager.setIsDarkMode(dark)
         }
     }
 }

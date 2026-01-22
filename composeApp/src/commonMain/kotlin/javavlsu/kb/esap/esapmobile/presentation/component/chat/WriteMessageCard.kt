@@ -6,11 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,11 +14,9 @@ import androidx.compose.ui.unit.dp
 import esapmobile.composeapp.generated.resources.Res
 import esapmobile.composeapp.generated.resources.ic_send_message
 import esapmobile.composeapp.generated.resources.your_message
-import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WriteMessageCard(
     modifier: Modifier = Modifier,
@@ -33,12 +27,12 @@ fun WriteMessageCard(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shadowElevation = 6.dp,
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(30.dp),
     ) {
         TextField(
             modifier = Modifier
-                .background(color = Color.White),
+                .background(color = MaterialTheme.colorScheme.surface),
             value = value,
             onValueChange = { value ->
                 onValueChange(value)
@@ -54,15 +48,16 @@ fun WriteMessageCard(
                             onClickSend()
                         },
                     painter = painterResource(Res.drawable.ic_send_message),
-                    contentDescription = ""
+                    contentDescription = "",
+                    colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.primary)
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedPlaceholderColor = Gray40,
-                unfocusedPlaceholderColor = Gray40,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,

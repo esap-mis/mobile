@@ -142,7 +142,7 @@ fun ResultCard(
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
@@ -156,7 +156,7 @@ fun ResultCard(
                     modifier = Modifier
                         .size(50.dp)
                         .clip(RoundedCornerShape(40.dp))
-                        .background(Gray40)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Image(
                         painter = painterResource(icon),
@@ -176,11 +176,12 @@ fun ResultCard(
                 Text(
                     text = title,
                     fontWeight = FontWeight.W500,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = content,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 16.sp
                 )
                 Spacer(modifier = Modifier.height(10.dp))

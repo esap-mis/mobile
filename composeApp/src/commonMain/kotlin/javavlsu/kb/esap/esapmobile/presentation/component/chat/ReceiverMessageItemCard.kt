@@ -37,7 +37,7 @@ fun ReceiverMessageItemCard(
                 .wrapContentSize()
                 .align(Alignment.Bottom),
             shape = CircleShape,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.surface,
             shadowElevation = 4.dp
         ) {
             Image(
@@ -45,7 +45,8 @@ fun ReceiverMessageItemCard(
                     .padding(horizontal = 8.dp, vertical = 6.dp)
                     .size(24.dp),
                 painter = painterResource(Res.drawable.ic_chat_bot),
-                contentDescription = ""
+                contentDescription = "",
+                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
         }
 
@@ -56,13 +57,13 @@ fun ReceiverMessageItemCard(
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
             shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp, bottomEnd = 25.dp),
-            color = Gray40
+            color = MaterialTheme.colorScheme.secondaryContainer
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 24.dp),
                 text = message,
                 fontSize = 16.sp,
-                style = MaterialTheme.typography.labelLarge.copy(color = Color(0xFF505050))
+                style = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.onSecondaryContainer)
             )
         }
     }

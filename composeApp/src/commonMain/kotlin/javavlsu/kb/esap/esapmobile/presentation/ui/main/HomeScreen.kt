@@ -169,7 +169,7 @@ fun DisplayNextAppointments(
                     text = stringResource(Res.string.next_appointments),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Left
                 )
                 Box(
@@ -222,7 +222,7 @@ fun NextAppointmentCard(
         modifier = Modifier
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -234,11 +234,11 @@ fun NextAppointmentCard(
                     modifier = Modifier
                         .size(60.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Gray40)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Person,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
@@ -253,22 +253,24 @@ fun NextAppointmentCard(
                         Text(
                             text = "${appointment.doctor.lastName} ${appointment.doctor.firstName} ${appointment.doctor.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = appointment.doctor.specialization,
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 16.sp
                         )
                     } else if (appointment.patient != null) {
                         Text(
                             text = "${appointment.patient.lastName} ${appointment.patient.firstName} ${appointment.patient.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = appointment.patient.birthDate,
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 16.sp,
                         )
                     }
@@ -278,7 +280,7 @@ fun NextAppointmentCard(
                     Row {
                         Icon(
                             imageVector = Icons.Default.CalendarMonth,
-                            tint = Color.Gray,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                         )
                         val parsedTime = LocalTime.parse(appointment.startAppointments, DateTimeFormatter.ofPattern("HH:mm:ss"))
@@ -286,7 +288,7 @@ fun NextAppointmentCard(
                         Text(
                             text = "${parsedAppointmentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${parsedTime.format(
                                 DateTimeFormatter.ofPattern("HH:mm"))}",
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 16.sp
                         )
                     }
@@ -294,19 +296,19 @@ fun NextAppointmentCard(
                     Row {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            tint = Color.Gray,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                         )
                         if (appointment.doctor != null) {
                             Text(
                                 text = appointment.doctor.clinic!!.address,
-                                color = Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 16.sp
                             )
                         } else if (appointment.patient != null) {
                             Text(
                                 text = appointment.patient.clinic!!.address,
-                                color = Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 16.sp
                             )
                         }
@@ -337,7 +339,7 @@ fun DisplayAnalysis(
                     text = stringResource(Res.string.results),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Left
                 )
                 Box(
@@ -391,7 +393,7 @@ fun AnalysisCard(
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -400,18 +402,19 @@ fun AnalysisCard(
             Text(
                 text = "${parsedDate.format(DateTimeFormatter.ofPattern("dd MMMM"))} в ${parsedDate.format(
                     DateTimeFormatter.ofPattern("HH:mm"))}",
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )
             Text(
                 text = analysis.name.take(15),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.W500,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = analysis.result,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )

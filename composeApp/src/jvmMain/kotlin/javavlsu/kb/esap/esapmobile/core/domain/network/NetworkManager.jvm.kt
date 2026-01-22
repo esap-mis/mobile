@@ -1,6 +1,7 @@
 package javavlsu.kb.esap.esapmobile.core.domain.network
 
 import com.russhwolf.settings.Settings
+import kotlinx.coroutines.flow.StateFlow
 import org.koin.dsl.module
 import java.io.File
 import java.util.Properties
@@ -13,6 +14,13 @@ class DesktopNetworkManager : NetworkManager {
     override suspend fun getBaseUrl(): String = networkManager.getBaseUrl()
 
     override suspend fun setBaseUrl(newBaseUrl: String) = networkManager.setBaseUrl(newBaseUrl)
+
+    override suspend fun getIsDarkMode(): Boolean? = networkManager.getIsDarkMode()
+
+    override suspend fun setIsDarkMode(isDarkMode: Boolean?) = networkManager.setIsDarkMode(isDarkMode)
+
+    override val isDarkModeFlow: StateFlow<Boolean?>
+        get() = networkManager.isDarkModeFlow
 
     private fun createDesktopSettings(): Settings {
         val userHome = System.getProperty("user.home")

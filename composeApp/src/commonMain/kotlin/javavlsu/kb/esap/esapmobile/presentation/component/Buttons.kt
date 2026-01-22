@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CustomButton(
     text: String,
-    color: Color = Color.Blue,
+    color: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit,
     isEnabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
             containerColor = color
         ),
         enabled = isEnabled,
@@ -35,7 +35,6 @@ fun CustomButton(
         Text(
             text = text,
             fontSize = 18.sp,
-            color = Color.White,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(6.dp)

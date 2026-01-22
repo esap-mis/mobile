@@ -44,7 +44,7 @@ actual fun PlatformThemeSideEffects(
             activity.window.statusBarColor = colorScheme.primary.toArgb()
             val insetsController = WindowCompat.getInsetsController(activity.window, view)
             insetsController.hide(WindowInsetsCompat.Type.navigationBars())
-            insetsController.isAppearanceLightStatusBars = darkTheme
+            insetsController.isAppearanceLightStatusBars = !darkTheme
         }
     }
 }

@@ -13,14 +13,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,15 +27,14 @@ import esapmobile.composeapp.generated.resources.Res
 import esapmobile.composeapp.generated.resources.bot_name
 import esapmobile.composeapp.generated.resources.ic_chat_bot
 import esapmobile.composeapp.generated.resources.online
-import javavlsu.kb.esap.esapmobile.presentation.theme.Blue80
-import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
-import javavlsu.kb.esap.esapmobile.presentation.theme.Green40
+import javavlsu.kb.esap.esapmobile.presentation.theme.Green30
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ToolbarMessage(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickBack: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -44,21 +42,25 @@ fun ToolbarMessage(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color.White)
+                .background(color = MaterialTheme.colorScheme.surface)
                 .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = ""
-            )
+            IconButton(onClick = onClickBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
 
             Image(
                 modifier = Modifier
-                    .align(Alignment.CenterVertically)
+                    .size(42.dp)
                     .padding(start = 12.dp),
                 painter = painterResource(Res.drawable.ic_chat_bot),
-                contentDescription = ""
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
 
             Column(
@@ -66,8 +68,7 @@ fun ToolbarMessage(
             ) {
                 Text(
                     text = stringResource(Res.string.bot_name),
-                    fontSize = 20.sp,
-                    color = Blue80,
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp
@@ -76,19 +77,18 @@ fun ToolbarMessage(
 
                 Spacer(modifier = Modifier.height(2.dp))
 
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .align(Alignment.CenterVertically)
                             .size(6.dp)
-                            .background(color = Green40, shape = CircleShape)
+                            .background(color = Green30, shape = CircleShape)
                     )
 
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
                         text = stringResource(Res.string.online),
-                        color = Green40,
+                        color = Green30,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Medium,
                             fontSize = 12.sp
@@ -98,10 +98,11 @@ fun ToolbarMessage(
             }
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(1.dp), color = Gray40
+                .height(1.dp), 
+            color = MaterialTheme.colorScheme.outlineVariant
         )
     }
 }

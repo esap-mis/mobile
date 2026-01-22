@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,7 +45,7 @@ fun Header(
                     text = "${stringResource(Res.string.hello)} ${user.firstName} ${stringResource(Res.string.smile)}",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Left
                 )
             } else {
@@ -52,7 +53,7 @@ fun Header(
                     text = "${user.firstName} ${user.lastName}",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Left
                 )
             }
@@ -68,7 +69,7 @@ fun Header(
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.medical_card),
-                    tint = Color.Blue,
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
@@ -77,7 +78,7 @@ fun Header(
                     text = stringResource(Res.string.medical_record),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
-                    color = Color.Blue,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Left
                 )
             }
@@ -90,11 +91,11 @@ private fun SearchIcon() {
     Box(
         modifier = Modifier
             .size(42.dp)
-            .background(color = Gray40, shape = CircleShape)
+            .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
     ) {
         Icon(
             imageVector = Icons.Outlined.Search,
-            tint = Color.Gray,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             contentDescription = null,
             modifier = Modifier
                 .size(24.dp)

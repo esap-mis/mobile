@@ -124,7 +124,7 @@ fun CustomToggleSwitch(
             .padding(8.dp)
             .height(50.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(Gray40)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Row(
             modifier = Modifier
@@ -139,15 +139,15 @@ fun CustomToggleSwitch(
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isUpcoming) Color.White else Gray40,
-                    contentColor = if (isUpcoming) Color.Black else Color.White
+                    containerColor = if (isUpcoming) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (isUpcoming) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     fontSize = 16.sp,
                     text = stringResource(Res.string.future_appointments),
-                    color = if (isUpcoming) Color.Black else Color.Gray
+                    color = if (isUpcoming) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Button(
@@ -158,15 +158,15 @@ fun CustomToggleSwitch(
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (!isUpcoming) Color.White else Gray40,
-                    contentColor = if (!isUpcoming) Color.Black else Color.White
+                    containerColor = if (!isUpcoming) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (!isUpcoming) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     fontSize = 16.sp,
                     text = stringResource(Res.string.past_appointments),
-                    color = if (!isUpcoming) Color.Black else Color.Gray
+                    color = if (!isUpcoming) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -195,7 +195,7 @@ fun AppointmentCard(
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -213,11 +213,11 @@ fun AppointmentCard(
                         .height(35.dp)
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Green20)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
                 ) {
                     Text(
                         text = stringResource(Res.string.record),
-                        color = Green80,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
                         modifier = Modifier.padding(horizontal = 20.dp)
@@ -230,13 +230,13 @@ fun AppointmentCard(
                         .height(35.dp)
                         .width(IntrinsicSize.Max)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Gray40)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     val parsedTime = LocalTime.parse(appointment.startAppointments, DateTimeFormatter.ofPattern("HH:mm:ss"))
                     val parsedAppointmentDate = LocalDate.parse(appointment.date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                     Text(
                         text = "${parsedAppointmentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${parsedTime.format(DateTimeFormatter.ofPattern("HH:mm"))}",
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
                         modifier = Modifier.padding(horizontal = 20.dp)
@@ -249,11 +249,11 @@ fun AppointmentCard(
                     modifier = Modifier
                         .size(60.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Gray40)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Person,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
@@ -268,22 +268,24 @@ fun AppointmentCard(
                         Text(
                             text = "${appointment.doctor.lastName} ${appointment.doctor.firstName} ${appointment.doctor.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = appointment.doctor.specialization,
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 14.sp
                         )
                     } else if (appointment.patient != null) {
                         Text(
                             text = "${appointment.patient.lastName} ${appointment.patient.firstName} ${appointment.patient.patronymic}",
                             fontWeight = FontWeight.W500,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = appointment.patient.birthDate,
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 14.sp
                         )
                     }
@@ -293,19 +295,19 @@ fun AppointmentCard(
                     Row {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            tint = Color.Gray,
+                            tint = MaterialTheme.colorScheme.primary,
                             contentDescription = null,
                         )
                         if (appointment.doctor != null) {
                             Text(
                                 text = appointment.doctor.clinic!!.address,
-                                color = Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
                         } else if (appointment.patient != null) {
                             Text(
                                 text = appointment.patient.clinic!!.address,
-                                color = Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
                         }

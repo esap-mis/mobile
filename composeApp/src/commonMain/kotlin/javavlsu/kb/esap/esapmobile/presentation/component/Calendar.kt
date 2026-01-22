@@ -134,7 +134,7 @@ fun ContentItem(
             containerColor = if (date.isSelected) {
                 MaterialTheme.colorScheme.primary
             } else {
-                Color.White
+                MaterialTheme.colorScheme.surface
             }
         ),
     ) {

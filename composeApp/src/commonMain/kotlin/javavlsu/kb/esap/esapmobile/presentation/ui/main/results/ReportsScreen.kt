@@ -73,14 +73,14 @@ fun ReportsScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBackIos,
                             contentDescription = null,
-                            tint = Color.Black
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     Text(
                         text = stringResource(Res.string.records),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.W600,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -153,7 +153,7 @@ fun DisplayMedicalRecord(
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -161,7 +161,7 @@ fun DisplayMedicalRecord(
             val parsedDate = LocalDate.parse(medicalRecord.date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             Text(
                 text = parsedDate.format(DateTimeFormatter.ofPattern("dd MMMM")),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(8.dp)
             )
@@ -170,11 +170,11 @@ fun DisplayMedicalRecord(
                     modifier = Modifier
                         .size(60.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Gray40)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Person,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
@@ -189,18 +189,19 @@ fun DisplayMedicalRecord(
                     Text(
                         text = parsedDoctor[0].trim(),
                         fontWeight = FontWeight.W500,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text = parsedDoctor[1].trim(),
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 14.sp
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = medicalRecord.record,
                         fontSize = 16.sp,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

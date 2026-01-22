@@ -74,14 +74,14 @@ fun AnalysisScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBackIos,
                             contentDescription = null,
-                            tint = Color.Black
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     Text(
                         text = stringResource(Res.string.analysis),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.W600,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -163,7 +163,7 @@ fun AnalysisCard(analysis: AnalysisResponse) {
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -184,13 +184,13 @@ fun AnalysisCard(analysis: AnalysisResponse) {
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             if (analysis.result == stringResource(Res.string.analysis_ready))
-                                Green20 else Red20
+                                MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer
                         )
                 ) {
                     Text(
                         text = analysis.result,
                         color = if (analysis.result == stringResource(Res.string.analysis_ready))
-                            Green80 else Red80,
+                            MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
                         maxLines = 1,
@@ -206,12 +206,12 @@ fun AnalysisCard(analysis: AnalysisResponse) {
                         .wrapContentWidth()
                         .defaultMinSize(minWidth = 120.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Gray40)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     val parsedDate = LocalDateTime.parse(analysis.date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
                     Text(
                         text = "${parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${parsedDate.format(DateTimeFormatter.ofPattern("HH:mm"))}",
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500,
                         maxLines = 1,
@@ -224,7 +224,8 @@ fun AnalysisCard(analysis: AnalysisResponse) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = analysis.name,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             Spacer(modifier = Modifier.height(18.dp))
