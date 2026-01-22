@@ -50,10 +50,10 @@ fun AppointmentBookingScreen(
 ) {
     val loading by mainViewModel.loading.collectAsState()
     val doctorListResponse by mainViewModel.doctorListState.collectAsState()
-    val data by calendarViewModel.calendarData.collectAsState()
+    val selectedDate by calendarViewModel.selectedDate.collectAsState()
 
-    LaunchedEffect(data!!.selectedDate) {
-        mainViewModel.getDoctorList(data!!.selectedDate.date,)
+    LaunchedEffect(selectedDate) {
+        mainViewModel.getDoctorList(selectedDate)
     }
 
     val showLoading = loading || doctorListResponse is ApiResponse.Loading
@@ -93,7 +93,7 @@ fun AppointmentBookingScreen(
                         LazyColumn {
                             items(doctors) { doctor ->
                                 DoctorCard(
-                                    date = data!!.selectedDate.date,
+                                    date = selectedDate,
                                     doctor = doctor,
                                     navController = navController
                                 )

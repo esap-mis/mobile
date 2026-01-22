@@ -8,7 +8,7 @@ val viewModelModule = module {
     viewModel { MainViewModel(get(), get()) }
     viewModel { AuthViewModel(get()) }
     viewModel { NotificationViewModel(get(), get()) }
-    viewModel { CalendarViewModel(get()) }
+    viewModel { CalendarViewModel() }
     viewModel { SettingsViewModel(get()) }
     viewModel { TokenViewModel(get()) }
     viewModel { ChatViewModel(get()) }

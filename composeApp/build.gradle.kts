@@ -98,6 +98,8 @@ kotlin {
             implementation(libs.multiplatform.settings.coroutines)
 
             implementation(libs.kotlin.logging)
+            implementation(libs.calendar)
+            implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
