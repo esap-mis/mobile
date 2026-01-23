@@ -1,11 +1,8 @@
 package javavlsu.kb.esap.esapmobile
 
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPosition
-import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import esapmobile.composeapp.generated.resources.Res
 import esapmobile.composeapp.generated.resources.app_name
 import javavlsu.kb.esap.esapmobile.core.di.appModules
@@ -26,10 +23,8 @@ fun main()  {
         Window(
             onCloseRequest = ::exitApplication,
             title = stringResource(Res.string.app_name),
-            state = WindowState(
-                position = WindowPosition(250.dp, 10.dp),
-                size = DpSize(500.dp, 760.dp)),
-            resizable = false,
+            state = rememberWindowState(),
+            resizable = true,
         ) {
             App()
         }

@@ -1,6 +1,8 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,9 +20,12 @@ import esapmobile.composeapp.generated.resources.logout
 import javavlsu.kb.esap.esapmobile.core.data.TokenViewModel
 import javavlsu.kb.esap.esapmobile.core.navigation.Screen
 import javavlsu.kb.esap.esapmobile.core.navigation.graph.MainScreenNavGraph
+import javavlsu.kb.esap.esapmobile.core.util.Platform
+import javavlsu.kb.esap.esapmobile.core.util.getPlatform
 import javavlsu.kb.esap.esapmobile.presentation.component.CustomButton
 import javavlsu.kb.esap.esapmobile.presentation.component.navigation.BottomNavigationBar
-import javavlsu.kb.esap.esapmobile.presentation.theme.Blue100
+import javavlsu.kb.esap.esapmobile.presentation.component.navigation.NavigationItemsProvider
+import javavlsu.kb.esap.esapmobile.presentation.component.navigation.NavigationSideBar
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -41,6 +46,8 @@ fun MainScreen(
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
     val roles by tokenViewModel.roles.collectAsState()
+    val platform = getPlatform()
+    val navigationItems = roles?.let { NavigationItemsProvider.getItems(it) } ?: emptyList()
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         ModalNavigationDrawer(
@@ -57,7 +64,8 @@ fun MainScreen(
                                             contentDescription = null,
                                             modifier = Modifier
                                                 .size(30.dp)
-                                        )},
+                                        )
+                                    },
                                     label = { Text(item.title) },
                                     selected = item == selectedItem.value,
                                     onClick = {
@@ -99,23 +107,37 @@ fun MainScreen(
             },
             content = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    Scaffold(
-                        bottomBar = {
-                            roles?.let {
+                    if (platform == Platform.Android) {
+                        Scaffold(
+                            bottomBar = {
                                 BottomNavigationBar(
-                                    userRoles = it,
+                                    items = navigationItems,
                                     navController = navHostController,
                                     onMoreButtonClick = {
                                         scope.launch { drawerState.open() }
                                     }
                                 )
                             }
+                        ) { paddingValues ->
+                            MainScreenNavGraph(
+                                navController = navHostController,
+                                paddingValues = paddingValues
+                            )
                         }
-                    ) { paddingValues ->
-                        MainScreenNavGraph(
-                            navController = navHostController,
-                            paddingValues = paddingValues
-                        )
+                    } else {
+                        Row {
+                            NavigationSideBar(
+                                items = navigationItems,
+                                navController = navHostController,
+                                onMoreButtonClick = {
+                                    scope.launch { drawerState.open() }
+                                }
+                            )
+                            MainScreenNavGraph(
+                                navController = navHostController,
+                                paddingValues = PaddingValues()
+                            )
+                        }
                     }
                 }
             }
