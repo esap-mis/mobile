@@ -6,13 +6,13 @@ import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.ModelResponse
 
-interface IChatApiService {
+interface ChatApiService {
     suspend fun sendMessage(message: String): ApiResponse<ModelResponse>
 }
 
-class ChatApiService(
+class ChatApiServiceImpl(
     private val mainClient: HttpClient
-) : BaseApiService(mainClient), IChatApiService {
+) : BaseApiService(mainClient), ChatApiService {
 
     override suspend fun sendMessage(message: String): ApiResponse<ModelResponse> {
         return safeRequest {

@@ -1,9 +1,13 @@
 package javavlsu.kb.esap.esapmobile.core.di
 
 import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.AuthApiServiceImpl
 import javavlsu.kb.esap.esapmobile.core.domain.api.ChatApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.ChatApiServiceImpl
 import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.MainApiServiceImpl
 import javavlsu.kb.esap.esapmobile.core.domain.api.NotificationApiService
+import javavlsu.kb.esap.esapmobile.core.domain.api.NotificationApiServiceImpl
 import javavlsu.kb.esap.esapmobile.core.domain.network.NetworkClient
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -23,19 +27,19 @@ val networkModule = module {
     }
 
     single<AuthApiService> {
-        AuthApiService(get(named("authHttpClient")))
+        AuthApiServiceImpl(get(named("authHttpClient")))
     }
 
     single<MainApiService> {
-        MainApiService(get(named("mainHttpClient")))
+        MainApiServiceImpl(get(named("mainHttpClient")))
     }
 
     single<NotificationApiService> {
-        NotificationApiService(get(named("mainHttpClient")))
+        NotificationApiServiceImpl(get(named("mainHttpClient")))
     }
 
     single<ChatApiService> {
-        ChatApiService(get(named("mainHttpClient")))
+        ChatApiServiceImpl(get(named("mainHttpClient")))
     }
 
 //    single { ChatHistoryStore(androidContext()) }

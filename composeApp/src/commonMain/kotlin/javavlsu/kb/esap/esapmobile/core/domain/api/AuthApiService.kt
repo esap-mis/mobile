@@ -1,23 +1,25 @@
 package javavlsu.kb.esap.esapmobile.core.domain.api
 
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
+import io.ktor.http.HttpMethod
 import javavlsu.kb.esap.esapmobile.core.domain.model.request.AuthRequest
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.AuthResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.ServerStatusResponse
 
-interface IAuthApiService {
+interface AuthApiService {
     suspend fun checkStatus(): ApiResponse<ServerStatusResponse>
     suspend fun login(request: AuthRequest): ApiResponse<AuthResponse>
     suspend fun resetPassword(request: AuthRequest): ApiResponse<String>
     suspend fun refreshToken(refreshToken: String): ApiResponse<AuthResponse>
 }
 
-class AuthApiService(
+class AuthApiServiceImpl(
     private val authClient: HttpClient
 ) : BaseApiService(authClient),
-    IAuthApiService {
+    AuthApiService {
 
     override suspend fun checkStatus(): ApiResponse<ServerStatusResponse> {
         return safeRequest {

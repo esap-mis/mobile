@@ -6,13 +6,13 @@ import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
 import javavlsu.kb.esap.esapmobile.core.domain.model.request.TokenRequest
 
-interface INotificationApiService {
+interface NotificationApiService {
     suspend fun registerToken(request: TokenRequest): ApiResponse<String>
 }
 
-class NotificationApiService(
+class NotificationApiServiceImpl(
     private val mainClient: HttpClient
-) : BaseApiService(mainClient), INotificationApiService {
+) : BaseApiService(mainClient), NotificationApiService {
 
     override suspend fun registerToken(request: TokenRequest): ApiResponse<String> {
         return safeRequest {

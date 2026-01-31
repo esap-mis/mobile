@@ -13,7 +13,7 @@ import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardRespons
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
 import java.time.LocalDate
 
-interface IMainApiService {
+interface MainApiService {
     suspend fun getDoctor(): ApiResponse<DoctorResponse>
     suspend fun getPatient(): ApiResponse<PatientResponse>
     suspend fun getDoctorList(date: LocalDate): ApiResponse<List<DoctorResponse>>
@@ -25,9 +25,9 @@ interface IMainApiService {
     suspend fun getDoctors(page: Int, size: Int = 10): ApiResponse<Page<DoctorResponse>>
 }
 
-class MainApiService(
+class MainApiServiceImpl(
     private val mainClient: HttpClient
-) : BaseApiService(mainClient), IMainApiService {
+) : BaseApiService(mainClient), MainApiService {
 
     override suspend fun getDoctor(): ApiResponse<DoctorResponse> {
         return safeRequest {
