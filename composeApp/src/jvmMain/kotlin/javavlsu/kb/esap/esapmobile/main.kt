@@ -13,7 +13,10 @@ fun main()  {
     System.setProperty("skiko.renderApi", "OPENGL")
     System.setProperty("compose.desktop.rendering.multisample", "true")
     System.setProperty("compose.desktop.rendering.vsync", "true")
+    System.setProperty("compose.desktop.render.half.pixel.snap", "false")
     System.setProperty("sun.java2d.uiScale.enabled", "true")
+    System.setProperty("awt.useSystemAAFontSettings","on")
+    System.setProperty("swing.aatext", "true")
 
     application {
         startKoin {

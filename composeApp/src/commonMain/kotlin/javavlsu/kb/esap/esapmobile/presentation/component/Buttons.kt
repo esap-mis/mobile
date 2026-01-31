@@ -23,7 +23,7 @@ fun CustomButton(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            contentColor = Color.White,
             containerColor = color
         ),
         enabled = isEnabled,
