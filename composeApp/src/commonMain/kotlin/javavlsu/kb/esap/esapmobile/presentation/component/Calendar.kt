@@ -1,0 +1,161 @@
+package javavlsu.kb.esap.esapmobile.presentation.component
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import javavlsu.kb.esap.esapmobile.core.data.CalendarViewModel
+import javavlsu.kb.esap.esapmobile.presentation.data.CalendarUiModel
+import org.koin.compose.viewmodel.koinViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+@Composable
+fun Calendar(
+    modifier: Modifier = Modifier,
+    calendarViewModel: CalendarViewModel = koinViewModel()
+) {
+    val data by calendarViewModel.calendarData.collectAsState()
+
+    data?.let { calendarData ->
+        Column(modifier = modifier.fillMaxWidth(1f)) {
+            Header(data = calendarData)
+            Content(
+                data = calendarData,
+                onDateClickListener = { date ->
+                    calendarViewModel.selectDate(date.date)
+                },
+                onPrevClickListener = {
+                    calendarViewModel.navigateToPreviousWeek()
+                },
+                onNextClickListener = {
+                    calendarViewModel.navigateToNextWeek()
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun Header(
+    data: CalendarUiModel
+) {
+    Row(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = data.selectedDate.date.format(
+                DateTimeFormatter.ofPattern("d MMMM yyyy")
+            ),
+            fontSize = 18.sp,
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun Content(
+    data: CalendarUiModel,
+    onDateClickListener: (CalendarUiModel.Date) -> Unit,
+    onPrevClickListener: (LocalDate) -> Unit,
+    onNextClickListener: (LocalDate) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = {
+            onPrevClickListener(data.startDate.date)
+        }) {
+            Icon(
+                imageVector = Icons.Default.ChevronLeft,
+                contentDescription = null
+            )
+        }
+
+        LazyVerticalGrid(
+            modifier = Modifier.weight(1f),
+            columns = GridCells.Fixed(7)
+        ) {
+            items(data.visibleDates.size) { index ->
+                ContentItem(
+                    date = data.visibleDates[index],
+                    onDateClickListener
+                )
+            }
+        }
+
+        IconButton(onClick = {
+            onNextClickListener(data.endDate.date)
+        }) {
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
+fun ContentItem(
+    date: CalendarUiModel.Date,
+    onClickListener: (CalendarUiModel.Date) -> Unit,
+) {
+    Card(
+        modifier = Modifier
+            .padding(
+                vertical = 2.dp,
+                horizontal = 2.dp
+            )
+            .clickable {
+                onClickListener(date)
+            }
+        ,
+        colors = CardDefaults.cardColors(
+            containerColor = if (date.isSelected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .width(48.dp)
+                .height(58.dp)
+                .padding(2.dp)
+        ) {
+            Text(
+                text = date.day,
+                fontSize = 16.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = date.date.dayOfMonth.toString(),
+                fontSize = 16.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
