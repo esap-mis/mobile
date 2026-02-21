@@ -26,7 +26,7 @@ fun App(
     EsapMobileTheme(darkTheme = darkTheme) {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+            color = MaterialTheme.colorScheme.surface
         ) {
             val navController = rememberNavController()
             RootNavHost(navHostController = navController)

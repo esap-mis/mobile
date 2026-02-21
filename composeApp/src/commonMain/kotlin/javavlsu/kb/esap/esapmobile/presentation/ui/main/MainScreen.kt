@@ -125,18 +125,20 @@ fun MainScreen(
                             )
                         }
                     } else {
-                        Row {
-                            NavigationSideBar(
-                                items = navigationItems,
-                                navController = navHostController,
-                                onMoreButtonClick = {
-                                    scope.launch { drawerState.open() }
-                                }
-                            )
-                            MainScreenNavGraph(
-                                navController = navHostController,
-                                paddingValues = PaddingValues()
-                            )
+                        Surface(color = MaterialTheme.colorScheme.surface) {
+                            Row {
+                                NavigationSideBar(
+                                    items = navigationItems,
+                                    navController = navHostController,
+                                    onMoreButtonClick = {
+                                        scope.launch { drawerState.open() }
+                                    }
+                                )
+                                MainScreenNavGraph(
+                                    navController = navHostController,
+                                    paddingValues = PaddingValues()
+                                )
+                            }
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package javavlsu.kb.esap.esapmobile.core.navigation.graph
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import javavlsu.kb.esap.esapmobile.core.navigation.Screen
+import javavlsu.kb.esap.esapmobile.presentation.ui.chat.ChatScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.HomeScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.SettingsScreen
 import javavlsu.kb.esap.esapmobile.presentation.ui.main.appointments.AppointmentBookingScreen
@@ -28,18 +30,21 @@ fun MainScreenNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Main.Home.route,
-        modifier = Modifier.padding(paddingValues = paddingValues)
+        startDestination = Screen.Main.Home.route
     ) {
         composable(route = Screen.Main.Home.route) {
-            HomeScreen(
-                navigateToAppointmentsBooking = { navController.navigate(Screen.Main.AppointmentBooking.route) },
-                navigateToAppointments = { navController.navigate(Screen.Main.Appointments.route) },
-                navigateToMedicalCard = { navController.navigate(Screen.Main.Results.route) }
-            )
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                HomeScreen(
+                    navigateToAppointmentsBooking = { navController.navigate(Screen.Main.AppointmentBooking.route) },
+                    navigateToAppointments = { navController.navigate(Screen.Main.Appointments.route) },
+                    navigateToMedicalCard = { navController.navigate(Screen.Main.Results.route) }
+                )
+            }
         }
         composable(route = Screen.Main.AppointmentBooking.route) {
-            AppointmentBookingScreen(navController)
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                AppointmentBookingScreen(navController)
+            }
         }
         composable(
             route = Screen.Main.AppointmentBooking.Confirmation.route,
@@ -50,26 +55,32 @@ fun MainScreenNavGraph(
                 navArgument("scheduleId") { type = NavType.LongType },
             )
         ) { backStackEntry ->
-            ConfirmationScreen(
-                selectedDate = backStackEntry.savedStateHandle.get<String>("selectedDate")!!,
-                startTime = backStackEntry.savedStateHandle.get<String>("startTime")!!,
-                doctorId = backStackEntry.savedStateHandle.get<Long>("doctorId")!!,
-                scheduleId = backStackEntry.savedStateHandle.get<Long>("scheduleId")!!,
-                navigateBack = {
-                    navController.navigate(Screen.Main.AppointmentBooking.route)
-                }
-            )
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                ConfirmationScreen(
+                    selectedDate = backStackEntry.savedStateHandle.get<String>("selectedDate")!!,
+                    startTime = backStackEntry.savedStateHandle.get<String>("startTime")!!,
+                    doctorId = backStackEntry.savedStateHandle.get<Long>("doctorId")!!,
+                    scheduleId = backStackEntry.savedStateHandle.get<Long>("scheduleId")!!,
+                    navigateBack = {
+                        navController.navigate(Screen.Main.AppointmentBooking.route)
+                    }
+                )
+            }
         }
         composable(route = Screen.Main.Appointments.route) {
-            AppointmentsScreen(
-                navigateToMedicalCard = { navController.navigate(Screen.Main.Results.route) }
-            )
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                AppointmentsScreen(
+                    navigateToMedicalCard = { navController.navigate(Screen.Main.Results.route) }
+                )
+            }
         }
 
         composable(route = Screen.Main.Results.route) {
-            ResultsScreen(
-                navController = navController
-            )
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                ResultsScreen(
+                    navController = navController
+                )
+            }
         }
         composable(
             route = Screen.Main.Results.Analysis.route,
@@ -77,12 +88,14 @@ fun MainScreenNavGraph(
                 navArgument("patientId") { type = NavType.LongType },
             )
         ) { backStackEntry ->
-            AnalysisScreen(
-                patientId = backStackEntry.savedStateHandle.get<Long>("patientId")!!,
-                onBackPressed = {
-                    navController.navigate(Screen.Main.Results.route)
-                }
-            )
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                AnalysisScreen(
+                    patientId = backStackEntry.savedStateHandle.get<Long>("patientId")!!,
+                    onBackPressed = {
+                        navController.navigate(Screen.Main.Results.route)
+                    }
+                )
+            }
         }
         composable(
             route = Screen.Main.Results.Reports.route,
@@ -90,24 +103,32 @@ fun MainScreenNavGraph(
                 navArgument("patientId") { type = NavType.LongType },
             )
         ) { backStackEntry ->
-            ReportsScreen(
-                patientId = backStackEntry.savedStateHandle.get<Long>("patientId")!!,
-                onBackPressed = {
-                    navController.navigate(Screen.Main.Results.route)
-                }
-            )
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                ReportsScreen(
+                    patientId = backStackEntry.savedStateHandle.get<Long>("patientId")!!,
+                    onBackPressed = {
+                        navController.navigate(Screen.Main.Results.route)
+                    }
+                )
+            }
         }
         composable(route = Screen.Main.Doctors.route) {
-            DoctorsScreen()
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                DoctorsScreen()
+            }
         }
         composable(route = Screen.Main.Patients.route) {
-            PatientsScreen()
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                PatientsScreen()
+            }
         }
         composable(route = Screen.Main.More.Settings.route) {
-            SettingsScreen()
+            Box(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                SettingsScreen()
+            }
         }
-//        composable(route = Screen.Main.More.Chat.route) {
-//            ChatScreen()
-//        }
+        composable(route = Screen.Main.More.Chat.route) {
+            ChatScreen(mainPadding = paddingValues)
+        }
     }
 }

@@ -41,6 +41,4 @@ val networkModule = module {
     single<ChatApiService> {
         ChatApiServiceImpl(get(named("mainHttpClient")))
     }
-
-//    single { ChatHistoryStore(androidContext()) }
 }

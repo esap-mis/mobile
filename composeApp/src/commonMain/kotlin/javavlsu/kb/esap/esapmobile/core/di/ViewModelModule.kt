@@ -11,6 +11,6 @@ val viewModelModule = module {
     viewModel { CalendarViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { TokenViewModel(get()) }
-    viewModel { ChatViewModel(get()) }
+    single { ChatViewModel(get()) }
     viewModel { FileDownloaderViewModel(get()) }
 }
