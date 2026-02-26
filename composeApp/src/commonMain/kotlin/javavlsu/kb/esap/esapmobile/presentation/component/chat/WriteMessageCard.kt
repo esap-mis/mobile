@@ -40,6 +40,7 @@ fun WriteMessageCard(
             placeholder = {
                 Text(text = stringResource(Res.string.your_message))
             },
+            maxLines = 5,
             trailingIcon = {
                 Image(
                     modifier = Modifier

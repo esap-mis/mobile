@@ -54,4 +54,7 @@ class MainRepository(
             }
         ).flow
     }
+
+    suspend fun cancelAppointment(appointmentId: Long): ApiResponse<Unit> =
+        mainApiService.cancelAppointment(appointmentId)
 }

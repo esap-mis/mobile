@@ -1,13 +1,6 @@
 package javavlsu.kb.esap.esapmobile.presentation.ui.chat
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -52,18 +45,24 @@ fun ChatScreen(
     }
 
     LaunchedEffect(chatViewModel.messages.size) {
-        lazyListState.animateScrollToItem(chatViewModel.messages.size)
+        if (chatViewModel.messages.isNotEmpty()) {
+            lazyListState.animateScrollToItem(chatViewModel.messages.size - 1)
+        }
     }
 
     Scaffold(
-        modifier = Modifier.padding(mainPadding).imePadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(mainPadding)
+            .imePadding(), // Это поднимет весь экран вместе с клавиатурой
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             ToolbarMessage(onClickBack = {})
         },
         bottomBar = {
             WriteMessageCard(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 value = input,
                 onValueChange = setInput,
                 onClickSend = { sendMessage(input) },
@@ -71,17 +70,15 @@ fun ChatScreen(
         }
     ) { paddingValues ->
         Surface(
-            modifier = Modifier.fillMaxSize().padding(paddingValues = paddingValues),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
             color = MaterialTheme.colorScheme.background
         ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(
-                        top = 8.dp,
-                        start = 8.dp,
-                        end = 8.dp
-                    ),
+                    .padding(horizontal = 8.dp),
                 state = lazyListState,
                 verticalArrangement = Arrangement.spacedBy(space = 8.dp)
             ) {

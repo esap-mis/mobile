@@ -23,6 +23,7 @@ interface MainApiService {
     suspend fun getMedicalCard(patientId: Long): ApiResponse<MedicalCardResponse>
     suspend fun getPatients(page: Int, size: Int = 10): ApiResponse<Page<PatientResponse>>
     suspend fun getDoctors(page: Int, size: Int = 10): ApiResponse<Page<DoctorResponse>>
+    suspend fun cancelAppointment(appointmentId: Long): ApiResponse<Unit>
 }
 
 class MainApiServiceImpl(
@@ -98,6 +99,13 @@ class MainApiServiceImpl(
             method = HttpMethod.Get
             parameter("page", page)
             parameter("size", size)
+        }
+    }
+
+    override suspend fun cancelAppointment(appointmentId: Long): ApiResponse<Unit> {
+        return safeRequest {
+            url("api/schedule/appointment/$appointmentId")
+            method = HttpMethod.Delete
         }
     }
 }

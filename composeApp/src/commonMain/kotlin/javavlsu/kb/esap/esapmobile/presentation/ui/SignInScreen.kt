@@ -208,7 +208,8 @@ fun AuthForm(
 
         CustomButton(
             text = stringResource(Res.string.signin),
-            onClick = onSignInButtonClick
+            onClick = onSignInButtonClick,
+            color = Color.Blue
         )
 
         RegisterButton(onRegisterButtonClick)
@@ -240,7 +241,7 @@ fun RegisterButton(onClick: () -> Unit) {
         Text(
             text = buildAnnotatedString {
                 withStyle(
-                    style = SpanStyle(color = Color.Black)
+                    style = SpanStyle(color = MaterialTheme.colorScheme.secondary)
                 ) {
                     append(stringResource(Res.string.dont_have_account))
                 }

@@ -56,6 +56,9 @@ class MainViewModel(
     private val _currentUser = MutableStateFlow<Any?>(null)
     val currentUser: StateFlow<Any?> = _currentUser.asStateFlow()
 
+    private val _cancelAppointmentState = MutableStateFlow<ApiResponse<Unit>?>(null)
+    val cancelAppointmentState: StateFlow<ApiResponse<Unit>?> = _cancelAppointmentState.asStateFlow()
+
     init {
         observeUserRole()
         observeUserAppointments()
@@ -146,6 +149,16 @@ class MainViewModel(
                 .collectLatest { pagingData ->
                     _doctorsList.value = pagingData
                 }
+        }
+    }
+
+    fun cancelAppointment(appointmentId: Long) {
+        launchRequestWithState(_cancelAppointmentState, true) {
+            val response = mainRepository.cancelAppointment(appointmentId)
+            if (response is ApiResponse.Success) {
+                getUserAppointments()
+            }
+            response
         }
     }
 }

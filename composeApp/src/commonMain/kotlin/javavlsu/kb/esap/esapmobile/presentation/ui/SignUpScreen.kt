@@ -121,7 +121,8 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.size(30.dp))
                 CustomButton(
                     text = "Зарегистрироваться",
-                    onClick = { /* TODO: viewModel.register(...) */ }
+                    onClick = { /* TODO: viewModel.register(...) */ },
+                    color = Color.Blue
                 )
 
                 TextButton(
@@ -131,7 +132,7 @@ fun SignUpScreen(
                     Text(
                         text = buildAnnotatedString {
                             withStyle(
-                                style = SpanStyle(color = Color.Black)
+                                style = SpanStyle(color = MaterialTheme.colorScheme.secondary)
                             ) {
                                 append("Уже есть аккаунт?")
                             }

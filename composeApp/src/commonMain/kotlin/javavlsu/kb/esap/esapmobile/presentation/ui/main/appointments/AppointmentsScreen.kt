@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,9 +28,6 @@ import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentRespons
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
-import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
-import javavlsu.kb.esap.esapmobile.presentation.theme.Green20
-import javavlsu.kb.esap.esapmobile.presentation.theme.Green80
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
@@ -46,13 +42,25 @@ fun AppointmentsScreen(
 ) {
     val loading by mainViewModel.loading.collectAsState()
     val userAppointmentList by mainViewModel.userAppointmentsState.collectAsState()
+    val cancelState by mainViewModel.cancelAppointmentState.collectAsState()
     var isUpcoming by remember { mutableStateOf(true) }
+    var showCancelDialog by remember { mutableStateOf(false) }
+    var appointmentIdToCancel by remember { mutableStateOf<Long?>(null) }
+    var showResponseDialog by remember { mutableStateOf(false) }
+    var responseMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         mainViewModel.getUserAppointments()
     }
 
-    val showLoading = loading || userAppointmentList is ApiResponse.Loading
+    LaunchedEffect(cancelState) {
+        if (cancelState is ApiResponse.Failure) {
+            responseMessage = (cancelState as ApiResponse.Failure).errorMessage
+            showResponseDialog = true
+        }
+    }
+
+    val showLoading = loading || userAppointmentList is ApiResponse.Loading || cancelState is ApiResponse.Loading
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -67,17 +75,18 @@ fun AppointmentsScreen(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (mainViewModel.patientState.collectAsState().value is ApiResponse.Success) {
-                    val user = (mainViewModel.patientState.collectAsState().value as ApiResponse.Success).data
+                val patientState = mainViewModel.patientState.collectAsState().value
+                val doctorState = mainViewModel.doctorState.collectAsState().value
+                
+                if (patientState is ApiResponse.Success) {
                     Header(
-                        user = user,
+                        user = patientState.data,
                         isHome = false,
                         onMedicalCardClick = { navigateToMedicalCard() }
                     )
-                } else if (mainViewModel.doctorState.collectAsState().value is ApiResponse.Success) {
-                    val user = (mainViewModel.doctorState.collectAsState().value as ApiResponse.Success).data
+                } else if (doctorState is ApiResponse.Success) {
                     Header(
-                        user = user,
+                        user = doctorState.data,
                         isHome = false,
                         onMedicalCardClick = { navigateToMedicalCard() }
                     )
@@ -106,9 +115,45 @@ fun AppointmentsScreen(
                         appointments.filter { !it.isUpcoming() }
                     }
 
-                    DisplayAppointments(appointments.sortedBy { it.getDateTime() })
+                    DisplayAppointments(
+                        appointments = appointments.sortedBy { it.getDateTime() },
+                        isUpcoming = isUpcoming,
+                        onCancelClick = { id ->
+                            appointmentIdToCancel = id
+                            showCancelDialog = true
+                        }
+                    )
                 }
             }
+        }
+    }
+
+    if (showCancelDialog) {
+        AlertDialog(
+            onDismissRequest = { showCancelDialog = false },
+            title = { Text("Отмена записи") },
+            text = { Text("Вы уверены, что хотите отменить эту запись?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        appointmentIdToCancel?.let { mainViewModel.cancelAppointment(it) }
+                        showCancelDialog = false
+                    }
+                ) {
+                    Text("Да, отменить", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showCancelDialog = false }) {
+                    Text("Назад")
+                }
+            }
+        )
+    }
+
+    if (showResponseDialog) {
+        ResponseDialog(responseMessage) {
+            showResponseDialog = false
         }
     }
 }
@@ -174,11 +219,19 @@ fun CustomToggleSwitch(
 }
 
 @Composable
-fun DisplayAppointments(appointments: List<AppointmentResponse>?) {
+fun DisplayAppointments(
+    appointments: List<AppointmentResponse>?,
+    isUpcoming: Boolean,
+    onCancelClick: (Long) -> Unit
+) {
     if (!appointments.isNullOrEmpty()) {
         LazyColumn {
             items(appointments) { appointment ->
-                AppointmentCard(appointment = appointment)
+                AppointmentCard(
+                    appointment = appointment,
+                    isUpcoming = isUpcoming,
+                    onCancelClick = onCancelClick
+                )
             }
         }
     } else {
@@ -188,7 +241,9 @@ fun DisplayAppointments(appointments: List<AppointmentResponse>?) {
 
 @Composable
 fun AppointmentCard(
-    appointment: AppointmentResponse
+    appointment: AppointmentResponse,
+    isUpcoming: Boolean,
+    onCancelClick: (Long) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -205,7 +260,8 @@ fun AppointmentCard(
             Row(
                 modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -310,6 +366,21 @@ fun AppointmentCard(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
+                        }
+                    }
+                    
+                    if (isUpcoming) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = { onCancelClick(appointment.id) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                                contentColor = MaterialTheme.colorScheme.onErrorContainer
+                            ),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Text("Отменить запись")
                         }
                     }
                 }
