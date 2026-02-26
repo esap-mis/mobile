@@ -14,12 +14,6 @@ data class AppointmentResponse(
     val patient: PatientResponse? = null,
     val status: AppointmentStatus
 ) {
-    fun isUpcoming(): Boolean {
-        val appointmentDateTime =
-            LocalDateTime.parse("$date $startAppointments", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        return appointmentDateTime.isAfter(LocalDateTime.now())
-    }
-
     fun getDateTime(): LocalDateTime {
         return LocalDateTime.parse("$date $startAppointments", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
     }

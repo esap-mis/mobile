@@ -38,8 +38,11 @@ class MainViewModel(
     private val _makeAppointmentState = MutableStateFlow<ApiResponse<String>?>(null)
     val makeAppointmentState: StateFlow<ApiResponse<String>?> = _makeAppointmentState.asStateFlow()
 
-    private val _userAppointmentsState = MutableStateFlow<ApiResponse<List<AppointmentResponse>>?>(null)
-    val userAppointmentsState: StateFlow<ApiResponse<List<AppointmentResponse>>?> = _userAppointmentsState.asStateFlow()
+    private val _upcomingAppointmentsState = MutableStateFlow<ApiResponse<List<AppointmentResponse>>?>(null)
+    val upcomingAppointmentsState: StateFlow<ApiResponse<List<AppointmentResponse>>?> = _upcomingAppointmentsState.asStateFlow()
+
+    private val _pastAppointmentsState = MutableStateFlow<ApiResponse<List<AppointmentResponse>>?>(null)
+    val pastAppointmentsState: StateFlow<ApiResponse<List<AppointmentResponse>>?> = _pastAppointmentsState.asStateFlow()
 
     private val _medicalCardState = MutableStateFlow<ApiResponse<MedicalCardResponse>?>(null)
     val medicalCardState: StateFlow<ApiResponse<MedicalCardResponse>?> = _medicalCardState.asStateFlow()
@@ -61,7 +64,8 @@ class MainViewModel(
 
     init {
         observeUserRole()
-        observeUserAppointments()
+        getUpcomingAppointments()
+        getPastAppointments()
     }
 
     private fun observeUserRole() {
@@ -69,12 +73,6 @@ class MainViewModel(
             val roles = tokenManager.getRoles()
             _userRole.value = roles
             loadUserDataBasedOnRole(roles)
-        }
-    }
-
-    private fun observeUserAppointments() {
-        viewModelScope.launch {
-            getUserAppointments()
         }
     }
 
@@ -120,9 +118,15 @@ class MainViewModel(
         }
     }
 
-    fun getUserAppointments() {
-        launchRequestWithState(_userAppointmentsState, true) {
-            mainRepository.getUserAppointments()
+    fun getUpcomingAppointments() {
+        launchRequestWithState(_upcomingAppointmentsState, true) {
+            mainRepository.getUpcomingUserAppointments()
+        }
+    }
+
+    fun getPastAppointments() {
+        launchRequestWithState(_pastAppointmentsState, true) {
+            mainRepository.getPastUserAppointments()
         }
     }
 
@@ -156,7 +160,7 @@ class MainViewModel(
         launchRequestWithState(_cancelAppointmentState, true) {
             val response = mainRepository.cancelAppointment(appointmentId)
             if (response is ApiResponse.Success) {
-                getUserAppointments()
+                getUpcomingAppointments()
             }
             response
         }

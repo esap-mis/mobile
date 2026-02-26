@@ -31,8 +31,11 @@ class MainRepository(
     suspend fun makeAppointment(scheduleId: Long, appointmentRequest: AppointmentRequest): ApiResponse<String> =
         mainApiService.makeAppointment(scheduleId, appointmentRequest)
 
-    suspend fun getUserAppointments():  ApiResponse<List<AppointmentResponse>> =
-        mainApiService.getUserAppointments()
+    suspend fun getUpcomingUserAppointments():  ApiResponse<List<AppointmentResponse>> =
+        mainApiService.getUpcomingUserAppointments()
+
+    suspend fun getPastUserAppointments():  ApiResponse<List<AppointmentResponse>> =
+        mainApiService.getPastUserAppointments()
 
     suspend fun getMedicalCard(patientId: Long): ApiResponse<MedicalCardResponse> =
         mainApiService.getMedicalCard(patientId)

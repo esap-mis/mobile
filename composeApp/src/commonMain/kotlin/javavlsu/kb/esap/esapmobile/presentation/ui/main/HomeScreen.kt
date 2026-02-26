@@ -50,7 +50,7 @@ fun HomeScreen(
     val loading by mainViewModel.loading.collectAsState()
     val doctorResponse by mainViewModel.doctorState.collectAsState()
     val patientResponse by mainViewModel.patientState.collectAsState()
-    val userAppointmentList by mainViewModel.userAppointmentsState.collectAsState()
+    val upcomingAppointmentList by mainViewModel.upcomingAppointmentsState.collectAsState()
     val medicalCardResponse by mainViewModel.medicalCardState.collectAsState()
 
     val errorMessage by mainViewModel.errorMessage.collectAsStateWithLifecycle()
@@ -73,7 +73,7 @@ fun HomeScreen(
         }
     }
 
-    val showLoading = loading || doctorResponse is ApiResponse.Loading || patientResponse is ApiResponse.Loading || userAppointmentList is ApiResponse.Loading || medicalCardResponse is ApiResponse.Loading
+    val showLoading = loading || doctorResponse is ApiResponse.Loading || patientResponse is ApiResponse.Loading || upcomingAppointmentList is ApiResponse.Loading || medicalCardResponse is ApiResponse.Loading
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -124,11 +124,8 @@ fun HomeScreen(
                     )
                 }
 
-                if (userAppointmentList is ApiResponse.Success) {
-                    var appointments = (userAppointmentList as ApiResponse.Success).data
-
-                    appointments = appointments
-                        .filter { it.isUpcoming() }
+                if (upcomingAppointmentList is ApiResponse.Success) {
+                    val appointments = (upcomingAppointmentList as ApiResponse.Success).data
                         .sortedBy { it.getDateTime() }
                         .take(5)
 
@@ -297,21 +294,13 @@ fun NextAppointmentCard(
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            contentDescription = null,
+                            contentDescription = null
                         )
-                        if (appointment.doctor != null) {
-                            Text(
-                                text = appointment.doctor.clinic!!.address,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 16.sp
-                            )
-                        } else if (appointment.patient != null) {
-                            Text(
-                                text = appointment.patient.clinic!!.address,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 16.sp
-                            )
-                        }
+                        Text(
+                            text = if (appointment.doctor != null) appointment.doctor.clinic!!.address else appointment.patient!!.clinic!!.address,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 16.sp
+                        )
                     }
                 }
             }

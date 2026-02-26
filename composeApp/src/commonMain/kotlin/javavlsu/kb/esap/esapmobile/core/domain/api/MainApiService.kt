@@ -19,7 +19,8 @@ interface MainApiService {
     suspend fun getDoctorList(date: LocalDate): ApiResponse<List<DoctorResponse>>
     suspend fun getDoctorById(doctorId: Long): ApiResponse<DoctorResponse>
     suspend fun makeAppointment(scheduleId: Long, appointmentRequest: AppointmentRequest): ApiResponse<String>
-    suspend fun getUserAppointments(): ApiResponse<List<AppointmentResponse>>
+    suspend fun getUpcomingUserAppointments(): ApiResponse<List<AppointmentResponse>>
+    suspend fun getPastUserAppointments(): ApiResponse<List<AppointmentResponse>>
     suspend fun getMedicalCard(patientId: Long): ApiResponse<MedicalCardResponse>
     suspend fun getPatients(page: Int, size: Int = 10): ApiResponse<Page<PatientResponse>>
     suspend fun getDoctors(page: Int, size: Int = 10): ApiResponse<Page<DoctorResponse>>
@@ -70,9 +71,16 @@ class MainApiServiceImpl(
         }
     }
 
-    override suspend fun getUserAppointments(): ApiResponse<List<AppointmentResponse>> {
+    override suspend fun getUpcomingUserAppointments(): ApiResponse<List<AppointmentResponse>> {
         return safeRequest {
-            url("api/schedule/appointments")
+            url("api/schedule/appointments/upcoming")
+            method = HttpMethod.Get
+        }
+    }
+
+    override suspend fun getPastUserAppointments(): ApiResponse<List<AppointmentResponse>> {
+        return safeRequest {
+            url("api/schedule/appointments/past")
             method = HttpMethod.Get
         }
     }

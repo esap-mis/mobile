@@ -41,7 +41,8 @@ fun AppointmentsScreen(
     navigateToMedicalCard: () -> Unit
 ) {
     val loading by mainViewModel.loading.collectAsState()
-    val userAppointmentList by mainViewModel.userAppointmentsState.collectAsState()
+    val upcomingAppointmentsState by mainViewModel.upcomingAppointmentsState.collectAsState()
+    val pastAppointmentsState by mainViewModel.pastAppointmentsState.collectAsState()
     val cancelState by mainViewModel.cancelAppointmentState.collectAsState()
     var isUpcoming by remember { mutableStateOf(true) }
     var showCancelDialog by remember { mutableStateOf(false) }
@@ -50,7 +51,8 @@ fun AppointmentsScreen(
     var responseMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        mainViewModel.getUserAppointments()
+        mainViewModel.getUpcomingAppointments()
+        mainViewModel.getPastAppointments()
     }
 
     LaunchedEffect(cancelState) {
@@ -60,7 +62,7 @@ fun AppointmentsScreen(
         }
     }
 
-    val showLoading = loading || userAppointmentList is ApiResponse.Loading || cancelState is ApiResponse.Loading
+    val showLoading = loading || upcomingAppointmentsState is ApiResponse.Loading || pastAppointmentsState is ApiResponse.Loading || cancelState is ApiResponse.Loading
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -77,7 +79,7 @@ fun AppointmentsScreen(
             ) {
                 val patientState = mainViewModel.patientState.collectAsState().value
                 val doctorState = mainViewModel.doctorState.collectAsState().value
-                
+
                 if (patientState is ApiResponse.Success) {
                     Header(
                         user = patientState.data,
@@ -106,24 +108,20 @@ fun AppointmentsScreen(
                         )
                 )
 
-                if (userAppointmentList is ApiResponse.Success) {
-                    var appointments = (userAppointmentList as ApiResponse.Success).data
-
-                    appointments = if (isUpcoming) {
-                        appointments.filter { it.isUpcoming() }
-                    } else {
-                        appointments.filter { !it.isUpcoming() }
-                    }
-
-                    DisplayAppointments(
-                        appointments = appointments.sortedBy { it.getDateTime() },
-                        isUpcoming = isUpcoming,
-                        onCancelClick = { id ->
-                            appointmentIdToCancel = id
-                            showCancelDialog = true
-                        }
-                    )
+                val appointments = if (isUpcoming) {
+                    (upcomingAppointmentsState as? ApiResponse.Success)?.data
+                } else {
+                    (pastAppointmentsState as? ApiResponse.Success)?.data
                 }
+
+                DisplayAppointments(
+                    appointments = appointments?.sortedBy { it.getDateTime() },
+                    isUpcoming = isUpcoming,
+                    onCancelClick = { id ->
+                        appointmentIdToCancel = id
+                        showCancelDialog = true
+                    }
+                )
             }
         }
     }
