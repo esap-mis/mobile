@@ -10,6 +10,7 @@ import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentRespons
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.ScheduleResponse
 import javavlsu.kb.esap.esapmobile.presentation.util.DoctorsPagingSource
 import javavlsu.kb.esap.esapmobile.presentation.util.PatientsPagingSource
 import kotlinx.coroutines.flow.Flow
@@ -60,4 +61,7 @@ class MainRepository(
 
     suspend fun cancelAppointment(appointmentId: Long): ApiResponse<Unit> =
         mainApiService.cancelAppointment(appointmentId)
+
+    suspend fun getDoctorSchedules(doctorId: Long): ApiResponse<List<ScheduleResponse>> =
+        mainApiService.getDoctorSchedules(doctorId)
 }

@@ -29,18 +29,15 @@ import javavlsu.kb.esap.esapmobile.core.data.CalendarViewModel
 import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.TimeSlotResponse
 import javavlsu.kb.esap.esapmobile.presentation.component.Calendar
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.VerticalGrid
-import javavlsu.kb.esap.esapmobile.presentation.data.TimeSlot
-import javavlsu.kb.esap.esapmobile.presentation.data.calculateAvailableTimeSlots
 import javavlsu.kb.esap.esapmobile.presentation.theme.Gray20
-import javavlsu.kb.esap.esapmobile.presentation.theme.Gray40
 import javavlsu.kb.esap.esapmobile.presentation.theme.NightBlue
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun AppointmentBookingScreen(
@@ -164,19 +161,21 @@ fun DoctorCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            var isExpanded by remember { mutableStateOf(false) }
-            val availableTimeSlots = calculateAvailableTimeSlots(doctor.schedules!!, doctor.schedules[0].appointments)
+            if (doctor.schedules!!.isNotEmpty()) {
+                doctor.schedules.forEach { schedule ->
+                    var isExpanded by remember { mutableStateOf(false) }
+                    val availableTimeSlots = schedule.timeSlots.sortedBy { it.startTime }
 
-            if (doctor.schedules.isNotEmpty()) {
-                ExpandableTimeSlotsList(
-                    isExpanded = isExpanded,
-                    onExpandToggle = { isExpanded = !isExpanded },
-                    availableTimeSlots = availableTimeSlots,
-                    date = date,
-                    scheduleId = doctor.schedules[0].id,
-                    doctorId = doctor.id!!,
-                    navController = navController
-                )
+                    ExpandableTimeSlotsList(
+                        isExpanded = isExpanded,
+                        onExpandToggle = { isExpanded = !isExpanded },
+                        timeSlots = availableTimeSlots,
+                        date = date,
+                        scheduleId = schedule.id,
+                        doctorId = doctor.id!!,
+                        navController = navController
+                    )
+                }
             }
         }
     }
@@ -186,7 +185,7 @@ fun DoctorCard(
 fun ExpandableTimeSlotsList(
     isExpanded: Boolean,
     onExpandToggle: () -> Unit,
-    availableTimeSlots: List<TimeSlot>,
+    timeSlots: List<TimeSlotResponse>,
     date: LocalDate,
     scheduleId: Long,
     doctorId: Long,
@@ -201,7 +200,7 @@ fun ExpandableTimeSlotsList(
             fontSize = 18.sp
         )
         Spacer(modifier = Modifier.weight(1f))
-        if (availableTimeSlots.size > 8) {
+        if (timeSlots.size > 8) {
             IconButton(
                 onClick = onExpandToggle,
             ) {
@@ -217,12 +216,14 @@ fun ExpandableTimeSlotsList(
     VerticalGrid(
         columns = 4,
         content = {
-            val displayedTimeSlots = if (isExpanded) availableTimeSlots else availableTimeSlots.take(8)
+            val displayedTimeSlots = if (isExpanded) timeSlots else timeSlots.take(8)
             displayedTimeSlots.forEach { timeSlot ->
-                TimeSlotCard(
-                    timeSlot = timeSlot,
-                    onClick = { navController.navigate("appointment/${date}/${scheduleId}/${timeSlot.startTime}/${doctorId}") }
-                )
+                if (timeSlot.isAvailable) {
+                    TimeSlotCard(
+                        timeSlot = timeSlot,
+                        onClick = { navController.navigate("appointment/${date}/${scheduleId}/${timeSlot.startTime}/${doctorId}") }
+                    )
+                }
             }
         }
     )
@@ -230,7 +231,7 @@ fun ExpandableTimeSlotsList(
 
 @Composable
 fun TimeSlotCard(
-    timeSlot: TimeSlot,
+    timeSlot: TimeSlotResponse,
     onClick: () -> Unit
 ) {
     Card(
@@ -248,7 +249,7 @@ fun TimeSlotCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = timeSlot.startTime.format(DateTimeFormatter.ofPattern("HH:mm")),
+                text = timeSlot.startTime,
                 color = Color.Gray,
                 fontWeight = FontWeight.W500,
                 fontSize = 14.sp,

@@ -11,6 +11,7 @@ import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentRespons
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.ScheduleResponse
 import java.time.LocalDate
 
 interface MainApiService {
@@ -25,6 +26,7 @@ interface MainApiService {
     suspend fun getPatients(page: Int, size: Int = 10): ApiResponse<Page<PatientResponse>>
     suspend fun getDoctors(page: Int, size: Int = 10): ApiResponse<Page<DoctorResponse>>
     suspend fun cancelAppointment(appointmentId: Long): ApiResponse<Unit>
+    suspend fun getDoctorSchedules(doctorId: Long): ApiResponse<List<ScheduleResponse>>
 }
 
 class MainApiServiceImpl(
@@ -114,6 +116,13 @@ class MainApiServiceImpl(
         return safeRequest {
             url("api/schedule/appointment/$appointmentId")
             method = HttpMethod.Delete
+        }
+    }
+
+    override suspend fun getDoctorSchedules(doctorId: Long): ApiResponse<List<ScheduleResponse>> {
+        return safeRequest {
+            url("api/schedule/doctor/$doctorId")
+            method = HttpMethod.Get
         }
     }
 }

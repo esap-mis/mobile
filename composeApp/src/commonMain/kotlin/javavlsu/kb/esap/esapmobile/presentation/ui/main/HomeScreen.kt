@@ -57,6 +57,10 @@ fun HomeScreen(
     var showErrorDialog by remember { mutableStateOf(false) }
     var currentErrorMessage by remember { mutableStateOf("") }
 
+    LaunchedEffect(Unit) {
+        mainViewModel.getUpcomingAppointments()
+    }
+
     LaunchedEffect(errorMessage) {
         if (errorMessage.isNotBlank()) {
             currentErrorMessage = errorMessage
@@ -126,7 +130,6 @@ fun HomeScreen(
 
                 if (upcomingAppointmentList is ApiResponse.Success) {
                     val appointments = (upcomingAppointmentList as ApiResponse.Success).data
-                        .sortedBy { it.getDateTime() }
                         .take(5)
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -280,11 +283,9 @@ fun NextAppointmentCard(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                         )
-                        val parsedTime = LocalTime.parse(appointment.startAppointments, DateTimeFormatter.ofPattern("HH:mm:ss"))
                         val parsedAppointmentDate = LocalDate.parse(appointment.date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                         Text(
-                            text = "${parsedAppointmentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${parsedTime.format(
-                                DateTimeFormatter.ofPattern("HH:mm"))}",
+                            text = "${parsedAppointmentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))} в ${appointment.timeSlot.startTime}",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 16.sp
                         )

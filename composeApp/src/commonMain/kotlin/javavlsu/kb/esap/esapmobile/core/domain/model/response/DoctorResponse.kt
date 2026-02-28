@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DoctorResponse(
     val specialization: String,
-    val schedules: List<ScheduleResponse>? = null,
+    val schedules: List<ScheduleResponse>? = null, // TODO Разделить на два запроса
     override val id: Long? = null,
     override val firstName: String,
     override val patronymic: String,

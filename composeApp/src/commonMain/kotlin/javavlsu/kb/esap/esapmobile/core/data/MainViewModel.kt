@@ -9,6 +9,7 @@ import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentRespons
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.DoctorResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.MedicalCardResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.PatientResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.ScheduleResponse
 import javavlsu.kb.esap.esapmobile.core.domain.network.TokenManager
 import javavlsu.kb.esap.esapmobile.core.domain.repository.MainRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,6 +62,9 @@ class MainViewModel(
 
     private val _cancelAppointmentState = MutableStateFlow<ApiResponse<Unit>?>(null)
     val cancelAppointmentState: StateFlow<ApiResponse<Unit>?> = _cancelAppointmentState.asStateFlow()
+
+    private val _doctorSchedulesState = MutableStateFlow<ApiResponse<List<ScheduleResponse>>?>(null)
+    val doctorSchedulesState: StateFlow<ApiResponse<List<ScheduleResponse>>?> = _doctorSchedulesState.asStateFlow()
 
     init {
         observeUserRole()
@@ -163,6 +167,12 @@ class MainViewModel(
                 getUpcomingAppointments()
             }
             response
+        }
+    }
+
+    fun getDoctorSchedules(doctorId: Long) {
+        launchRequestWithState(_doctorSchedulesState, true) {
+            mainRepository.getDoctorSchedules(doctorId)
         }
     }
 }
