@@ -118,7 +118,11 @@ class MainViewModel(
 
     fun makeAppointment(scheduleId: Long, appointmentRequest: AppointmentRequest) {
         launchRequestWithState(_makeAppointmentState, true) {
-            mainRepository.makeAppointment(scheduleId, appointmentRequest)
+            val response = mainRepository.makeAppointment(scheduleId, appointmentRequest)
+            if (response is ApiResponse.Success) {
+                getUpcomingAppointments()
+            }
+            response
         }
     }
 

@@ -47,6 +47,9 @@
     <string name="past_appointments">Прошедшие</string>
     <string name="record">Запись</string>
     <string name="dont_have_appointments">Нет приемов</string>
+    <string name="status_confirmed">Подтвержден</string>
+    <string name="status_cancelled">Отменен</string>
+    <string name="status_completed">Завершен</string>
 
     <!-- Patients -->
     <string name="patients_list">Пациенты</string>

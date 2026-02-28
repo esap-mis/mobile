@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,9 +47,13 @@ import esapmobile.composeapp.generated.resources.dont_have_appointments
 import esapmobile.composeapp.generated.resources.future_appointments
 import esapmobile.composeapp.generated.resources.past_appointments
 import esapmobile.composeapp.generated.resources.record
+import esapmobile.composeapp.generated.resources.status_cancelled
+import esapmobile.composeapp.generated.resources.status_completed
+import esapmobile.composeapp.generated.resources.status_confirmed
 import javavlsu.kb.esap.esapmobile.core.data.MainViewModel
 import javavlsu.kb.esap.esapmobile.core.domain.api.ApiResponse
 import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentResponse
+import javavlsu.kb.esap.esapmobile.core.domain.model.response.AppointmentStatus
 import javavlsu.kb.esap.esapmobile.presentation.component.CircularProgress
 import javavlsu.kb.esap.esapmobile.presentation.component.Header
 import javavlsu.kb.esap.esapmobile.presentation.component.ResponseDialog
@@ -387,7 +392,7 @@ fun AppointmentCard(
                             )
                         }
                     }
-                    
+
                     if (isUpcoming) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
@@ -400,6 +405,39 @@ fun AppointmentCard(
                             shape = RoundedCornerShape(10.dp)
                         ) {
                             Text("Отменить запись")
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        val (statusText, statusColor, containerColor) = when (appointment.status) {
+                            AppointmentStatus.CONFIRMED -> Triple(
+                                stringResource(Res.string.status_confirmed),
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.primaryContainer
+                            )
+                            AppointmentStatus.CANCELLED -> Triple(
+                                stringResource(Res.string.status_cancelled),
+                                MaterialTheme.colorScheme.error,
+                                MaterialTheme.colorScheme.errorContainer
+                            )
+                            AppointmentStatus.COMPLETED -> Triple(
+                                stringResource(Res.string.status_completed),
+                                Color(0xFF2E7D32), // Dark Green
+                                Color(0xFFC8E6C9)  // Light Green
+                            )
+                        }
+                        
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(containerColor)
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Text(
+                                text = statusText,
+                                color = statusColor,
+                                fontWeight = FontWeight.W600,
+                                fontSize = 14.sp
+                            )
                         }
                     }
                 }
