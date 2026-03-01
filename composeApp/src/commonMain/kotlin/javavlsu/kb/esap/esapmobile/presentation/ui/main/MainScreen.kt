@@ -39,15 +39,11 @@ fun MainScreen(
 ) {
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val items = listOf(
-        Screen.Main.More.Chat,
-        Screen.Main.More.Settings,
-        "Logout"
-    )
-    val selectedItem = remember { mutableStateOf(items[0]) }
     val roles by tokenViewModel.roles.collectAsState()
     val platform = getPlatform()
-    val navigationItems = roles?.let { NavigationItemsProvider.getItems(it) } ?: emptyList()
+    val navigationItems = roles?.let { NavigationItemsProvider.getNavigationItems(it) } ?: emptyList()
+    val moreItems = roles?.let { NavigationItemsProvider.getMoreItems(it) } ?: emptyList()
+    val selectedItem = remember { mutableStateOf(moreItems[0]) }
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         ModalNavigationDrawer(
@@ -55,7 +51,7 @@ fun MainScreen(
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     ModalDrawerSheet {
-                        items.forEach { item ->
+                        moreItems.forEach { item ->
                             if (item is Screen) {
                                 NavigationDrawerItem(
                                     icon = {
